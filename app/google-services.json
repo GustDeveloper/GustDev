@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "109498833413",
+    "firebase_url": "https://gustdev-d442e.firebaseio.com",
+    "project_id": "gustdev-d442e",
+    "storage_bucket": "gustdev-d442e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109498833413:android:fcfef757a832647b",
+        "android_client_info": {
+          "package_name": "com.google.firebase.quickstart.database"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "109498833413-kkuh58naj0u95kdao4fub5s72kjs3445.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR7-VHfVAbaQgMqtwH_9WMc-BIUO38cNY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
