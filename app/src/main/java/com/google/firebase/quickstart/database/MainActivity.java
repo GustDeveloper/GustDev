@@ -52,8 +52,8 @@ public class  MainActivity extends BaseActivity {
         Intent serviceIntent = new Intent(this, BackgroundIntentService.class);
         startService(serviceIntent);
 
+        //Test
 
-;
 
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
