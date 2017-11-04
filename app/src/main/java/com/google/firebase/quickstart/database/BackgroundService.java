@@ -5,11 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-
-/**
- * Created by vanne on 11/3/2017.
- */
-
 public class BackgroundService extends Service {
     private static final String TAG = "BackgroundService";
 
@@ -23,7 +18,6 @@ public class BackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //return super.onStartCommand(intent, flags, startId);
         Log.e(TAG, "On Start Command Method");
 
         Runnable r = new Runnable() {
