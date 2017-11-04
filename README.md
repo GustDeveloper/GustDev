@@ -1,2 +1,4 @@
-Team Eat Together \n
+Team Eat Together
+
+
 App: Gust
