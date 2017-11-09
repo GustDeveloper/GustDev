@@ -127,6 +127,8 @@
     <orderEntry type="library" name="com.google.firebase:firebase-auth-license-11.4.2" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-basement-license-11.4.2" level="project" />
     <orderEntry type="library" name="com.android.support:support-annotations:26.1.0@jar" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-solver:1.0.2@jar" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-1.0.2" level="project" />
     <orderEntry type="library" name="com.firebaseui:firebase-ui-common-3.0.0" level="project" />
     <orderEntry type="library" name="com.android.support:support-core-ui-26.1.0" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-iid-11.4.2" level="project" />

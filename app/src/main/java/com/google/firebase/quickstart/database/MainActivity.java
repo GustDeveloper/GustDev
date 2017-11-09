@@ -45,12 +45,12 @@ public class  MainActivity extends BaseActivity {
         setTitle("Gust by E.T.");
 
         //Create Background Service
-        Intent backgroundService = new Intent(this,BackgroundService.class);
-        startService(backgroundService);
+        //Intent backgroundService = new Intent(this,BackgroundService.class);
+        //startService(backgroundService);
 
         //Create Background ServiceIntent
-        Intent serviceIntent = new Intent(this, BackgroundIntentService.class);
-        startService(serviceIntent);
+        //Intent serviceIntent = new Intent(this, BackgroundIntentService.class);
+        //startService(serviceIntent);
 
         //Test
 
@@ -111,6 +111,8 @@ public class  MainActivity extends BaseActivity {
             return true;
         } else if (i == R.id.action_profile) {
           //TODO: 11/3/2017 navigate to user profile
+            Intent profileActivity = new Intent(this,ProfileActivity.class);
+            startActivity(profileActivity);
             return super.onOptionsItemSelected(item);
         } else {
             return super.onOptionsItemSelected(item);

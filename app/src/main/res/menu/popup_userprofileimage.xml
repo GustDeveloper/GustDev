@@ -1,17 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    tools:context=".ProfileActivity">
 
     <item
-        android:id="@+id/action_logout"
-        android:title="@string/menu_logout"
+        android:id="@+id/action_camera"
+        android:title="@string/popupmenu_camera"
         android:visible="true"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_profile"
-        android:title="@string/menu_profile"
+        android:id="@+id/action_storage"
+        android:title="@string/popupmenu_storage"
         android:visible="true"
         app:showAsAction="never" />
 
