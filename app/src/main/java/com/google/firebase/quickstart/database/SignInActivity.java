@@ -14,10 +14,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.quickstart.database.models.User;
+import com.google.firebase.quickstart.database.models.UtilToast;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
 
@@ -107,8 +109,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            Toast.makeText(SignInActivity.this, "Sign Up Failed",
-                                    Toast.LENGTH_SHORT).show();
+                            FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                            UtilToast.showToast(SignInActivity.this,e.getMessage());
                         }
                     }
                 });
