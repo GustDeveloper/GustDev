@@ -43,18 +43,7 @@ public class  MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Gust by E.T.");
-
-        //Create Background Service
-        //Intent backgroundService = new Intent(this,BackgroundService.class);
-        //startService(backgroundService);
-
-        //Create Background ServiceIntent
-        //Intent serviceIntent = new Intent(this, BackgroundIntentService.class);
-        //startService(serviceIntent);
-
-        //Test
-
-
+        
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {

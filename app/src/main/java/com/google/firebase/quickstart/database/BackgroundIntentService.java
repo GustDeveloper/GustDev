@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-/**
- * Created by vanne on 11/3/2017.
- */
-
 public class BackgroundIntentService extends IntentService {
 
     private static final String TAG = "BackgroundIntentService";
@@ -20,5 +16,8 @@ public class BackgroundIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.i(TAG, "Connected to background intent service");
+
+
+
     }
 }

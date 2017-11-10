@@ -3,14 +3,18 @@ package com.google.firebase.quickstart.database;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,9 +25,27 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.quickstart.database.models.UtilToast;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.Calendar;
+
+/*
+    1. load one image from gallery
+    2. capture one image from camera
+    3. upload one image to Firebase
+    4. Handle image upload/load/capture in the background
+    5. modify user profile by clicking FAB.
+    6. download profile data (images, strings from server)
+    7. check if data is stored locally.  * optional
+ */
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener,PopupMenu.OnMenuItemClickListener {
 
@@ -37,21 +59,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     /*Maximum Byte Size Is 10MB*/
     int MAX_IMG_BYTE_SIZE = 10485760;
-    int REQUEST_IMAGE_CAPTURE = 1;
-    int REQUEST_IMAGE_STORAGE = 0;
+    private static final String IMAGE_DIRECTORY = "/GustImg";
+
+    /*Gallery Request Code*/
+    int REQUEST_IMAGE_STORAGE = 1;
+    int REQUEST_IMAGE_CAPTURE = 0;
+
+    /*String Messages*/
+    String toastMessage;
+
+    /*Databse Reference*/
+    private DatabaseReference mDatabase;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
-        profileImageView = (ImageView) findViewById(R.id.profileImageView);
+        //Todo: grab image from database
+        profileImageView = findViewById(R.id.profileImageView);
         profileImageView.setOnClickListener(this);
-        tvNumber1 = (EditText) findViewById(R.id.tvNumber1);
+        tvNumber1 = findViewById(R.id.tvNumber1);
 
     }
 
@@ -82,16 +116,23 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         popupMenu.show();
     }
 
-
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.action_camera:
                 //do stuff
+                Log.e(TAG, "You clicked camera");
+                if (hasCamera()) {
+                    if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                    } else {
+                        launchCamera();
+                    }
+                }
 
                 return true;
             case R.id.action_storage:
-                Log.e(TAG, "You click storage");
+                Log.e(TAG, "You clicked storage");
                 if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 } else {
@@ -116,32 +157,62 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == RESULT_OK && data != null){
+        if(requestCode == REQUEST_IMAGE_STORAGE && resultCode == RESULT_OK && data != null){
             Uri selectedImage = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                //Todo: See if you can render this image on background, with handler or something
-                //ImageView imageView = (ImageView)findViewById(R.id.profileImageView);
 
-
+                //Todo: what is blocking the UI thread, do it in the background thread
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+                //bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+
                 byte[] byteArray = stream.toByteArray();
 
                 /*If image is way too large, reject it*/
                 if(byteArray.length >= MAX_IMG_BYTE_SIZE){
                     //Todo: Try wrap toast in a class for better user experience or use
-                    Toast.makeText(ProfileActivity.this,"Your image is too large, Please upload again!", Toast.LENGTH_SHORT).show();
-                    return;
+                    //Toast.makeText(ProfileActivity.this,"Your image is too large, Please upload again!", Toast.LENGTH_SHORT).show();
+                    toastMessage  = "The image selected exceeds size limit";
+                    UtilToast.showToast(ProfileActivity.this, toastMessage);
                 } else {
-                    Toast.makeText(ProfileActivity.this,"Image Upload is Successful", Toast.LENGTH_SHORT).show();
+
                     profileImageView.setImageBitmap(bitmap);
+                    upLoadImageToServer(byteArray);
+                    UtilToast.showToast(ProfileActivity.this, toastMessage);
+
                 }
 
-                //Todo: Upload image to firebase
             }catch(IOException e){
                 e.printStackTrace();
             }
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+
+            if (bitmap == null) {
+                toastMessage  = "Failed to process camera image data";
+                UtilToast.showToast(ProfileActivity.this, toastMessage);
+                return;
+            }
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+
+            if (bitmap == null) {
+                toastMessage  = "Failed to compress camera image data";
+                UtilToast.showToast(ProfileActivity.this, toastMessage);
+                return;
+            }
+
+            profileImageView.setImageBitmap(bitmap);
+
+            byte[] byteArray = stream.toByteArray();
+            String path = saveImageIntoFolder(byteArray);
+            upLoadImageToServer(byteArray);
+
+            toastMessage  = "Image is uploaded and saved to " + path;
+            UtilToast.showToast(ProfileActivity.this, toastMessage);
+
         }
     }
 
@@ -154,51 +225,59 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 
-    public void launchCamera(View view){
+    public void launchCamera(){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //Take a picture and pass results along to onActivityResult
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
-    /*
-    private void onCaptureImageResult(Intent data) {
-      Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-      ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-      thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-      File destination = new File(Environment.getExternalStorageDirectory(),
-            System.currentTimeMillis() + ".jpg");
-      FileOutputStream fo;
-      try {
-         destination.createNewFile();
-         fo = new FileOutputStream(destination);
-         fo.write(bytes.toByteArray());
-         fo.close();
-      } catch (FileNotFoundException e) {
-         e.printStackTrace();
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-      ivImage.setImageBitmap(thumbnail);
+    public String saveImageIntoFolder(byte[] byteArray) {
+
+
+        File wallpaperDirectory = new File(
+                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+        // have the object build the directory structure, if needed.
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
+        }
+
+        try {
+            File f = new File(wallpaperDirectory, Calendar.getInstance()
+                    .getTimeInMillis() + ".jpg");
+
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            //fo.write(bytes.toByteArray());
+            fo.write(byteArray);
+
+            MediaScannerConnection.scanFile(this,
+                    new String[]{f.getPath()},
+                    new String[]{"image/jpeg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+            return f.getAbsolutePath();
+
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
     }
-     */
 
-    /*
-        @SuppressWarnings("deprecation")
-    	private void onSelectFromGalleryResult(Intent data) {
+    public void upLoadImageToServer(byte[] byteArray) {
+        //TODO: this is needs to verify.
+        String imageEncoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        DatabaseReference userImgRef = FirebaseDatabase.getInstance()
+                .getReference()
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("ProfileImage")
+                .child("imageUrl");
+        //TODO: Might change it to setValueAsync with Completion Callback, return boolean to indicate the status of uploading.
+        userImgRef.setValue(imageEncoded);
+    }
 
-		Bitmap bm=null;
-		if (data != null) {
-			try {
-				bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		ivImage.setImageBitmap(bm);
-	}
-     */
-
-
-
+    public Bitmap fetchImageFromServer(String imageUrl) {
+        //TODO: this is needs to verify.
+        byte[] decodedByteArray = android.util.Base64.decode(imageUrl, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+    }
 }
