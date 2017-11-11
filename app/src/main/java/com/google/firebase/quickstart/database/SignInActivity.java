@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.models.User;
 import com.google.firebase.quickstart.database.models.UtilToast;
 
@@ -85,7 +86,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            message = "Sign In Failed";
+                            FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                            message = "Sign In Failed: " + e.getMessage();
                             UtilToast.showToast(SignInActivity.this, message);
                         }
                     }
@@ -125,6 +127,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
         // Write new user
         writeNewUser(user.getUid(), username, user.getEmail());
+        writeNewUserProfile(user.getUid(), username, user.getEmail());
 
         // Go to MainActivity
         startActivity(new Intent(SignInActivity.this, MainActivity.class));
@@ -165,6 +168,20 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mDatabase.child("users").child(userId).setValue(user);
     }
     // [END basic_write]
+
+    //Todo: Something that retains the value of image/birthday/hobbies and etc
+    private void fetchExistingUser(String userId) {
+        mDatabase.child("users").child(userId);
+    }
+    private void fetchExistingUserProfile(String userId) {
+        mDatabase.child("profiles").child(userId);
+    }
+
+
+    private void writeNewUserProfile(String userId, String name, String email) {
+        Profile profile  = new Profile(userId, name, email);
+        mDatabase.child("profiles").child(userId).setValue(profile);
+    }
 
     @Override
     public void onClick(View v) {
