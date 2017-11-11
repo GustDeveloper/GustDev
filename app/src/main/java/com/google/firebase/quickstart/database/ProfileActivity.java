@@ -1,5 +1,7 @@
 package com.google.firebase.quickstart.database;
 
+import android.*;
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -38,8 +40,8 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 
 /*
-    1. load one image from gallery
-    2. capture one image from camera
+    1. load one image from gallery (verified)
+    2. capture one image from camera (verified)
     3. upload one image to Firebase
     4. Handle image upload/load/capture in the background
     5. modify user profile by clicking FAB.
@@ -77,8 +79,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         Toolbar toolbar =  findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar); //replace the old action bar with toolbar
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
@@ -86,6 +89,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         profileImageView = findViewById(R.id.profileImageView);
         profileImageView.setOnClickListener(this);
         tvNumber1 = findViewById(R.id.tvNumber1);
+        setTitle("Gus");
+
 
     }
 
@@ -123,8 +128,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 //do stuff
                 Log.e(TAG, "You clicked camera");
                 if (hasCamera()) {
-                    if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                    if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                            checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_IMAGE_CAPTURE);
                     } else {
                         launchCamera();
                     }
@@ -134,7 +140,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.action_storage:
                 Log.e(TAG, "You clicked storage");
                 if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                    requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_IMAGE_STORAGE);
                 } else {
                     getImageFromStorage();
                 }
@@ -147,9 +153,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == 1) {
+        if(requestCode == REQUEST_IMAGE_STORAGE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getImageFromStorage();
+            }
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                launchCamera();
             }
         }
     }
@@ -171,16 +181,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                 /*If image is way too large, reject it*/
                 if(byteArray.length >= MAX_IMG_BYTE_SIZE){
-                    //Todo: Try wrap toast in a class for better user experience or use
-                    //Toast.makeText(ProfileActivity.this,"Your image is too large, Please upload again!", Toast.LENGTH_SHORT).show();
                     toastMessage  = "The image selected exceeds size limit";
                     UtilToast.showToast(ProfileActivity.this, toastMessage);
                 } else {
-
                     profileImageView.setImageBitmap(bitmap);
-                    upLoadImageToServer(byteArray);
                     UtilToast.showToast(ProfileActivity.this, toastMessage);
-
                 }
 
             }catch(IOException e){
@@ -208,7 +213,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             byte[] byteArray = stream.toByteArray();
             String path = saveImageIntoFolder(byteArray);
-            upLoadImageToServer(byteArray);
+            //upLoadImageToServer(byteArray);
 
             toastMessage  = "Image is uploaded and saved to " + path;
             UtilToast.showToast(ProfileActivity.this, toastMessage);
@@ -218,7 +223,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public void getImageFromStorage(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_IMAGE_STORAGE);
     }
 
     private boolean hasCamera(){
@@ -236,7 +241,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         File wallpaperDirectory = new File(
                 Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
-        // have the object build the directory structure, if needed.
         if (!wallpaperDirectory.exists()) {
             wallpaperDirectory.mkdirs();
         }

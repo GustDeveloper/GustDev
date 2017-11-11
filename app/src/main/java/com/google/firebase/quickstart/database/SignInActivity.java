@@ -33,6 +33,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private Button mSignInButton;
     private Button mSignUpButton;
 
+    private String message;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +85,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            Toast.makeText(SignInActivity.this, "Sign In Failed",
-                                    Toast.LENGTH_SHORT).show();
+                            message = "Sign In Failed";
+                            UtilToast.showToast(SignInActivity.this, message);
                         }
                     }
                 });
@@ -110,7 +113,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                             onAuthSuccess(task.getResult().getUser());
                         } else {
                             FirebaseAuthException e = (FirebaseAuthException)task.getException();
-                            UtilToast.showToast(SignInActivity.this,e.getMessage());
+                            message = e.getMessage();
+                            UtilToast.showToast(SignInActivity.this,message);
                         }
                     }
                 });
