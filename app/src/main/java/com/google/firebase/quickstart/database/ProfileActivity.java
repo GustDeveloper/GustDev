@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.models.UtilToast;
 
 import java.io.ByteArrayOutputStream;
@@ -36,6 +37,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
     1. load one image from gallery (verified)
@@ -57,6 +60,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     EditText locationEditText;
     EditText birthdayEditText;
 
+    String nickname;
+    String phone;
+    String location;
+    String birthday;
+    String image;
+
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
 
     /*Maximum Byte Size Is 10MB*/
@@ -75,14 +85,18 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private DatabaseReference profileRef;
     private DatabaseReference imgRef;
 
+    /*Profile*/
     private String userID;
+    private Profile profile;
+
 
     /*Misc*/
-    private String imageEncoded;
     private static String TAG = "quickstart.database.ProfileActivity";
     private boolean editEnabled = false;
     private Handler handler = new Handler();
+    private Handler profileHandler = new Handler();
     private Runnable runnable;
+    private Runnable profileRunnable;
 
 
     @Override
@@ -99,8 +113,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         profileImageView = findViewById(R.id.profileImageView);
         profileImageView.setOnClickListener(this);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-        collapsingToolbarLayout.setTitle("John Doe");
+        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+
 
         nicknameEditText = findViewById(R.id.nicknameEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
@@ -115,18 +129,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         mDatabase = FirebaseDatabase.getInstance().getReference();
         userID = getUid();
         profileRef = mDatabase.child("profiles").child(userID);
-
         imgRef = profileRef.child("image");
 
-
-        /*Add datas reference and listeners*/
-
-
-        Bitmap bitmap = fetchImageFromServer();
-        if (bitmap != null) {
-            profileImageView.setImageBitmap(bitmap);
-        }
-
+        getProfileFromServer(profileRef);
     }
 
     @Override
@@ -226,13 +231,12 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    public void onCaptureImageResult(Intent data) {
-       final Intent imgData = data;
+    public void onCaptureImageResult(final Intent data) {
        Runnable imgRunnable = new Runnable() {
            @Override
            public void run() {
                showProgressDialog();
-               Bitmap bitmap = (Bitmap) imgData.getExtras().get("data");
+               Bitmap bitmap = (Bitmap) data.getExtras().get("data");
 
                if (bitmap == null) {
                    toastMessage  = "Failed to process camera image data";
@@ -260,15 +264,14 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
        handler.post(imgRunnable);
 
     }
-    public void onSelectFromGalleryResult(Intent data) {
-        final Intent imgData = data;
+    public void onSelectFromGalleryResult(final Intent data) {
 
         Runnable imgRunnable = new Runnable() {
             @Override
             public void run() {
                 try {
                     showProgressDialog();
-                    Uri selectedImage = imgData.getData();
+                    Uri selectedImage = data.getData();
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(ProfileActivity.this.getContentResolver(), selectedImage);
 
                     //Todo: what is blocking the UI thread, do it in the background thread
@@ -287,6 +290,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         UtilToast.showToast(ProfileActivity.this, toastMessage);
                     } else {
                         upLoadImageToServer(byteArray);
+                        saveImageIntoFolder(byteArray);
                     }
                     hideProgressDialog();
 
@@ -329,7 +333,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
             f.createNewFile();
             FileOutputStream fo = new FileOutputStream(f);
-            //fo.write(bytes.toByteArray());
             fo.write(byteArray);
 
             MediaScannerConnection.scanFile(this,
@@ -353,29 +356,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         //TODO: Might change it to setValueAsync with Completion Callback, return boolean to indicate the status of uploading.
     }
 
-    public Bitmap fetchImageFromServer() {
-        //TODO: this is needs to verify.
-
-        imgRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                imageEncoded = (String) dataSnapshot.getValue();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                toastMessage = "Can not load image from server";
-                UtilToast.showToast(ProfileActivity.this, toastMessage);
-            }
-        });
-
-        if (imageEncoded == null || imageEncoded.length() == 0) {
-            return null;
-        }
-
-        byte[] decodedByteArray = Base64.decode(imageEncoded, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
-    }
-
     public void enabledEdit() {
         editFab.setImageResource(R.drawable.content_save_settings);
         nicknameEditText.setEnabled(true);
@@ -392,16 +372,112 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         birthdayEditText.setEnabled(false);
 
         //Todo: update to the server;
-        /*
-        Map<String, Object>  = profile.toMap();
+        nickname = nicknameEditText.getText().toString();
+        location = locationEditText.getText().toString();
+        birthday = birthdayEditText.getText().toString();
+        phone = phoneEditText.getText().toString();
 
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/posts/" + key, postValues);
-        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+        if (validateString(nickname)) {
+            profile.setNickname(nickname);
+        }
 
-        mDatabase.updateChildren(childUpdates);
-        */
+        if (validateString(phone)) {
+            profile.setLocation(phone);
+        }
+
+        if (validateString(location)) {
+            profile.setPhone(location);
+        }
+
+        if (validateString(birthday)) {
+            profile.setBirthday(birthday);
+        }
+
+        updateProfileView();
+
+        /*Update to Firebase*/
+        profileRef.setValue(profile, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Log.e(TAG, "Failed to update user information, please try again");
+                    toastMessage = "Failed to update user information, please try again";
+                    UtilToast.showToast(ProfileActivity.this, toastMessage);
+                }
+            }
+
+        });
+
+        /*Optional: Update to local DB*/
     }
 
+    public void getProfileFromServer(final DatabaseReference profileRef) {
+        profileRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                profile = dataSnapshot.getValue(Profile.class);
+                profileRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        updateProfileView();
+                    }
+                };
+                new Thread(profileRunnable).start();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                toastMessage = "Can not load profile from server";
+                UtilToast.showToast(ProfileActivity.this, toastMessage);
+            }
+        });
+    }
+
+    public void updateProfileView() {
+        Runnable populateRunnable = new Runnable() {
+            @Override
+            public void run() {
+                Map<String, Object> map = profile.toMap();
+                nickname = (String) map.get("nickname");
+                phone = (String) map.get("phone");
+                location = (String) map.get("location");
+                birthday = (String) map.get("birthday");
+                image = (String) map.get("image");
+
+                if (validateString(nickname)) {
+                    nicknameEditText.setText(nickname);
+                    collapsingToolbarLayout.setTitle(nickname);
+                }
+
+                if (validateString(phone)) {
+                    phoneEditText.setText(phone);
+                }
+
+                if (validateString(location)) {
+                    locationEditText.setText(location);
+                }
+
+                if (validateString(birthday)) {
+                    birthdayEditText.setText(birthday);
+                }
+
+                if (validateString(image)) {
+                    byte[] decodedByteArray = Base64.decode(image, Base64.DEFAULT);
+                    Bitmap imageEncoded = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+                    profileImageView.setImageBitmap(imageEncoded);
+                }
+
+
+
+            }
+        };
+        profileHandler.post(populateRunnable);
+    }
+
+    private boolean validateString(String str) {
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+        return true;
+    }
 }

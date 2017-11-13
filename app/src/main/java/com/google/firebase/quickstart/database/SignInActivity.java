@@ -16,8 +16,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.models.User;
 import com.google.firebase.quickstart.database.models.UtilToast;
@@ -122,6 +125,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 });
     }
 
+    /*
     private void onAuthSuccess(FirebaseUser user) {
         String username = usernameFromEmail(user.getEmail());
 
@@ -133,6 +137,35 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         startActivity(new Intent(SignInActivity.this, MainActivity.class));
         finish();
     }
+    */
+
+    private void onAuthSuccess(FirebaseUser user) {
+        final String username = usernameFromEmail(user.getEmail());
+        final String userId = user.getUid();
+        final String email = user.getEmail();
+        // Write new user
+        mDatabase.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    writeNewUser(userId, username, email);
+                    writeNewUserProfile(userId, username, email);
+                } else {
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // Go to MainActivity
+        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+        finish();
+
+    }
+
 
     private String usernameFromEmail(String email) {
         if (email.contains("@")) {
@@ -170,12 +203,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     // [END basic_write]
 
     //Todo: Something that retains the value of image/birthday/hobbies and etc
-    private void fetchExistingUser(String userId) {
-        mDatabase.child("users").child(userId);
-    }
-    private void fetchExistingUserProfile(String userId) {
-        mDatabase.child("profiles").child(userId);
-    }
 
 
     private void writeNewUserProfile(String userId, String name, String email) {

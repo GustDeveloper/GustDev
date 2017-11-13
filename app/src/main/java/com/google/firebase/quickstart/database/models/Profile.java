@@ -16,7 +16,12 @@ public class Profile {
     String nickname;
     String birthday;
     String location;
+    String phone;
     List<String> hobbies;
+
+    public Profile(){
+        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    }
 
     public Profile(String uid, String username, String email) {
         this.uid = uid;
@@ -38,5 +43,19 @@ public class Profile {
         result.put("hobbies", hobbies);
         result.put("image", image);
         return result;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
