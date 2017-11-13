@@ -201,7 +201,6 @@ public class chatActivity extends BaseActivity {
             // for own message, appears right. for others' message, appear left
             if (message.sender.equals(userId)){
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                //rparams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, holder.linearView.getId());
                 params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 holder.photoView.setLayoutParams(params);
                 params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

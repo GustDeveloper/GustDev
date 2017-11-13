@@ -22,6 +22,7 @@
     <string name="action_profile">Profile</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="nicknameTitle">Nickname</string>
+    <string name="title_activity_chat">chatActivity</string>
     <string name="birthdayTitle">Birthday</string>
     <string name="hobbiesTitle">Hobbies</string>
     <string name="emailTitle">Email</string>
