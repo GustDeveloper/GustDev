@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.database;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,6 +8,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -51,7 +51,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     /*UI elements*/
     ImageView profileImageView;
-    FloatingActionButton fab;
+    FloatingActionButton editFab;
     EditText nicknameEditText;
     EditText phoneEditText;
     EditText locationEditText;
@@ -72,15 +72,17 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     /*Databse Reference*/
     private DatabaseReference mDatabase;
-    private DatabaseReference userRef;
+    private DatabaseReference profileRef;
     private DatabaseReference imgRef;
+
     private String userID;
 
     /*Misc*/
     private String imageEncoded;
     private static String TAG = "quickstart.database.ProfileActivity";
     private boolean editEnabled = false;
-
+    private Handler handler = new Handler();
+    private Runnable runnable;
 
 
     @Override
@@ -91,8 +93,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar); //replace the old action bar with toolbar
 
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        editFab = findViewById(R.id.editFab);
+        editFab.setOnClickListener(this);
 
         profileImageView = findViewById(R.id.profileImageView);
         profileImageView.setOnClickListener(this);
@@ -112,8 +114,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         /*get database reference*/
         mDatabase = FirebaseDatabase.getInstance().getReference();
         userID = getUid();
-        userRef = mDatabase.child("profiles").child(userID);
-        imgRef = userRef.child("image");
+        profileRef = mDatabase.child("profiles").child(userID);
+
+        imgRef = profileRef.child("image");
+
+
+        /*Add datas reference and listeners*/
+
 
         Bitmap bitmap = fetchImageFromServer();
         if (bitmap != null) {
@@ -128,14 +135,14 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             case R.id.profileImageView:
                 showPopup(view);
                 break;
-            case R.id.fab:
+            case R.id.editFab:
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 editEnabled = !editEnabled;
                 if (editEnabled) {
                     enabledEdit();
                 } else {
-                    disableEditAndSave();
+                    disableEditAndSaveToServer();
                 }
                 break;
             default:
@@ -197,79 +204,101 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_IMAGE_STORAGE && resultCode == RESULT_OK && data != null){
-            Uri selectedImage = data.getData();
-            try {
-
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                if (bitmap == null) {
-                    toastMessage  = "Failed to process gallery image data";
-                    UtilToast.showToast(ProfileActivity.this, toastMessage);
-                    return;
-                }
-
-                //Todo: what is blocking the UI thread, do it in the background thread
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                //bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-
-                if (bitmap == null) {
-                    toastMessage  = "Failed to compress image data";
-                    UtilToast.showToast(ProfileActivity.this, toastMessage);
-                    return;
-                }
-
-
-                Log.e(TAG, "setting image from storage");
-                profileImageView.setImageBitmap(null);
-                profileImageView.setImageBitmap(bitmap);
-
-
-                byte[] byteArray = stream.toByteArray();
-
-                /*If image is way too large, reject it*/
-                if(byteArray.length >= MAX_IMG_BYTE_SIZE){
-                    toastMessage  = "The image selected exceeds size limit";
-                    UtilToast.showToast(ProfileActivity.this, toastMessage);
-                } else {
-
-                }
-
-            }catch(IOException e){
-                e.printStackTrace();
+        final Intent imgData = data;
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == REQUEST_IMAGE_STORAGE) {
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        onSelectFromGalleryResult(imgData);
+                    }
+                };
+                new Thread(runnable).start();
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        onCaptureImageResult(imgData);
+                    }
+                };
+                new Thread(runnable).start();
             }
-        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-
-            if (bitmap == null) {
-                toastMessage  = "Failed to process camera image data";
-                UtilToast.showToast(ProfileActivity.this, toastMessage);
-                return;
-            }
-
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-
-            if (bitmap == null) {
-                toastMessage  = "Failed to compress camera image data";
-                UtilToast.showToast(ProfileActivity.this, toastMessage);
-                return;
-            }
-
-            Log.e(TAG, "setting image from camera");
-
-            profileImageView.setImageBitmap(null);
-            profileImageView.setImageBitmap(bitmap);
-
-            byte[] byteArray = stream.toByteArray();
-            String path = saveImageIntoFolder(byteArray);
-            upLoadImageToServer(byteArray);
-
-            toastMessage  = "Image is uploaded and saved to " + path;
-            UtilToast.showToast(ProfileActivity.this, toastMessage);
-
         }
     }
+
+    public void onCaptureImageResult(Intent data) {
+       final Intent imgData = data;
+       Runnable imgRunnable = new Runnable() {
+           @Override
+           public void run() {
+               showProgressDialog();
+               Bitmap bitmap = (Bitmap) imgData.getExtras().get("data");
+
+               if (bitmap == null) {
+                   toastMessage  = "Failed to process camera image data";
+                   UtilToast.showToast(ProfileActivity.this, toastMessage);
+                   return;
+               }
+
+               ByteArrayOutputStream stream = new ByteArrayOutputStream();
+               bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+
+
+               profileImageView.setImageBitmap(null);
+               profileImageView.setImageBitmap(bitmap);
+               hideProgressDialog();
+
+               byte[] byteArray = stream.toByteArray();
+               String path = saveImageIntoFolder(byteArray);
+               upLoadImageToServer(byteArray);
+
+               toastMessage  = "Image is uploaded and saved to " + path;
+               UtilToast.showToast(ProfileActivity.this, toastMessage);
+           }
+       };
+
+       handler.post(imgRunnable);
+
+    }
+    public void onSelectFromGalleryResult(Intent data) {
+        final Intent imgData = data;
+
+        Runnable imgRunnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    showProgressDialog();
+                    Uri selectedImage = imgData.getData();
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(ProfileActivity.this.getContentResolver(), selectedImage);
+
+                    //Todo: what is blocking the UI thread, do it in the background thread
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+
+
+                    profileImageView.setImageBitmap(null);
+                    profileImageView.setImageBitmap(bitmap);
+
+                    byte[] byteArray = stream.toByteArray();
+
+                    /*If image is way too large, reject it*/
+                    if(byteArray.length >= MAX_IMG_BYTE_SIZE){
+                        toastMessage  = "The image selected exceeds size limit";
+                        UtilToast.showToast(ProfileActivity.this, toastMessage);
+                    } else {
+                        upLoadImageToServer(byteArray);
+                    }
+                    hideProgressDialog();
+
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        handler.post(imgRunnable);
+    }
+
 
     public void getImageFromStorage(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -319,7 +348,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     public void upLoadImageToServer(byte[] byteArray) {
         //TODO: this is needs to verify.
         String imageEncoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        imgRef = userRef.child("image");
+        imgRef = profileRef.child("image");
         imgRef.setValue(imageEncoded);
         //TODO: Might change it to setValueAsync with Completion Callback, return boolean to indicate the status of uploading.
     }
@@ -331,13 +360,11 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageEncoded = (String) dataSnapshot.getValue();
-                Log.e(TAG, imageEncoded);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 toastMessage = "Can not load image from server";
                 UtilToast.showToast(ProfileActivity.this, toastMessage);
-
             }
         });
 
@@ -350,20 +377,31 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void enabledEdit() {
-        fab.setImageResource(R.drawable.ic_navigation_check_24);
+        editFab.setImageResource(R.drawable.content_save_settings);
         nicknameEditText.setEnabled(true);
         phoneEditText.setEnabled(true);
         locationEditText.setEnabled(true);
         birthdayEditText.setEnabled(true);
     }
 
-    public void disableEditAndSave() {
-        fab.setImageResource(R.drawable.ic_image_edit);
+    public void disableEditAndSaveToServer() {
+        editFab.setImageResource(R.drawable.ic_image_edit);
         nicknameEditText.setEnabled(false);
         phoneEditText.setEnabled(false);
         locationEditText.setEnabled(false);
         birthdayEditText.setEnabled(false);
 
         //Todo: update to the server;
+        /*
+        Map<String, Object>  = profile.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/posts/" + key, postValues);
+        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+
+        mDatabase.updateChildren(childUpdates);
+        */
     }
+
+
 }

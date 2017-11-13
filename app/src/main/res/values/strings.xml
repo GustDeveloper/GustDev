@@ -27,6 +27,7 @@
     <string name="emailTitle">Email</string>
     <string name="locationTitle">Location</string>
     <string name="phoneTitle">Phone</string>
+    <string name="contentDescription">Image Content</string>
 
 
     </resources>
