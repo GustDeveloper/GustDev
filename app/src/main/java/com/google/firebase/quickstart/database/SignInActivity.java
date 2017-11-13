@@ -16,8 +16,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.models.User;
 import com.google.firebase.quickstart.database.models.UtilToast;
 
@@ -32,6 +36,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private EditText mPasswordField;
     private Button mSignInButton;
     private Button mSignUpButton;
+
+    private String message;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +89,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            Toast.makeText(SignInActivity.this, "Sign In Failed",
-                                    Toast.LENGTH_SHORT).show();
+                            FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                            message = "Sign In Failed: " + e.getMessage();
+                            UtilToast.showToast(SignInActivity.this, message);
                         }
                     }
                 });
@@ -110,22 +118,54 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                             onAuthSuccess(task.getResult().getUser());
                         } else {
                             FirebaseAuthException e = (FirebaseAuthException)task.getException();
-                            UtilToast.showToast(SignInActivity.this,e.getMessage());
+                            message = e.getMessage();
+                            UtilToast.showToast(SignInActivity.this,message);
                         }
                     }
                 });
     }
 
+    /*
     private void onAuthSuccess(FirebaseUser user) {
         String username = usernameFromEmail(user.getEmail());
 
         // Write new user
         writeNewUser(user.getUid(), username, user.getEmail());
+        writeNewUserProfile(user.getUid(), username, user.getEmail());
 
         // Go to MainActivity
         startActivity(new Intent(SignInActivity.this, MainActivity.class));
         finish();
     }
+    */
+
+    private void onAuthSuccess(FirebaseUser user) {
+        final String username = usernameFromEmail(user.getEmail());
+        final String userId = user.getUid();
+        final String email = user.getEmail();
+        // Write new user
+        mDatabase.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    writeNewUser(userId, username, email);
+                    writeNewUserProfile(userId, username, email);
+                } else {
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // Go to MainActivity
+        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+        finish();
+
+    }
+
 
     private String usernameFromEmail(String email) {
         if (email.contains("@")) {
@@ -162,6 +202,14 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mDatabase.child("users").child(userId).setValue(user);
     }
     // [END basic_write]
+
+    //Todo: Something that retains the value of image/birthday/hobbies and etc
+
+
+    private void writeNewUserProfile(String userId, String name, String email) {
+        Profile profile  = new Profile(userId, name, email);
+        mDatabase.child("profiles").child(userId).setValue(profile);
+    }
 
     @Override
     public void onClick(View v) {

@@ -10,7 +10,7 @@
     <string name="email_label">Email</string>
     <string name="password_label">Password</string>
     <string name="send_text">Send</string>
-    <string name="lorem"> Something I don't know.</string>
+    <string name="lorem"> Something</string>
     <string name="title_sign_in">Welcome</string>
     <string name="sign_up">Sign Up</string>
     <string name="hint_password">password</string>
@@ -21,6 +21,13 @@
     <string name="heading_my_top_posts">My Top Posts</string>
     <string name="action_profile">Profile</string>
     <string name="title_activity_profile">ProfileActivity</string>
-    <string name="title_activity_chat">chatActivity</string>
-    <string name="title_activity_main2">Main2Activity</string>
-</resources>
+    <string name="nicknameTitle">Nickname</string>
+    <string name="birthdayTitle">Birthday</string>
+    <string name="hobbiesTitle">Hobbies</string>
+    <string name="emailTitle">Email</string>
+    <string name="locationTitle">Location</string>
+    <string name="phoneTitle">Phone</string>
+    <string name="contentDescription">Image Content</string>
+
+
+    </resources>
