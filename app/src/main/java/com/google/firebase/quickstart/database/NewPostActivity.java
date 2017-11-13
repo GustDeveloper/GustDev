@@ -70,46 +70,7 @@ public class NewPostActivity extends BaseActivity {
         }
 
         // Disable button so there are no multi-posts
-        setEditingEnabled(false);
-        Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
-
-        // [START single_value_read]
         final String userId = getUid();
-        //get user and get started
-        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user value
-                        User user = dataSnapshot.getValue(User.class);
-
-                        // [START_EXCLUDE]
-                        if (user == null) {
-                            // User is null, error out
-                            Log.e(TAG, "User " + userId + " is unexpectedly null");
-                            Toast.makeText(NewPostActivity.this,
-                                    "Error: could not fetch user.",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Write new post
-                            writeNewPost(userId, user.username, title, body);
-                        }
-
-                        // Finish this Activity, back to the stream
-                        setEditingEnabled(true);
-                        finish();
-                        // [END_EXCLUDE]
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        // [START_EXCLUDE]
-                        setEditingEnabled(true);
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END single_value_read]
     }
 
     private void setEditingEnabled(boolean enabled) {

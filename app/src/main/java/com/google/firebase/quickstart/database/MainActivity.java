@@ -103,6 +103,11 @@ public class  MainActivity extends BaseActivity {
             Intent profileActivity = new Intent(this,ProfileActivity.class);
             startActivity(profileActivity);
             return super.onOptionsItemSelected(item);
+        } else if(i == R.id.chat) {
+            // navigate to chat room
+            Intent chatActivity = new Intent(this,chatActivity.class);
+            startActivity(chatActivity);
+            return super.onOptionsItemSelected(item);
         } else {
             return super.onOptionsItemSelected(item);
         }

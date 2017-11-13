@@ -15,8 +15,6 @@
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/comment_photo"
         android:orientation="vertical"
         android:padding="5dp">
 

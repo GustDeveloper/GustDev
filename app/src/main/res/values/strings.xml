@@ -21,4 +21,6 @@
     <string name="heading_my_top_posts">My Top Posts</string>
     <string name="action_profile">Profile</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_chat">chatActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>
