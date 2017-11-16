@@ -91,7 +91,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/builds" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check-manifest" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes-jar" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-runtime-classes" />
@@ -164,6 +163,7 @@
     <orderEntry type="library" name="com.google.android.gms:play-services-basement-11.4.2" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-analytics-11.4.2" level="project" />
     <orderEntry type="library" name="com.android.support:support-core-utils-26.1.0" level="project" />
+    <orderEntry type="library" name="co.lujun:androidtagview-1.1.4" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-database-connection-11.4.2" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-database-license-11.4.2" level="project" />
     <orderEntry type="library" scope="TEST" name="org.hamcrest:hamcrest-library:1.3@jar" level="project" />

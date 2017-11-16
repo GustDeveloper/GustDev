@@ -99,8 +99,8 @@ public class  MainActivity extends BaseActivity {
             finish();
             return true;
         } else if (i == R.id.action_profile) {
-          //TODO: 11/3/2017 navigate to user profile
             Intent profileActivity = new Intent(this,ProfileActivity.class);
+            profileActivity.putExtra("isUser", false );
             startActivity(profileActivity);
             return super.onOptionsItemSelected(item);
         } else if(i == R.id.chat) {

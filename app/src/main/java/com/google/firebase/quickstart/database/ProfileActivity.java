@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.database;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,16 +15,19 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,9 +40,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+
+import co.lujun.androidtagview.ColorFactory;
+import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 
 /*
     1. load one image from gallery (verified)
@@ -55,16 +65,27 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     /*UI elements*/
     ImageView profileImageView;
     FloatingActionButton editFab;
+    FloatingActionButton messageFab;
     EditText nicknameEditText;
     EditText phoneEditText;
     EditText locationEditText;
     EditText birthdayEditText;
+    Toolbar toolbar;
+    EditText descriptionEditText;
+    TagContainerLayout mTagContainerLayout;
+    EditText tagEditText;
+    Button addTagBtn;
 
+
+    Map<String, Object> profileMap;
     String nickname;
     String phone;
     String location;
     String birthday;
+    String description;
+
     String image;
+    List<String> hobbies;
 
     CollapsingToolbarLayout collapsingToolbarLayout;
 
@@ -74,8 +95,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private static final String IMAGE_DIRECTORY = "/GustImg";
 
     /*Gallery Request Code*/
-    int REQUEST_IMAGE_STORAGE = 3;
-    int REQUEST_IMAGE_CAPTURE = 2;
+    int REQUEST_IMAGE_STORAGE = 0;
+    int REQUEST_IMAGE_CAPTURE = 1;
 
     /*String Messages*/
     String toastMessage;
@@ -84,6 +105,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private DatabaseReference mDatabase;
     private DatabaseReference profileRef;
     private DatabaseReference imgRef;
+    private DatabaseReference tagRef;
 
     /*Profile*/
     private String userID;
@@ -92,10 +114,15 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     /*Misc*/
     private static String TAG = "quickstart.database.ProfileActivity";
+
     private boolean editEnabled = false;
+    private boolean isUser;
+
+
+    /*Handlers and Runnables*/
     private Handler handler = new Handler();
     private Handler profileHandler = new Handler();
-    private Runnable runnable;
+    private Runnable imgRunnable;
     private Runnable profileRunnable;
 
 
@@ -104,34 +131,125 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
+        toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar); //replace the old action bar with toolbar
+
+        Intent intent = getIntent();
+        isUser = intent.getBooleanExtra("isUser", true);
+        Log.e(TAG, Boolean.toString(isUser));
+
 
         editFab = findViewById(R.id.editFab);
         editFab.setOnClickListener(this);
 
+        messageFab = findViewById(R.id.messageFab);
+        messageFab.setOnClickListener(this);
         profileImageView = findViewById(R.id.profileImageView);
+
         profileImageView.setOnClickListener(this);
 
-        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+        mTagContainerLayout = findViewById(R.id.tagcontainerLayout);
+        mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(int position, String text) {
+                toastMessage = "Please do not cross click buttons";
+                UtilToast.showToast(ProfileActivity.this, toastMessage);
+            }
 
+            @Override
+            public void onTagLongClick(final int position, String text) {
+                AlertDialog dialog = new AlertDialog.Builder(ProfileActivity.this)
+                        .setTitle("long click")
+                        .setMessage("You will delete this tag!")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (position < mTagContainerLayout.getChildCount()) {
+                                    mTagContainerLayout.removeTag(position);
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create();
+                dialog.show();
+            }
+
+            @Override
+            public void onTagCrossClick(int position) {
+                toastMessage = "Please do not cross click buttons";
+                UtilToast.showToast(ProfileActivity.this, toastMessage);
+            }
+        });
+        mTagContainerLayout.setBackgroundColor(ColorFactory.NONE);
+        mTagContainerLayout.setTheme(ColorFactory.RANDOM);
+
+        tagEditText = findViewById(R.id.tagEditText);
+        tagEditText.setVisibility(View.INVISIBLE);
+
+        addTagBtn = findViewById(R.id.addTagButton);
+        addTagBtn.setVisibility(View.INVISIBLE);
+        addTagBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newHobby = tagEditText.getText().toString();
+                hobbies.add(newHobby);
+                mTagContainerLayout.addTag(newHobby);
+                Log.e(TAG, hobbies.toString());
+                tagRef.setValue(hobbies, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            toastMessage = "Failed to add tags to the server";
+                            UtilToast.showToast(ProfileActivity.this, toastMessage);
+                        }
+                    }
+                });
+            }
+        });
+
+        if (isUser) {
+            messageFab.setVisibility(View.INVISIBLE);
+        }
+        else {
+            editFab.setVisibility(View.INVISIBLE);
+            tagEditText.setVisibility(View.INVISIBLE);
+            addTagBtn.setVisibility(View.INVISIBLE);
+
+            profileImageView.setOnClickListener(null);
+            mTagContainerLayout.setOnTagClickListener(null);
+            mTagContainerLayout.setDragEnable(false);
+        }
+
+
+        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
 
         nicknameEditText = findViewById(R.id.nicknameEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
         locationEditText = findViewById(R.id.locationEditText);
         birthdayEditText = findViewById(R.id.birthdayEditText);
+        descriptionEditText = findViewById(R.id.descriptionEditText);
+        descriptionEditText.setText("I am a foodie and I love hanging out with people");
+
+
+        /*get database reference*/
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        userID = getUid();
+
+        profileRef = mDatabase.child("profiles").child(userID);
+        imgRef = profileRef.child("image");
+        tagRef = profileRef.child("hobbies");
+
+        getProfileFromServer(profileRef);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        /*get database reference*/
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        userID = getUid();
-        profileRef = mDatabase.child("profiles").child(userID);
-        imgRef = profileRef.child("image");
-
-        getProfileFromServer(profileRef);
     }
 
     @Override
@@ -141,14 +259,19 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 showPopup(view);
                 break;
             case R.id.editFab:
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 editEnabled = !editEnabled;
                 if (editEnabled) {
                     enabledEdit();
                 } else {
                     disableEditAndSaveToServer();
                 }
+                break;
+            case R.id.messageFab:
+                Snackbar.make(view, "Messaging the others", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                Intent chatActivity = new Intent(this,chatActivity.class);
+                startActivity(chatActivity);
                 break;
             default:
                 break;
@@ -212,21 +335,21 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         final Intent imgData = data;
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == REQUEST_IMAGE_STORAGE) {
-                runnable = new Runnable() {
+                imgRunnable = new Runnable() {
                     @Override
                     public void run() {
                         onSelectFromGalleryResult(imgData);
                     }
                 };
-                new Thread(runnable).start();
+                new Thread(imgRunnable).start();
             } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                runnable = new Runnable() {
+                imgRunnable = new Runnable() {
                     @Override
                     public void run() {
                         onCaptureImageResult(imgData);
                     }
                 };
-                new Thread(runnable).start();
+                new Thread(imgRunnable).start();
             }
         }
     }
@@ -254,7 +377,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
                byte[] byteArray = stream.toByteArray();
                String path = saveImageIntoFolder(byteArray);
-               upLoadImageToServer(byteArray);
+               uploadImageToServer(byteArray);
 
                toastMessage  = "Image is uploaded and saved to " + path;
                UtilToast.showToast(ProfileActivity.this, toastMessage);
@@ -274,7 +397,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     Uri selectedImage = data.getData();
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(ProfileActivity.this.getContentResolver(), selectedImage);
 
-                    //Todo: what is blocking the UI thread, do it in the background thread
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
 
@@ -289,7 +411,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         toastMessage  = "The image selected exceeds size limit";
                         UtilToast.showToast(ProfileActivity.this, toastMessage);
                     } else {
-                        upLoadImageToServer(byteArray);
+                        uploadImageToServer(byteArray);
                         saveImageIntoFolder(byteArray);
                     }
                     hideProgressDialog();
@@ -348,12 +470,19 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         return "";
     }
 
-    public void upLoadImageToServer(byte[] byteArray) {
-        //TODO: this is needs to verify.
+    public void uploadImageToServer(byte[] byteArray) {
         String imageEncoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
         imgRef = profileRef.child("image");
-        imgRef.setValue(imageEncoded);
-        //TODO: Might change it to setValueAsync with Completion Callback, return boolean to indicate the status of uploading.
+        imgRef.setValue(imageEncoded, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Log.e(TAG, "Failed to update profile image, please try again");
+                    toastMessage = "Failed to update profile image, please try again";
+                    UtilToast.showToast(ProfileActivity.this, toastMessage);
+                }
+            }
+        });
     }
 
     public void enabledEdit() {
@@ -362,6 +491,11 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         phoneEditText.setEnabled(true);
         locationEditText.setEnabled(true);
         birthdayEditText.setEnabled(true);
+        descriptionEditText.setEnabled(true);
+        addTagBtn.setVisibility(View.VISIBLE);
+        tagEditText.setVisibility(View.VISIBLE);
+        mTagContainerLayout.setDragEnable(true);
+
     }
 
     public void disableEditAndSaveToServer() {
@@ -370,27 +504,40 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         phoneEditText.setEnabled(false);
         locationEditText.setEnabled(false);
         birthdayEditText.setEnabled(false);
+        descriptionEditText.setEnabled(false);
+        addTagBtn.setVisibility(View.INVISIBLE);
+        tagEditText.setVisibility(View.INVISIBLE);
+        mTagContainerLayout.setDragEnable(false);
 
-        //Todo: update to the server;
         nickname = nicknameEditText.getText().toString();
         location = locationEditText.getText().toString();
         birthday = birthdayEditText.getText().toString();
         phone = phoneEditText.getText().toString();
+        description = descriptionEditText.getText().toString();
+
 
         if (validateString(nickname)) {
-            profile.setNickname(nickname);
+            //profile.setNickname(nickname);
+            profile.nickname = nickname;
         }
 
         if (validateString(phone)) {
-            profile.setLocation(phone);
+            //profile.setLocation(phone);
+            profile.phone = phone;
         }
 
         if (validateString(location)) {
-            profile.setPhone(location);
+           // profile.setPhone(location);
+            profile.location = location;
         }
 
         if (validateString(birthday)) {
-            profile.setBirthday(birthday);
+            //profile.setBirthday(birthday);
+            profile.birthday = birthday;
+        }
+
+        if (validateString(description)) {
+            profile.description = description;
         }
 
         updateProfileView();
@@ -407,22 +554,24 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             }
 
         });
-
         /*Optional: Update to local DB*/
     }
 
     public void getProfileFromServer(final DatabaseReference profileRef) {
-        profileRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        profileRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e(TAG, "profile change");
                 profile = dataSnapshot.getValue(Profile.class);
-                profileRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        updateProfileView();
-                    }
-                };
-                new Thread(profileRunnable).start();
+                if (profile != null) {
+                    profileRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            updateProfileView();
+                        }
+                    };
+                    new Thread(profileRunnable).start();
+                }
             }
 
             @Override
@@ -437,12 +586,18 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         Runnable populateRunnable = new Runnable() {
             @Override
             public void run() {
-                Map<String, Object> map = profile.toMap();
-                nickname = (String) map.get("nickname");
-                phone = (String) map.get("phone");
-                location = (String) map.get("location");
-                birthday = (String) map.get("birthday");
-                image = (String) map.get("image");
+                profileMap = profile.toMap();
+                nickname = (String) profileMap.get("nickname");
+                phone = (String) profileMap.get("phone");
+                location = (String) profileMap.get("location");
+                birthday = (String) profileMap.get("birthday");
+                image = (String) profileMap.get("image");
+                description = (String) profileMap.get("description");
+                hobbies  = (List)profileMap.get("hobbies");
+                //Log.e(TAG, phone);
+                //Log.e(TAG, location);
+
+
 
                 if (validateString(nickname)) {
                     nicknameEditText.setText(nickname);
@@ -467,7 +622,14 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     profileImageView.setImageBitmap(imageEncoded);
                 }
 
+                if (validateString(description)) {
+                    descriptionEditText.setText(description);
+                }
 
+                if (hobbies != null) {
+                    hobbies.removeAll(Collections.singleton(null)); //Time complexity is n^2, not the best implementation
+                    mTagContainerLayout.setTags(hobbies);
+                }
 
             }
         };
@@ -475,9 +637,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     private boolean validateString(String str) {
-        if (str == null || str.length() == 0) {
-            return false;
-        }
-        return true;
+        return !(str == null);
     }
 }

@@ -125,20 +125,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 });
     }
 
-    /*
-    private void onAuthSuccess(FirebaseUser user) {
-        String username = usernameFromEmail(user.getEmail());
-
-        // Write new user
-        writeNewUser(user.getUid(), username, user.getEmail());
-        writeNewUserProfile(user.getUid(), username, user.getEmail());
-
-        // Go to MainActivity
-        startActivity(new Intent(SignInActivity.this, MainActivity.class));
-        finish();
-    }
-    */
-
     private void onAuthSuccess(FirebaseUser user) {
         final String username = usernameFromEmail(user.getEmail());
         final String userId = user.getUid();
@@ -150,8 +136,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 if (!dataSnapshot.exists()) {
                     writeNewUser(userId, username, email);
                     writeNewUserProfile(userId, username, email);
-                } else {
-
                 }
             }
             @Override

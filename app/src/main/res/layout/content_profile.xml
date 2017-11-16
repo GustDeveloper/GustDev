@@ -29,7 +29,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_action_account"
+                app:srcCompat="@drawable/ic_action_account"
                 android:contentDescription="@string/contentDescription"/>
 
             <TextView
@@ -50,14 +50,13 @@
                 android:id="@+id/nicknameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/nicknameTitle"
-                android:layout_toRightOf="@+id/nicknameIcon"
-                android:layout_toLeftOf="@+id/chkNickname"
-                android:layout_toStartOf ="@+id/chkNickname"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@+id/nicknameTitle"
+                android:layout_toLeftOf="@+id/chkNickname"
+                android:layout_toRightOf="@+id/nicknameIcon"
+                android:layout_toStartOf="@+id/chkNickname"
                 android:enabled="false"
-                android:text="John Doe"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#121212" />
 
@@ -74,7 +73,8 @@
                 android:checked="true"
                 android:padding="6dp"
                 android:textOff=""
-                android:textOn="" />
+                android:textOn=""
+                android:visibility="invisible"/>
 
         </RelativeLayout>
         <include layout="@layout/item_divider" />
@@ -96,7 +96,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_phone_black" />
+                app:srcCompat="@drawable/ic_phone_black" />
 
             <TextView
                 android:id="@+id/phoneTitle"
@@ -105,9 +105,11 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/phoneIcon"
                 android:layout_toRightOf="@+id/phoneIcon"
-                android:text="@string/phoneTitle"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#727272" />
+                android:textColor="#727272"
+                android:text="Phone" />
 
             <EditText
                 android:id="@+id/phoneEditText"
@@ -115,14 +117,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_toRightOf = "@+id/phoneTitle"
-                android:layout_toEndOf ="@+id/phoneTitle"
+                android:layout_toEndOf="@+id/phoneTitle"
                 android:layout_toLeftOf="@+id/chkPhone"
-                android:layout_toStartOf ="@+id/chkPhone"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toRightOf="@+id/phoneTitle"
+                android:layout_toStartOf="@+id/chkPhone"
                 android:enabled="false"
-                android:text="(123) 456-7890"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -139,7 +138,8 @@
                 android:checked="true"
                 android:padding="6dp"
                 android:textOff=""
-                android:textOn="" />
+                android:textOn=""
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 
@@ -161,14 +161,14 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_location_on_black" />
+                app:srcCompat="@drawable/ic_location_on_black" />
 
 
             <TextView
                 android:id="@+id/locationTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/locationIcon"
+                android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/locationIcon"
                 android:layout_toRightOf="@+id/locationIcon"
                 android:text="@string/locationTitle"
@@ -181,14 +181,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_toRightOf = "@+id/locationTitle"
-                android:layout_toEndOf ="@+id/locationTitle"
-                android:layout_toLeftOf="@+id/chkLocation"
-                android:layout_toStartOf ="@+id/chkLocation"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@+id/locationTitle"
+                android:layout_toLeftOf="@+id/chkLocation"
+                android:layout_toRightOf="@+id/locationTitle"
+                android:layout_toStartOf="@+id/chkLocation"
                 android:enabled="false"
-                android:text="San Diego, CA"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -205,7 +204,8 @@
                 android:checked="true"
                 android:padding="6dp"
                 android:textOff=""
-                android:textOn="" />
+                android:textOn=""
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 
@@ -225,7 +225,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_email_black" />
+                app:srcCompat="@drawable/ic_email_black" />
 
             <TextView
                 android:id="@+id/birthdayTitle"
@@ -238,20 +238,20 @@
                 android:text="@string/birthdayTitle"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
+
             <EditText
                 android:id="@+id/birthdayEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_toRightOf = "@+id/birthdayTitle"
-                android:layout_toEndOf ="@+id/birthdayTitle"
-                android:layout_toLeftOf="@+id/chkBirthday"
-                android:layout_toStartOf ="@+id/chkBirthday"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@+id/birthdayTitle"
+                android:layout_toLeftOf="@+id/chkBirthday"
+                android:layout_toRightOf="@+id/birthdayTitle"
+                android:layout_toStartOf="@+id/chkBirthday"
                 android:enabled="false"
-                android:text="1986, June, 29"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -268,7 +268,8 @@
                 android:checked="true"
                 android:padding="6dp"
                 android:textOff=""
-                android:textOn="" />
+                android:textOn=""
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 
@@ -288,7 +289,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_favorite_black" />
+                app:srcCompat="@drawable/ic_favorite_black" />
 
             <TextView
                 android:id="@+id/hobbiesTitle"
@@ -303,19 +304,47 @@
                 android:text="@string/hobbiesTitle"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
-
         </RelativeLayout>
 
-
-
-        <include layout="@layout/item_divider" />
+        <co.lujun.androidtagview.TagContainerLayout
+            android:id="@+id/tagcontainerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:padding="10dp"
+            app:container_border_color="@color/divider"
+            app:container_enable_drag="true"
+            app:horizontal_interval="10dp"
+            app:vertical_interval="10dp"
+            app:tag_clickable="true"
+            app:tag_theme="random"
+            app:tag_ripple_duration="2000"
+            app:tag_ripple_alpha="47"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/bottomLinearLayout"
-            android:padding="@dimen/activity_horizontal_margin"></LinearLayout>
+            android:weightSum="1"
+            >
+
+            <EditText
+                android:id="@+id/tagEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/addTagButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="add tag" />
+        </LinearLayout>
+
+        <include layout="@layout/item_divider" />
     </LinearLayout>
+
 
 </android.support.v4.widget.NestedScrollView>

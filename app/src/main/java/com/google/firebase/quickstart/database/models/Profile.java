@@ -9,18 +9,19 @@ import java.util.List;
 import java.util.Map;
 
 public class Profile {
-    String uid;
-    String email;
-    String username;
-    String image;
-    String nickname;
-    String birthday;
-    String location;
-    String phone;
-    List<String> hobbies;
+    public String uid;
+    public String email;
+    public String username;
+    public String image;
+    public String nickname;
+    public String birthday;
+    public String location;
+    public String phone;
+    public String description;
+    public List<String> hobbies;
 
     public Profile(){
-        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+        // Default constructor required for calls to DataSnapshot.getValue(Profile.class)
     }
 
     public Profile(String uid, String username, String email) {
@@ -31,7 +32,9 @@ public class Profile {
         this.nickname = "";
         this.birthday = "";
         this.location = "";
-        this.hobbies = new ArrayList<>(Arrays.asList("Add Hobby"));
+        this.phone = "";
+        this.hobbies = new ArrayList<>();
+        this.phone = "";
     }
 
     @Exclude
@@ -42,20 +45,9 @@ public class Profile {
         result.put("birthday", birthday);
         result.put("hobbies", hobbies);
         result.put("image", image);
+        result.put("description", description);
+        result.put("phone", phone);
+        result.put("location", location);
         return result;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-    public void setLocation(String location) {
-        this.location = location;
-    }
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 }

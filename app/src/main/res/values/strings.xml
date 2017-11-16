@@ -29,6 +29,12 @@
     <string name="locationTitle">Location</string>
     <string name="phoneTitle">Phone</string>
     <string name="contentDescription">Image Content</string>
+    <string name="descriptionHint">Enter your personal description</string>
+    <string name="nicknameHint">Enter your nickname</string>
+    <string name="locationHint">Enter your location</string>
+    <string name="phoneHint">Enter your phone</string>
+    <string name="birthdayHint">Enter your birthday</string>
 
 
-    </resources>
+
+</resources>
