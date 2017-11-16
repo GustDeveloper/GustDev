@@ -79,7 +79,8 @@ public class  MainActivity extends BaseActivity {
         findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
+                //startActivity(new Intent(MainActivity.this, NewPostActivity.class));
+                startActivity(new Intent(MainActivity.this, EventActivity.class));
             }
         });
     }
@@ -100,7 +101,8 @@ public class  MainActivity extends BaseActivity {
             return true;
         } else if (i == R.id.action_profile) {
             Intent profileActivity = new Intent(this,ProfileActivity.class);
-            profileActivity.putExtra("isUser", false );
+            //profileActivity.putExtra("intentUserID", getUid());
+            profileActivity.putExtra("intentUserID", "random stuff");
             startActivity(profileActivity);
             return super.onOptionsItemSelected(item);
         } else if(i == R.id.chat) {

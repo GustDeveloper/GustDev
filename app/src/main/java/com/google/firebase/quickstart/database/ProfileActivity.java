@@ -116,7 +116,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private static String TAG = "quickstart.database.ProfileActivity";
 
     private boolean editEnabled = false;
-    private boolean isUser;
+    //private boolean isUser;
+    private String intentUserID;
 
 
     /*Handlers and Runnables*/
@@ -135,9 +136,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         setSupportActionBar(toolbar); //replace the old action bar with toolbar
 
         Intent intent = getIntent();
-        isUser = intent.getBooleanExtra("isUser", true);
-        Log.e(TAG, Boolean.toString(isUser));
+        //isUser = intent.getBooleanExtra("isUser", true);
+        intentUserID = intent.getStringExtra("intentUserID");
+        Log.e(TAG, intentUserID);
 
+        /*get database reference*/
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        userID = getUid();
 
         editFab = findViewById(R.id.editFab);
         editFab.setOnClickListener(this);
@@ -212,7 +217,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-        if (isUser) {
+        if (intentUserID.matches(userID)) {
             messageFab.setVisibility(View.INVISIBLE);
         }
         else {
@@ -236,9 +241,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         descriptionEditText.setText("I am a foodie and I love hanging out with people");
 
 
-        /*get database reference*/
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        userID = getUid();
+
 
         profileRef = mDatabase.child("profiles").child(userID);
         imgRef = profileRef.child("image");
@@ -247,10 +250,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         getProfileFromServer(profileRef);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
     @Override
     public void onClick(View view){
@@ -594,10 +593,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 image = (String) profileMap.get("image");
                 description = (String) profileMap.get("description");
                 hobbies  = (List)profileMap.get("hobbies");
-                //Log.e(TAG, phone);
-                //Log.e(TAG, location);
-
-
 
                 if (validateString(nickname)) {
                     nicknameEditText.setText(nickname);

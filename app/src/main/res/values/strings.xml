@@ -34,7 +34,10 @@
     <string name="locationHint">Enter your location</string>
     <string name="phoneHint">Enter your phone</string>
     <string name="birthdayHint">Enter your birthday</string>
-
+    <string name="title_activity_event">EventActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fragment_event">Event</string>
+    <string name="fragment_part">Participants</string>
 
 
 </resources>
