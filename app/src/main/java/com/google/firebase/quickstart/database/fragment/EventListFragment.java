@@ -22,7 +22,6 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.quickstart.database.EventDetailActivity;
 import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.models.Event;
-import com.google.firebase.quickstart.database.models.Post;
 import com.google.firebase.quickstart.database.viewholder.EventViewHolder;
 
 
