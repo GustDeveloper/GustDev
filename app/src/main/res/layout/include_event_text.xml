@@ -16,7 +16,7 @@
         tools:text="My First Post" />
 
     <TextView
-        android:id="@+id/event_body"
+        android:id="@+id/event_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

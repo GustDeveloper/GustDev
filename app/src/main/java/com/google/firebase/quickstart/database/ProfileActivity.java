@@ -27,7 +27,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +39,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -266,7 +264,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 Snackbar.make(view, "Messaging the others", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                Intent chatActivity = new Intent(this,chatActivity.class);
+                Intent chatActivity = new Intent(this,ChatActivity.class);
                 startActivity(chatActivity);
                 break;
             default:

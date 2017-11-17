@@ -24,7 +24,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         authorView = itemView.findViewById(R.id.event_author);
         starView = itemView.findViewById(R.id.star);
         numStarsView = itemView.findViewById(R.id.event_num_stars);
-        bodyView = itemView.findViewById(R.id.event_body);
+        bodyView = itemView.findViewById(R.id.event_description);
     }
 
     public void bindToEvent(Event event, View.OnClickListener starClickListener) {

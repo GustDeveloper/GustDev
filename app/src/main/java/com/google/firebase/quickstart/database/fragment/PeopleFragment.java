@@ -4,14 +4,12 @@ package com.google.firebase.quickstart.database.fragment;
  * Created by tangjinhao on 11/15/17.
  */
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,58 +17,21 @@ import android.view.ViewGroup;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.quickstart.database.PostDetailActivity;
 import com.google.firebase.quickstart.database.ProfileActivity;
 import com.google.firebase.quickstart.database.R;
-import com.google.firebase.quickstart.database.chatActivity;
-import com.google.firebase.quickstart.database.models.Info;
-import com.google.firebase.quickstart.database.models.Message;
-import com.google.firebase.quickstart.database.models.Post;
+import com.google.firebase.quickstart.database.ChatActivity;
 import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.viewholder.PeopleViewHolder;
-import com.google.firebase.quickstart.database.viewholder.PostViewHolder;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
-import com.google.firebase.quickstart.database.PostDetailActivity;
-import com.google.firebase.quickstart.database.R;
-import com.google.firebase.quickstart.database.models.Post;
-import com.google.firebase.quickstart.database.viewholder.PostViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.zip.Inflater;
 
 public class PeopleFragment extends Fragment {
 
@@ -172,7 +133,7 @@ public class PeopleFragment extends Fragment {
                                                 userhash.child(Uid).child(infoKey).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                                        Intent chatActivity = new Intent(getActivity(),chatActivity.class);
+                                                        Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
                                                         chatActivity.putExtra("Path","/chat-room/" + dataSnapshot.getValue().toString());
                                                         startActivity(chatActivity);
                                                     }
@@ -184,7 +145,7 @@ public class PeopleFragment extends Fragment {
                                                 userhash.child(Uid).child(infoKey).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                                        Intent chatActivity = new Intent(getActivity(),chatActivity.class);
+                                                        Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
                                                         chatActivity.putExtra("Path","/chat-room/" + dataSnapshot.getValue().toString());
                                                         startActivity(chatActivity);
                                                     }
@@ -209,7 +170,7 @@ public class PeopleFragment extends Fragment {
                                     userhash.child(Uid).child(infoKey).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            Intent chatActivity = new Intent(getActivity(),chatActivity.class);
+                                            Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
                                             chatActivity.putExtra("Path","/chat-room/" + dataSnapshot.getValue().toString());
                                             startActivity(chatActivity);
                                         }
