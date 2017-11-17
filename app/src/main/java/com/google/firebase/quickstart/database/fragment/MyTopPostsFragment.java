@@ -1,5 +1,7 @@
 package com.google.firebase.quickstart.database.fragment;
 
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 

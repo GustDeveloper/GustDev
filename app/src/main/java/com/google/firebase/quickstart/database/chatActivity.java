@@ -54,21 +54,24 @@ public class chatActivity extends BaseActivity {
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclers;
     private String userId;
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-
+        path = getIntent().getStringExtra("Path");
+        Log.d("Path", path);
         btn_send_msg = (Button) findViewById(R.id.btn_send);
         input_msg = (EditText) findViewById(R.id.msg_input);
-        chat_conversation = (TextView) findViewById(R.id.chat_view);
+       // chat_conversation = (TextView) findViewById(R.id.chat_view);
         mRecyclers = findViewById(R.id.messages_list);
         mRecyclers.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         mRecyclers.setLayoutManager(linearLayoutManager);
+
 
         chat_room = FirebaseDatabase.getInstance().getReference();
         userId = getUid();
@@ -84,11 +87,9 @@ public class chatActivity extends BaseActivity {
 
                 // Update the message to the database
                 Message m = new Message(userId, "TJ", input_msg.getText().toString(), formattedDate);
-                String key = chat_room.child("chat-room").push().getKey();
+                String key = chat_room.child(path).push().getKey();
                 input_msg.setText("");
-                chat_room.child("chat-room").child("Jinhao").child(key).setValue(m);
-
-
+                chat_room.child(path).child(key).setValue(m);
             }
         });
     }
@@ -97,7 +98,7 @@ public class chatActivity extends BaseActivity {
     public void onStart() {
         super.onStart();
         // call the recyclerview adapter
-        mAdapter = new MessageAdapter(this, chat_room.child("chat-room").child("Jinhao"));
+        mAdapter = new MessageAdapter(this, chat_room.child(path));
         mRecyclers.setAdapter(mAdapter);
 
     }
@@ -199,6 +200,8 @@ public class chatActivity extends BaseActivity {
             holder.bodyView.setText(message.msg);
 
             // for own message, appears right. for others' message, appear left
+            Log.d("Chat",message.sender);
+            Log.d("Chat",userId);
             if (message.sender.equals(userId)){
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);

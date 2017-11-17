@@ -21,7 +21,7 @@ public class Event {
     public List<String> participants;
     public List<String> tags;
     public int starCount = 0;
-    public Map<String, Boolean> stars;
+    public Map<String, Boolean> stars = new HashMap<>();
 
     public Event() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -38,7 +38,7 @@ public class Event {
         this.tags = new ArrayList<>();
         this.participants = new ArrayList<>();
         this.starCount = 0;
-        this.stars = new HashMap<>();
+//        this.stars = new HashMap<>();
 
     }
 

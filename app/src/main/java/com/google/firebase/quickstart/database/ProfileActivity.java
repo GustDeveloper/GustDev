@@ -240,10 +240,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         descriptionEditText = findViewById(R.id.descriptionEditText);
         descriptionEditText.setText("I am a foodie and I love hanging out with people");
 
-
-
-
-        profileRef = mDatabase.child("profiles").child(userID);
+        profileRef = mDatabase.child("profiles").child(intentUserID);
         imgRef = profileRef.child("image");
         tagRef = profileRef.child("hobbies");
 
