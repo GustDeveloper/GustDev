@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PostDetailActivity" />
+        <activity android:name=".EventDetailActivity" />
 
         <service android:name=".BackgroundIntentService" />
         <service android:name=".BackgroundService" />
@@ -40,6 +41,7 @@
             android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".EventActivity"
             android:label="@string/title_activity_event"
