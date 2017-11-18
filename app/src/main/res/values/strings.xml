@@ -39,13 +39,15 @@
     <string name="title_event_date">Date</string>
     <string name="title_event_time">Time</string>
     <string name="title_event_description">Description</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="fragment_event">Event</string>
-    <string name="fragment_part">Participants</string>
+    <string name="fragment_part">Invited</string>
     <string name="event_title">title</string>
     <string name="location">location</string>
     <string name="description">description</string>
     <string name="heading_my_top_events">My Top Events</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

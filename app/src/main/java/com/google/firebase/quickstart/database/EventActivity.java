@@ -12,9 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.google.firebase.quickstart.database.fragment.EventFragment;
-import com.google.firebase.quickstart.database.fragment.MyPostsFragment;
-import com.google.firebase.quickstart.database.fragment.MyTopPostsFragment;
-import com.google.firebase.quickstart.database.fragment.RecentPostsFragment;
+import com.google.firebase.quickstart.database.fragment.PeopleFragment;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -40,7 +38,7 @@ public class EventActivity extends AppCompatActivity {
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
                     new EventFragment(),
-                    new RecentPostsFragment()
+                    new PeopleFragment()
             };
             private final String[] mFragmentNames = new String[] {
                     getString(R.string.fragment_event),

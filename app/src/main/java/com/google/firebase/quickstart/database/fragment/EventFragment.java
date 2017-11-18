@@ -15,28 +15,12 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.quickstart.database.R;
 
 import java.util.Calendar;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- *
- * create an instance of this fragment.
- */
 public class EventFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    /*
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    */
 
     // [START define_database_reference]
     private DatabaseReference mDatabase;
@@ -47,7 +31,6 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     private int mYear, mMonth, mDay, mHour, mMinute;
 
 
-
     //private OnFragmentInteractionListener mListener;
 
     public EventFragment() {
@@ -56,12 +39,6 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        */
     }
 
     @Override
@@ -75,6 +52,9 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         btnTimePicker.setOnClickListener(this);
         txtDate =  rootView.findViewById(R.id.dateEditText);
         txtTime =  rootView.findViewById(R.id.timeEditText);
+
+        // Datebase Reference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         return rootView;
     }
 
@@ -91,11 +71,10 @@ public class EventFragment extends Fragment implements View.OnClickListener {
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                            txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            txtDate.setText((monthOfYear + 1) + "-" + dayOfMonth +  "-" + year);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
-
         }
 
         if (view == btnTimePicker) {

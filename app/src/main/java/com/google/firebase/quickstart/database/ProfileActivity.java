@@ -608,7 +608,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     birthdayEditText.setText(birthday);
                 }
 
-                if (validateString(image)) {
+                if (validateString(image) && image.length() != 0) {
                     byte[] decodedByteArray = Base64.decode(image, Base64.DEFAULT);
                     Bitmap imageEncoded = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
                     profileImageView.setImageBitmap(imageEncoded);
