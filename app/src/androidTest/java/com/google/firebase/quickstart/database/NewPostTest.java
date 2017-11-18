@@ -74,7 +74,7 @@ public class NewPostTest {
 
         // Click new post button
         ViewInteraction floatingActionButton = onView(
-                allOf(withId(R.id.fab_new_post), isDisplayed()));
+                allOf(withId(R.id.fab_new_event), isDisplayed()));
         floatingActionButton.perform(click());
 
         // Enter post title

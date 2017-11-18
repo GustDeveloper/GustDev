@@ -14,6 +14,7 @@ public class Event {
     public String uid;
     public String author;
     public String title;
+    public String date;
     public String time;
     public String location;
     public String description;
@@ -21,38 +22,39 @@ public class Event {
     public List<String> participants;
     public List<String> tags;
     public int starCount = 0;
-    public Map<String, Boolean> stars;
+    public Map<String, Boolean> stars = new HashMap<>();
 
     public Event() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Event(String uid, String eid) {
-        this.uid = uid;
-        this.author = "";
-        this.title = "";
-        this.time = "";
-        this.location = "";
-        this.description = "";
-        this.status = "Upcoming";
-        this.tags = new ArrayList<>();
-        this.participants = new ArrayList<>();
-        this.starCount = 0;
-        this.stars = new HashMap<>();
+//    public Event(String uid, String eid) {
+//        this.uid = uid;
+//        this.author = "";
+//        this.title = "";
+//        this.time = "";
+//        this.date = "";
+//        this.location = "";
+//        this.description = "";
+//        this.status = "Upcoming";
+//        this.tags = new ArrayList<>();
+//        this.participants = new ArrayList<>();
+//        this.starCount = 0;
+////        this.stars = new HashMap<>();
+//
+//    }
 
-    }
-
-    public Event(String uid, String eid, String author, String title, String location, String description, List<String> tags) {
+    public Event(String uid, String eid, String author, String title, String time, String date, String location, String description, List<String> tags) {
         this.uid = uid;
         this.author = author;
         this.title = title;
         this.time = time;
+        this.date = date;
         this.location = location;
         this.description = description;
         this.tags = tags;
         this.status = "Upcoming";
         this.starCount = 0;
-        this.stars = new HashMap<>();
     }
 
     // [START post_to_map]
