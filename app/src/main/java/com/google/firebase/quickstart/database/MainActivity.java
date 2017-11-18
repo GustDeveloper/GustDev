@@ -45,7 +45,7 @@ public class  MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Gust by E.T.");
+        setTitle("Gust");
         
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -61,7 +61,7 @@ public class  MainActivity extends BaseActivity {
                     getString(R.string.heading_recent),
 //                    getString(R.string.heading_my_posts),
                     getString(R.string.heading_my_top_events),
-                    "People Contact"
+                    "Contacts"
             };
             @Override
             public Fragment getItem(int position) {
