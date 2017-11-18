@@ -31,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.PostDetailActivity;
 import com.google.firebase.quickstart.database.ProfileActivity;
 import com.google.firebase.quickstart.database.R;
-import com.google.firebase.quickstart.database.chatActivity;
+import com.google.firebase.quickstart.database.ChatActivity;
 import com.google.firebase.quickstart.database.models.Info;
 import com.google.firebase.quickstart.database.models.Message;
 import com.google.firebase.quickstart.database.models.Post;
@@ -164,7 +164,7 @@ public class PeopleFragment extends Fragment {
                                                 if (peopleSnapshot.getKey().equals( infoKey)) {
                                                         Create = false;
                                                         Log.d("ChatChat", peopleSnapshot.getValue().toString());
-                                                        Intent chatActivity = new Intent(getActivity(),chatActivity.class);
+                                                        Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
                                                         chatActivity.putExtra("Path","/chat-room/" + peopleSnapshot.getValue().toString());
                                                         startActivity(chatActivity);
                                                 }
@@ -176,7 +176,7 @@ public class PeopleFragment extends Fragment {
                                                 childUpdates.put("/user-user/" + Uid + "/" + infoKey, roomkey);
                                                 childUpdates.put("/user-user/" + infoKey + "/" + Uid, roomkey);
                                                 mDatabase.updateChildren(childUpdates);
-                                                Intent chatActivity = new Intent(getActivity(), chatActivity.class);
+                                                Intent chatActivity = new Intent(getActivity(), ChatActivity.class);
                                                 chatActivity.putExtra("Path", "/chat-room/" + roomkey);
                                                 startActivity(chatActivity);
                                             }
