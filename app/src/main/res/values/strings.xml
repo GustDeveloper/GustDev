@@ -46,6 +46,7 @@
     <string name="location">location</string>
     <string name="description">description</string>
     <string name="heading_my_top_events">HISTORY</string>
+    <string name="descriptionTitle">Description</string>
 
 
 </resources>
