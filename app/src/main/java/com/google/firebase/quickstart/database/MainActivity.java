@@ -22,7 +22,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +45,7 @@ public class  MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Gust by E.T.");
+        setTitle("Gust");
         
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -62,7 +61,7 @@ public class  MainActivity extends BaseActivity {
                     getString(R.string.heading_recent),
 //                    getString(R.string.heading_my_posts),
                     getString(R.string.heading_my_top_events),
-                    "People Contact"
+                    "Contacts"
             };
             @Override
             public Fragment getItem(int position) {
@@ -114,7 +113,7 @@ public class  MainActivity extends BaseActivity {
             return super.onOptionsItemSelected(item);
         } else if(i == R.id.chat) {
             // navigate to chat room
-            Intent chatActivity = new Intent(this,chatActivity.class);
+            Intent chatActivity = new Intent(this,ChatActivity.class);
             startActivity(chatActivity);
             return super.onOptionsItemSelected(item);
         } else {

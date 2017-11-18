@@ -68,7 +68,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         // Initialize Views
         mAuthorView = findViewById(R.id.event_author);
         mTitleView = findViewById(R.id.event_title);
-        mDescriptionView = findViewById(R.id.event_body);
+        mDescriptionView = findViewById(R.id.event_description);
         mCommentField = findViewById(R.id.field_comment_text);
         mCommentButton = findViewById(R.id.button_event_comment);
         mCommentsRecycler = findViewById(R.id.recycler_comments);

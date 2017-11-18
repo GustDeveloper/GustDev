@@ -30,7 +30,7 @@ public class PeopleViewHolder extends RecyclerView.ViewHolder {
 
     public void bindToPeople(Profile profile, View.OnClickListener messageListener) {
         Log.d("ViewHold","Sucess");
-        authorView.setText(profile.nickname);
+        authorView.setText(profile.username);
         msg.setOnClickListener(messageListener);
     }
 }

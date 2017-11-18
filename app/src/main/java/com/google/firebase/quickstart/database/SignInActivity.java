@@ -136,6 +136,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 if (!dataSnapshot.exists()) {
                     writeNewUser(userId, username, email);
                     writeNewUserProfile(userId, username, email);
+                    createNewUserPair(userId);
                 }
             }
             @Override
@@ -185,6 +186,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
         mDatabase.child("users").child(userId).setValue(user);
     }
+    //
+    private void createNewUserPair(String userId) {
+        mDatabase.child("user-user").child(userId).setValue("");
+    }
+
     // [END basic_write]
 
     //Todo: Something that retains the value of image/birthday/hobbies and etc

@@ -31,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.PostDetailActivity;
 import com.google.firebase.quickstart.database.ProfileActivity;
 import com.google.firebase.quickstart.database.R;
-import com.google.firebase.quickstart.database.chatActivity;
+import com.google.firebase.quickstart.database.ChatActivity;
 import com.google.firebase.quickstart.database.models.Info;
 import com.google.firebase.quickstart.database.models.Message;
 import com.google.firebase.quickstart.database.models.Post;
@@ -114,10 +114,9 @@ public class PeopleFragment extends Fragment {
 
         // Set up FirebaseRecyclerAdapter with the Query
         //Query peopleQuery = mDatabase.child("profiles").child(getUid());
-        Query peopleQuery = mDatabase.child("profiles").limitToFirst(100);
+        final Query peopleQuery = mDatabase.child("profiles").limitToFirst(100);
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Profile>()
-                .setQuery(peopleQuery, Profile.class)
-                .build();
+                .setQuery(peopleQuery, Profile.class).build();
 
         mAdapter = new FirebaseRecyclerAdapter<Profile, PeopleViewHolder>(options) {
             @Override
@@ -138,7 +137,6 @@ public class PeopleFragment extends Fragment {
                         // Launch Profile Activity
                         Intent profileActivity = new Intent(getActivity(), ProfileActivity.class);
                         profileActivity.putExtra("intentUserID",infoKey);
-                        //intent.putExtra(PostDetailActivity.EXTRA_PROFILE_KEY, profileKey); for importing message
                         startActivity(profileActivity);
                     }
                 });
@@ -153,78 +151,40 @@ public class PeopleFragment extends Fragment {
                         // find the user Uid
                         final String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         final DatabaseReference userhash = mDatabase.child("user-user");
-                        // determine if the user-user pair exists
-                        userhash.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                if (snapshot.hasChild(Uid)) {
+                        // determine if the user-user pair exist
                                     Log.d("Chat","Success");
+
                                     userhash.child(Uid).addListenerForSingleValueEvent(new ValueEventListener(){
                                         public void onDataChange(DataSnapshot snapshot1) {
-                                            if (!snapshot1.hasChild(infoKey)) {
+                                            boolean Create = true;
+                                            for (DataSnapshot peopleSnapshot: snapshot1.getChildren()) {
+                                                // TODO: handle the post
+                                               // Log.d("ChatChat", peopleSnapshot.getKey());
+
+                                                if (peopleSnapshot.getKey().equals( infoKey)) {
+                                                        Create = false;
+                                                        Log.d("ChatChat", peopleSnapshot.getValue().toString());
+                                                        Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
+                                                        chatActivity.putExtra("Path","/chat-room/" + peopleSnapshot.getValue().toString());
+                                                        startActivity(chatActivity);
+                                                }
+                                            }
+                                            if (Create) {
+                                                Log.d("ChatChat", "Create");
                                                 Map<String, Object> childUpdates = new HashMap<>();
                                                 String roomkey = mDatabase.child("chat-room").push().getKey();
                                                 childUpdates.put("/user-user/" + Uid + "/" + infoKey, roomkey);
                                                 childUpdates.put("/user-user/" + infoKey + "/" + Uid, roomkey);
-                                               // childUpdates.put("/chat-room/" + roomkey, "");
                                                 mDatabase.updateChildren(childUpdates);
-
-                                                userhash.child(Uid).child(infoKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                                        Intent chatActivity = new Intent(getActivity(),chatActivity.class);
-                                                        chatActivity.putExtra("Path","/chat-room/" + dataSnapshot.getValue().toString());
-                                                        startActivity(chatActivity);
-                                                    }
-                                                    @Override
-                                                    public void onCancelled(DatabaseError databaseError) {
-                                                    }
-                                                });
-                                            } else {
-                                                userhash.child(Uid).child(infoKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                                        Intent chatActivity = new Intent(getActivity(),chatActivity.class);
-                                                        chatActivity.putExtra("Path","/chat-room/" + dataSnapshot.getValue().toString());
-                                                        startActivity(chatActivity);
-                                                    }
-                                                    @Override
-                                                    public void onCancelled(DatabaseError databaseError) {
-                                                    }
-                                                });
+                                                Intent chatActivity = new Intent(getActivity(), ChatActivity.class);
+                                                chatActivity.putExtra("Path", "/chat-room/" + roomkey);
+                                                startActivity(chatActivity);
                                             }
                                         }
-
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
                                         }
                                     });
-                                } else {
-                                    Map<String, Object> childUpdates = new HashMap<>();
-                                    String roomkey = mDatabase.child("chat-room").push().getKey();
-                                    childUpdates.put("/user-user/" + Uid + "/" + infoKey, roomkey);
-                                    childUpdates.put("/user-user/" + infoKey + "/" + Uid, roomkey);
-                                    mDatabase.updateChildren(childUpdates);
-
-                                    userhash.child(Uid).child(infoKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            Intent chatActivity = new Intent(getActivity(),chatActivity.class);
-                                            chatActivity.putExtra("Path","/chat-room/" + dataSnapshot.getValue().toString());
-                                            startActivity(chatActivity);
-                                        }
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-                                        }
-                                    });
-                                }
-                            }
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
 
 
                     }

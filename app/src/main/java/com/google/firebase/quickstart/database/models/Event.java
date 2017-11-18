@@ -14,8 +14,8 @@ public class Event {
     public String uid;
     public String author;
     public String title;
-    public String time;
     public String date;
+    public String time;
     public String location;
     public String description;
     public String status;
@@ -25,23 +25,24 @@ public class Event {
     public Map<String, Boolean> stars = new HashMap<>();
 
     public Event() {
-        // Default constructor required for calls to DataSnapshot.getValue(Event.class)
+        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Event(String uid, String eid) {
-        this.eid = eid;
-        this.uid = uid;
-        this.author = "";
-        this.title = "";
-        this.time = "";
-        this.date = "";
-        this.location = "";
-        this.description = "";
-        this.status = "Upcoming";
-        this.tags = new ArrayList<>();
-        this.participants = new ArrayList<>();
-        this.starCount = 0;
-    }
+//    public Event(String uid, String eid) {
+//        this.uid = uid;
+//        this.author = "";
+//        this.title = "";
+//        this.time = "";
+//        this.date = "";
+//        this.location = "";
+//        this.description = "";
+//        this.status = "Upcoming";
+//        this.tags = new ArrayList<>();
+//        this.participants = new ArrayList<>();
+//        this.starCount = 0;
+////        this.stars = new HashMap<>();
+//
+//    }
 
     public Event(String uid, String eid, String author, String title, String time, String date, String location, String description, List<String> tags) {
         this.uid = uid;
@@ -54,7 +55,6 @@ public class Event {
         this.tags = tags;
         this.status = "Upcoming";
         this.starCount = 0;
-        this.stars = new HashMap<>();
     }
 
     // [START post_to_map]

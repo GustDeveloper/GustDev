@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -27,11 +28,102 @@
         android:layout_marginTop="10dp" />
 
     <LinearLayout
+        android:id="@+id/details_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/event_text_layout"
+        android:layout_marginTop="20dp">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:layout_margin="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/dateIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/dateTitle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:contentDescription="@string/contentDescription"
+                    app:srcCompat="@drawable/calendar_blank" />
+
+                <TextView
+                    android:id="@+id/dateTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/dateEditText"
+                    android:layout_alignBottom="@+id/dateEditText"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@+id/dateIcon"
+                    android:layout_toRightOf="@+id/dateIcon"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/title_event_date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+
+                <ImageView
+                    android:id="@+id/timeIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/dateIcon"
+                    android:layout_marginTop="24dp"
+                    android:contentDescription="@string/contentDescription"
+                    app:srcCompat="@drawable/av_timer" />
+
+                <TextView
+                    android:id="@+id/timeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/timeIcon"
+                    android:layout_alignLeft="@+id/dateTitle"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/title_event_time"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272"
+                     />
+                <ImageView
+                    android:id="@+id/locationIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/timeIcon"
+                    android:layout_marginTop="24dp"
+                    app:srcCompat="@drawable/ic_location_on_black" />
+
+                <TextView
+                    android:id="@+id/locationTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignBottom="@+id/locationIcon"
+                    android:layout_alignLeft="@+id/timeTitle"
+                    android:text="@string/locationTitle"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/comment_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/event_text_layout"
+        android:layout_below="@+id/details_list"
         android:layout_marginTop="20dp"
         android:weightSum="1.0">
 

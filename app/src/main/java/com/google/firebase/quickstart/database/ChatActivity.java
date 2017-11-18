@@ -46,7 +46,7 @@ import java.util.Map;
 
 import static android.widget.RelativeLayout.ALIGN_RIGHT;
 
-public class chatActivity extends BaseActivity {
+public class ChatActivity extends BaseActivity {
     private Button btn_send_msg;
     private EditText input_msg;
     private TextView chat_conversation;
@@ -65,7 +65,7 @@ public class chatActivity extends BaseActivity {
         Log.d("Path", path);
         btn_send_msg = (Button) findViewById(R.id.btn_send);
         input_msg = (EditText) findViewById(R.id.msg_input);
-       // chat_conversation = (TextView) findViewById(R.id.chat_view);
+        // chat_conversation = (TextView) findViewById(R.id.chat_view);
         mRecyclers = findViewById(R.id.messages_list);
         mRecyclers.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -235,4 +235,3 @@ public class chatActivity extends BaseActivity {
     }
 
 }
-
