@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,29 +13,44 @@
 
         <android.support.v4.widget.CircleImageView
             android:id="@+id/list_profile_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_action_account_circle_40"
             android:layout_centerVertical="true"/>
 
         <TextView
-            android:id="@+id/info_author"
+            android:id="@+id/nicknameTextView"
             style="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:layout_toRightOf="@+id/list_profile_image"
             android:layout_toEndOf="@+id/list_profile_image"
-            android:layout_toLeftOf="@+id/checkboxBtn"
-            android:layout_toStartOf="@+id/checkboxBtn"
-            tools:text="someauthor@email.com" />
+            android:layout_toLeftOf="@+id/list_checkbox_btn"
+            android:layout_toStartOf="@+id/list_checkbox_btn"
+            tools:text="Vincent" />
 
-        <RadioButton
-            android:id="@+id/checkboxBtn"
+        <CheckBox
+            android:id="@+id/list_checkbox_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true" />
+
+        <co.lujun.androidtagview.TagContainerLayout
+            android:id="@+id/list_tagContainerLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/list_profile_image"
+            android:layout_toEndOf="@+id/list_profile_image"
+            android:layout_toLeftOf="@+id/list_checkbox_btn"
+            android:layout_toStartOf="@+id/list_checkbox_btn"
+            android:layout_below="@+id/nicknameTextView"
+            app:tag_theme="random"
+            app:container_background_color="@color/transparent"
+            >
+        </co.lujun.androidtagview.TagContainerLayout>
 
 
 

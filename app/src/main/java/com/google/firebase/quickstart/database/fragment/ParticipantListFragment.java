@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -21,7 +22,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.ProfileActivity;
 import com.google.firebase.quickstart.database.R;
-import com.google.firebase.quickstart.database.chatActivity;
 import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.viewholder.PeopleViewHolder;
 
@@ -40,6 +40,8 @@ public class ParticipantListFragment extends Fragment {
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
 
+
+
     public ParticipantListFragment() {
     }
 
@@ -54,6 +56,7 @@ public class ParticipantListFragment extends Fragment {
         // [END create_database_reference]
         mRecycler = rootView.findViewById(R.id.people_list);
         mRecycler.setHasFixedSize(true);
+
 
         return rootView;
     }

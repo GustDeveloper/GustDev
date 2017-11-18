@@ -5,7 +5,7 @@
     tools:context="com.google.firebase.quickstart.database.fragment.PeopleListDialogFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/people_list"
+        android:id="@+id/people_recyclerList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"

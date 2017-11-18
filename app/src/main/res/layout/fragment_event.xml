@@ -12,19 +12,20 @@
         android:layout_height="wrap_content"
         android:padding="3dp"
         android:layout_margin="8dp">
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/dateIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
+
                 app:srcCompat="@drawable/calendar_blank"
                 android:contentDescription="@string/contentDescription"/>
 
@@ -65,10 +66,71 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:padding="6dp"
+                android:text="Select"
                 />
+            </RelativeLayout>
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/timeIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/av_timer"
+                    android:contentDescription="@string/contentDescription"/>
+
+                <TextView
+                    android:id="@+id/timeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/timeEditText"
+                    android:layout_alignBottom="@+id/timeEditText"
+                    android:layout_toEndOf="@+id/timeIcon"
+                    android:layout_toRightOf="@+id/timeIcon"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/title_event_time"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+
+                <EditText
+                    android:id="@+id/timeEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_toEndOf="@+id/timeTitle"
+                    android:layout_toLeftOf="@+id/timePickerBtn"
+                    android:layout_toRightOf="@+id/timeIcon"
+                    android:layout_toStartOf="@+id/timePickerBtn"
+                    android:enabled="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#121212" />
+
+                <Button
+                    android:id="@+id/timePickerBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:padding="6dp"
+                    android:text="Select"
+                    />
+
+            </RelativeLayout>
+
+        </LinearLayout>
     </android.support.v7.widget.CardView>
+
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -76,151 +138,25 @@
         android:padding="3dp"
         android:layout_margin="8dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/timeIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                app:srcCompat="@drawable/av_timer"
-                android:contentDescription="@string/contentDescription"/>
-
-            <TextView
-                android:id="@+id/timeTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/timeEditText"
-                android:layout_alignBottom="@+id/timeEditText"
-                android:layout_toEndOf="@+id/timeIcon"
-                android:layout_toRightOf="@+id/timeIcon"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/title_event_time"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#727272" />
-
-            <EditText
-                android:id="@+id/timeEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@+id/timeTitle"
-                android:layout_toLeftOf="@+id/timePickerBtn"
-                android:layout_toRightOf="@+id/timeIcon"
-                android:layout_toStartOf="@+id/timePickerBtn"
-                android:enabled="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#121212" />
-
-            <Button
-                android:id="@+id/timePickerBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:padding="6dp"
-                />
-
-        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/personalInfo"
         android:padding="3dp"
-        android:layout_margin="8dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/nicknameIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                app:srcCompat="@drawable/ic_action_account"
-                android:contentDescription="@string/contentDescription"/>
-
-            <TextView
-                android:id="@+id/nicknameTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/nicknameEditText"
-                android:layout_alignBottom="@+id/nicknameEditText"
-                android:layout_toEndOf="@+id/nicknameIcon"
-                android:layout_toRightOf="@+id/nicknameIcon"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/nicknameTitle"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#727272" />
-
-            <EditText
-                android:id="@+id/nicknameEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@+id/nicknameTitle"
-                android:layout_toLeftOf="@+id/chkNickname"
-                android:layout_toRightOf="@+id/nicknameIcon"
-                android:layout_toStartOf="@+id/chkNickname"
-                android:enabled="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#121212" />
-
-            <ToggleButton
-                android:id="@+id/chkNickname"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:background="@drawable/ic_favorite_black"
-                android:checked="true"
-                android:padding="6dp"
-                android:textOff=""
-                android:textOn=""
-                android:visibility="invisible"/>
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="3dp"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="4dp">
-
+        android:layout_margin="8dp"
+        app:cardCornerRadius="4dp">
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
             >
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
                 android:id="@+id/phoneIcon"
@@ -246,7 +182,7 @@
 
             <EditText
                 android:id="@+id/phoneEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
@@ -258,21 +194,118 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
-            <ToggleButton
-                android:id="@+id/chkPhone"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:background="@drawable/toggle_selector"
-                android:checked="true"
-                android:padding="6dp"
-                android:textOff=""
-                android:textOn=""
-                android:visibility="invisible"/>
+
+
+        </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="14dp"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/nicknameIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:contentDescription="@string/contentDescription"
+                    app:srcCompat="@drawable/ic_action_account" />
+
+                <TextView
+                    android:id="@+id/nicknameTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/nicknameEditText"
+                    android:layout_alignBottom="@+id/nicknameEditText"
+                    android:layout_toEndOf="@+id/nicknameIcon"
+                    android:layout_toRightOf="@+id/nicknameIcon"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/title_event_host"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+
+                <EditText
+                    android:id="@+id/nicknameEditText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_toEndOf="@+id/nicknameTitle"
+                    android:layout_toRightOf="@+id/nicknameIcon"
+                    android:enabled="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#121212" />
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                >
+
+                <ImageView
+                    android:id="@+id/emailIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/ic_email_black" />
+
+                <TextView
+                    android:id="@+id/birthdayTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/emailIcon"
+                    android:layout_toRightOf="@id/emailIcon"
+                    android:layout_centerVertical="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/emailTitle"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+
+                <EditText
+                    android:id="@+id/birthdayEditText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_toEndOf="@+id/birthdayTitle"
+                    android:layout_toRightOf="@+id/birthdayTitle"
+                    android:enabled="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#212121" />
+
+            </RelativeLayout>
+    </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Invite Friends"
+                android:id="@+id/inviteBtn"/>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -297,7 +330,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignTop="@+id/chkLocation"
+                android:layout_centerVertical="true"
                 app:srcCompat="@drawable/ic_location_on_black" />
 
 
@@ -305,12 +338,9 @@
                 android:id="@+id/locationTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/locationEditText"
-                android:layout_alignBottom="@+id/locationEditText"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="26dp"
-                android:layout_marginStart="26dp"
+                android:layout_toEndOf="@+id/locationIcon"
+                android:layout_toRightOf="@+id/locationIcon"
+                android:layout_centerVertical="true"
                 android:text="@string/locationTitle"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
@@ -350,89 +380,62 @@
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="3dp"
         android:layout_margin="8dp"
         app:cardCornerRadius="4dp">
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            >
-
+            android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/birthdayIcon"
+                android:id="@+id/hobbiesIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                app:srcCompat="@drawable/ic_email_black" />
+                app:srcCompat="@drawable/ic_favorite_black"
+                android:contentDescription="@string/contentDescription"/>
 
             <TextView
-                android:id="@+id/birthdayTitle"
+                android:id="@+id/hobbiesTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/birthdayIcon"
-                android:layout_toRightOf="@id/birthdayIcon"
+                android:layout_toEndOf="@+id/hobbiesIcon"
+                android:layout_toRightOf="@+id/hobbiesIcon"
+                android:layout_above="@+id/tagcontainerLayout"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/birthdayTitle"
+                android:text="Topics"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
-
-            <EditText
-                android:id="@+id/birthdayEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@+id/birthdayTitle"
-                android:layout_toLeftOf="@+id/chkBirthday"
-                android:layout_toRightOf="@+id/birthdayTitle"
-                android:layout_toStartOf="@+id/chkBirthday"
-                android:enabled="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="4dp">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <co.lujun.androidtagview.TagContainerLayout
                 android:id="@+id/tagcontainerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
+                android:layout_below="@+id/hobbiesIcon"
                 android:padding="10dp"
-                app:container_border_color="@color/divider"
+                app:container_border_color="@color/transparent"
                 app:container_enable_drag="true"
+                app:container_background_color="@color/transparent"
                 app:horizontal_interval="10dp"
                 app:vertical_interval="10dp"
                 app:tag_clickable="true"
                 app:tag_theme="random"
                 app:tag_ripple_duration="2000"
-                app:tag_ripple_alpha="47"/>
+                app:tag_ripple_alpha="47"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/tagcontainerLayout"
                 android:weightSum="1"
                 >
 
@@ -444,7 +447,7 @@
                     android:singleLine="true" />
 
                 <Button
-                    android:id="@+id/addTagButton"
+                    android:id="@+id/addTagBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"

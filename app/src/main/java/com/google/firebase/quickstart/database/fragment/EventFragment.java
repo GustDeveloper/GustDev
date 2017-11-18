@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.database.fragment;
 
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.net.Uri;
@@ -29,6 +30,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     Button btnDatePicker, btnTimePicker;
     EditText txtDate, txtTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    private Button inviteBtn;
 
 
     //private OnFragmentInteractionListener mListener;
@@ -52,6 +54,8 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         btnTimePicker.setOnClickListener(this);
         txtDate =  rootView.findViewById(R.id.dateEditText);
         txtTime =  rootView.findViewById(R.id.timeEditText);
+        inviteBtn = rootView.findViewById(R.id.inviteBtn);
+        inviteBtn.setOnClickListener(this);
 
         // Datebase Reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -91,6 +95,11 @@ public class EventFragment extends Fragment implements View.OnClickListener {
                         }
                     }, mHour,mMinute,false);
             timePickerDialog.show();
+        }
+
+        if (view == inviteBtn) {
+            PeopleListDialogFragment peopleListDialogFragment = new PeopleListDialogFragment();
+            peopleListDialogFragment.show(getFragmentManager(),"friends");
         }
     }
 }

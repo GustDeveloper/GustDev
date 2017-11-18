@@ -45,7 +45,9 @@
     <string name="location">location</string>
     <string name="description">description</string>
     <string name="heading_my_top_events">HISTORY</string>
-
+    <string name="title_event_host">Host</string>
+    <string name="title_event_topic">Topic</string>
+    <string name="title_event_part">Participant</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
