@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class Event {
 
-    public String eid;
     public String uid;
     public String author;
     public String title;
@@ -19,8 +18,8 @@ public class Event {
     public String location;
     public String description;
     public String status;
-    public List<String> participants;
-    public List<String> tags;
+    public Map<String, Boolean> tags = new HashMap<>();
+    public Map<String, Boolean> participants = new HashMap<>();
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
 
@@ -44,15 +43,26 @@ public class Event {
 //
 //    }
 
-    public Event(String uid, String eid, String author, String title, String time, String date, String location, String description, List<String> tags) {
+//    public Event(String uid, String eid, String author, String title, String time, String date, String location, String description, List<String> tags) {
+//        this.uid = uid;
+//        this.author = author;
+//        this.title = title;
+//        this.time = time;
+//        this.date = date;
+//        this.location = location;
+//        this.description = description;
+//        this.tags = tags;
+//        this.status = "Upcoming";
+//        this.starCount = 0;
+//    }
+    public Event(String uid) {
         this.uid = uid;
-        this.author = author;
-        this.title = title;
-        this.time = time;
-        this.date = date;
-        this.location = location;
-        this.description = description;
-        this.tags = tags;
+        this.author = "";
+        this.title = "";
+        this.time = "";//hh::mm
+        this.date = "";//mm/dd/yyyy
+        this.location = "";
+        this.description = "";
         this.status = "Upcoming";
         this.starCount = 0;
     }
@@ -67,8 +77,8 @@ public class Event {
         result.put("time", time);
         result.put("location", location);
         result.put("description", description);
+        result.put("participants", participants);
         result.put("tags",tags);
-        result.put("eid", eid);
         result.put("status", status);
         result.put("starCount", starCount);
         result.put("stars", stars);
