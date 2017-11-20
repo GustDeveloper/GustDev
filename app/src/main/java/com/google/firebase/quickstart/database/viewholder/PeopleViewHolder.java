@@ -22,6 +22,7 @@ public class PeopleViewHolder extends RecyclerView.ViewHolder {
 
     public PeopleViewHolder(View itemView) {
         super(itemView);
+        Log.e("in PEOPLE LIST FRAG", "created vh");
         authorView = itemView.findViewById(R.id.people_name);
         picView = itemView.findViewById(R.id.info_photo);
         hobbyView = itemView.findViewById(R.id.people_hobby);

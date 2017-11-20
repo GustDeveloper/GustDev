@@ -99,6 +99,7 @@ public class PeopleFragment extends Fragment {
         mRecycler = rootView.findViewById(R.id.people_list);
         mRecycler.setHasFixedSize(true);
 
+
         return rootView;
     }
 
@@ -114,7 +115,7 @@ public class PeopleFragment extends Fragment {
 
         // Set up FirebaseRecyclerAdapter with the Query
         //Query peopleQuery = mDatabase.child("profiles").child(getUid());
-        final Query peopleQuery = mDatabase.child("profiles").limitToFirst(100);
+        final Query peopleQuery = mDatabase.child("profiles").limitToFirst(10);
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Profile>()
                 .setQuery(peopleQuery, Profile.class).build();
 
@@ -185,16 +186,12 @@ public class PeopleFragment extends Fragment {
                                         public void onCancelled(DatabaseError databaseError) {
                                         }
                                     });
-
-
                     }
                 });
             }
         };
         mRecycler.setAdapter(mAdapter);
     }
-
-
 
     @Override
     public void onStart() {

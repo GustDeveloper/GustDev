@@ -35,12 +35,13 @@
     <string name="phoneHint">Enter your phone</string>
     <string name="birthdayHint">Enter your birthday</string>
     <string name="title_activity_event">EventActivity</string>
+    <string name="title_create_activity_event">EventActivity</string>
     <string name="title_event_title">Title</string>
     <string name="title_event_date">Date</string>
     <string name="title_event_time">Time</string>
     <string name="title_event_description">Description</string>
     <string name="fragment_event">Event</string>
-    <string name="fragment_part">Invited</string>
+    <string name="fragment_part">Invitation</string>
     <string name="event_title">title</string>
     <string name="location">location</string>
     <string name="description">description</string>

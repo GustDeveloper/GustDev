@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
 
-        <android.support.v4.widget.CircleImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/list_profile_image"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -49,6 +49,7 @@
             android:layout_below="@+id/nicknameTextView"
             app:tag_theme="random"
             app:container_background_color="@color/transparent"
+            app:container_border_color="@color/transparent"
             >
         </co.lujun.androidtagview.TagContainerLayout>
 

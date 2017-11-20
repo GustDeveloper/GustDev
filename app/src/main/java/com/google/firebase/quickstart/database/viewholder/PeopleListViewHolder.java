@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.models.Profile;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
@@ -24,6 +26,8 @@ public class PeopleListViewHolder extends RecyclerView.ViewHolder {
     public TagContainerLayout tagContainerLayout;
     public CheckBox checkBox;
     public View peopleView;
+    public List<String> hobbies;
+    final static String TAG = "In ListView Holder";
 
     public PeopleListViewHolder(View peopleView){
         super(peopleView);
@@ -35,16 +39,28 @@ public class PeopleListViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindToPeopleListDialog (Profile profile, View.OnClickListener listListener ) {
-        Log.e("List view hold", "Success");
         nickname.setText(profile.username);
 
-        String image = profile.image;
-        byte[] decodedByteArray = Base64.decode(image, Base64.DEFAULT);
-        Bitmap imageEncoded = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
-        circleImageView.setImageBitmap(imageEncoded);
 
-        List<String> hobbies = profile.hobbies;
+        String image = profile.image;
+        if (image != null && image.length() != 0) {
+            byte[] decodedByteArray = Base64.decode(image, Base64.DEFAULT);
+            Bitmap imageEncoded = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+            circleImageView.setImageBitmap(imageEncoded);
+        } else{
+            circleImageView.setImageResource(R.drawable.ic_action_account_circle_40);
+        }
+
+
+        if (profile.hobbies != null && profile.hobbies instanceof List) {
+            hobbies = profile.hobbies;
+            hobbies.removeAll(Collections.singleton(null));
+         } else {
+            hobbies = new ArrayList<>();
+        }
+
         tagContainerLayout.setTags(hobbies);
+
         checkBox.setOnClickListener(listListener);
     }
 }

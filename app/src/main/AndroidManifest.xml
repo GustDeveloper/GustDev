@@ -45,9 +45,9 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".EventActivity"
-            android:label="@string/title_activity_event"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".NewEventActivity"
+            android:label="@string/title_create_activity_event"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
