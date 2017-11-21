@@ -8,21 +8,30 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.quickstart.database.fragment.EventFragment;
 import com.google.firebase.quickstart.database.fragment.PeopleListFragment;
 import com.google.firebase.quickstart.database.models.Event;
-
+import com.google.firebase.quickstart.database.models.UtilToast;
 import java.util.Map;
 
-public class NewEventActivity extends AppCompatActivity implements EventFragment.EventFragmentCallback,
+public class NewEventActivity extends BaseActivity implements EventFragment.EventFragmentCallback,
                                                                       PeopleListFragment.PeopleListFragmentCallback {
 
-    private static final String TAG = "firebase.quickstart.database.NewEventActivity";
+    /*UI Elements*/
+    private static final String TAG = "NewEventActivity";
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
-    public Event event;
-    FloatingActionButton saveFab;
+
+    /*Databse Reference*/
+    private Event event;
+    private DatabaseReference mDatabase;
+    private String key;
+
     FragmentManager mFragmentManager = getSupportFragmentManager();
     private static Fragment[] mFragments = new Fragment[] {
             new EventFragment(),
@@ -40,17 +49,7 @@ public class NewEventActivity extends AppCompatActivity implements EventFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-        /*
-
-        saveFab = (FloatingActionButton) findViewById(R.id.editFab);
-        saveFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
+        setTitle("Create An Event");
 
         mPagerAdapter = new FragmentPagerAdapter(mFragmentManager) {
 
@@ -91,17 +90,54 @@ public class NewEventActivity extends AppCompatActivity implements EventFragment
         mViewPager.setAdapter(mPagerAdapter);
         TabLayout tabLayout = findViewById(R.id.eventTabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        //Database reference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
-    public void sendEventToServer(Event event) {
+    public void sendEventToServer(Event newEvent) {
         //send it to server;
-        this.event = event;
-        //PeopleListFragment peopleListFragment = new PeopleListFragment();
+        this.event = newEvent;
+        if (key == null || key.length() == 0) {
+            key = mDatabase.child("events").push().getKey();
+        }
+
+        mDatabase.child("events").child(key).setValue(newEvent, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    UtilToast.showToast(getApplicationContext(), databaseError.getMessage());
+                } else {
+                    UtilToast.showToast(getApplicationContext(), "An event is created");
+                    Log.e(TAG, "calling event fragment");
+                }
+            }
+        });
     }
 
     @Override
-    public void sendPeopleToEvent(Map<String, Boolean> participantsMap) {
-        this.event.participants = participantsMap;
+    public void invitePeopleToEvent(Map<String, Boolean> participantsMap) {
+        if (this.event == null || this.key == null || this.key.length() == 0) {
+            UtilToast.showToast(getApplicationContext(), "You have not set up an event yet");
+        } else {
+            this.event.participants = participantsMap;
+            mDatabase.child("events").child(key).child("participants").setValue(participantsMap, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    if (databaseError != null) {
+                        UtilToast.showToast(getApplicationContext(), databaseError.getMessage());
+                    } else {
+                        UtilToast.showToast(getApplicationContext(),"Invitations have been sent ");
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        key = "";
     }
 }

@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.models.Profile;
+import com.google.firebase.quickstart.database.models.UtilToast;
 import com.google.firebase.quickstart.database.viewholder.PeopleListViewHolder;
 
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
     }
 
     public interface PeopleListFragmentCallback{
-        void sendPeopleToEvent(Map<String,Boolean> participantsMap);
+        void invitePeopleToEvent(Map<String,Boolean> participantsMap);
     }
 
     @Override
@@ -119,6 +120,14 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
                             holder.checkBox.setChecked(true);
                             participantsMap.put(userRef.getKey().toString(), true);
                         }
+                    }
+                });
+
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
+                    @Override
+                    public boolean onLongClick(View view){
+                        peopleListFragmentCallback.invitePeopleToEvent(participantsMap);
+                        return true;
                     }
                 });
 

@@ -42,9 +42,9 @@
     <string name="title_event_description">Description</string>
     <string name="fragment_event">Event</string>
     <string name="fragment_part">Invitation</string>
-    <string name="event_title">title</string>
-    <string name="location">location</string>
-    <string name="description">description</string>
+    <string name="event_title">Title</string>
+    <string name="location">Location</string>
+    <string name="description">Description</string>
     <string name="heading_my_top_events">HISTORY</string>
     <string name="title_event_host">Host</string>
     <string name="title_event_topic">Topic</string>

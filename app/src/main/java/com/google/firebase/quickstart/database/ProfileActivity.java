@@ -196,6 +196,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
         addTagBtn = findViewById(R.id.addTagButton);
         addTagBtn.setVisibility(View.INVISIBLE);
+        addTagBtn.setOnClickListener(this);
+        /*
         addTagBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,6 +216,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 });
             }
         });
+        */
+
 
         if (intentUserID.matches(userID)) {
             messageFab.setVisibility(View.INVISIBLE);
@@ -266,6 +270,22 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
                 Intent chatActivity = new Intent(this,ChatActivity.class);
                 startActivity(chatActivity);
+                break;
+
+            case R.id.addTagBtn:
+                String newHobby = tagEditText.getText().toString();
+                hobbies.add(newHobby);
+                mTagContainerLayout.addTag(newHobby);
+                Log.e(TAG, hobbies.toString());
+                tagRef.setValue(hobbies, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            toastMessage = "Failed to add tags to the server";
+                            UtilToast.showToast(ProfileActivity.this, toastMessage);
+                        }
+                    }
+                });
                 break;
             default:
                 break;
