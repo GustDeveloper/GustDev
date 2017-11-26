@@ -73,6 +73,7 @@ public class Event {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
         result.put("author", author);
+        result.put("date", date);
         result.put("title", title);
         result.put("time", time);
         result.put("location", location);
