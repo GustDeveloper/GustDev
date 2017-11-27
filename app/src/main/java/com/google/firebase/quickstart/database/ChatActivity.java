@@ -55,6 +55,7 @@ public class ChatActivity extends BaseActivity {
     private RecyclerView mRecyclers;
     private String userId;
     private String path;
+    private String receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +63,10 @@ public class ChatActivity extends BaseActivity {
         setContentView(R.layout.activity_chat);
 
         path = getIntent().getStringExtra("Path");
+        receiver = getIntent().getStringExtra("receiver");
         Log.d("Path", path);
         btn_send_msg = (Button) findViewById(R.id.btn_send);
         input_msg = (EditText) findViewById(R.id.msg_input);
-        // chat_conversation = (TextView) findViewById(R.id.chat_view);
         mRecyclers = findViewById(R.id.messages_list);
         mRecyclers.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -77,7 +78,6 @@ public class ChatActivity extends BaseActivity {
         userId = getUid();
         btn_send_msg.setOnClickListener(new View.OnClickListener(){
 
-
             @Override
             public void onClick(View v) {
                 // Get current Time Stamp
@@ -85,8 +85,9 @@ public class ChatActivity extends BaseActivity {
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String formattedDate = df.format(c.getTime());
 
+                //String sender, String receiver, String msg, String timeStamp
                 // Update the message to the database
-                Message m = new Message(userId, "TJ", input_msg.getText().toString(), formattedDate);
+                Message m = new Message(userId, receiver, input_msg.getText().toString(), formattedDate);
                 String key = chat_room.child(path).push().getKey();
                 input_msg.setText("");
                 chat_room.child(path).child(key).setValue(m);
@@ -131,11 +132,24 @@ public class ChatActivity extends BaseActivity {
         private List<String> mMessageIds = new ArrayList<>();
 
         private List<Message> mMessages = new ArrayList<>();
-
+        private RelativeLayout.LayoutParams params;
+        private RelativeLayout.LayoutParams params1;
+        private LinearLayout.LayoutParams p;
+        private RelativeLayout.LayoutParams rparams;
 
         public MessageAdapter(final Context context, DatabaseReference ref) {
             mContext = context;
             mDatabaseReference = ref;
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            p.weight = 1.0f;
+            p.gravity = Gravity.RIGHT;
+            rparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+
+
             ChildEventListener childEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
@@ -200,25 +214,25 @@ public class ChatActivity extends BaseActivity {
             holder.bodyView.setText(message.msg);
 
             // for own message, appears right. for others' message, appear left
-            Log.d("Chat",message.sender);
-            Log.d("Chat",userId);
             if (message.sender.equals(userId)){
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 holder.photoView.setLayoutParams(params);
-                params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.LEFT_OF, holder.photoView.getId());
-                holder.linearView.setLayoutParams(params);
-                LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                p.weight = 1.0f;
-                p.gravity = Gravity.RIGHT;
+                params1.addRule(RelativeLayout.LEFT_OF, holder.photoView.getId());
+                holder.linearView.setLayoutParams(params1);
                 holder.bodyView.setLayoutParams(p);
                 holder.authorView.setLayoutParams(p);
             } else {
-                RelativeLayout.LayoutParams rparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams paramsl = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                paramsl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                holder.photoView.setLayoutParams(paramsl);
                 rparams.addRule(RelativeLayout.RIGHT_OF, holder.photoView.getId());
                 holder.linearView.setLayoutParams(rparams);
+                LinearLayout.LayoutParams pl = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                pl.weight = 1.0f;
+                pl.gravity = Gravity.LEFT;
+                holder.bodyView.setLayoutParams(pl);
+                holder.authorView.setLayoutParams(pl);
             }
+
         }
 
         @Override

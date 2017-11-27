@@ -22,9 +22,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.quickstart.database.fragment.MyPostsFragment;
@@ -46,7 +48,7 @@ public class  MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Gust");
-        
+
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
@@ -86,7 +88,6 @@ public class  MainActivity extends BaseActivity {
         findViewById(R.id.fab_new_event).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this, NewPostActivity.class));
                 startActivity(new Intent(MainActivity.this, EventActivity.class));
             }
         });
@@ -111,12 +112,7 @@ public class  MainActivity extends BaseActivity {
             profileActivity.putExtra("intentUserID", getUid());
             startActivity(profileActivity);
             return super.onOptionsItemSelected(item);
-        } else if(i == R.id.chat) {
-            // navigate to chat room
-            Intent chatActivity = new Intent(this,ChatActivity.class);
-            startActivity(chatActivity);
-            return super.onOptionsItemSelected(item);
-        } else {
+        }  else {
             return super.onOptionsItemSelected(item);
         }
     }
