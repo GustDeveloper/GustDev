@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.models.Event;
-import com.google.firebase.quickstart.database.models.Post;
 
 public class EventViewHolder extends RecyclerView.ViewHolder {
 

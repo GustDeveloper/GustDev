@@ -42,6 +42,9 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
     private EventDetailActivity.CommentAdapter mAdapter;
 
     private TextView mAuthorView;
+    private TextView mDateView;
+    private TextView mTimeView;
+    private TextView mLocationView;
     private TextView mTitleView;
     private TextView mDescriptionView;
     private EditText mCommentField;
@@ -52,6 +55,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+//        setContentView(R.layout.activity_event_detail);
 
         // Get post key from intent
         mEventKey = getIntent().getStringExtra(EXTRA_EVENT_KEY);
@@ -67,8 +71,11 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
 
         // Initialize Views
         mAuthorView = findViewById(R.id.event_author);
-        mTitleView = findViewById(R.id.event_title);
-        mDescriptionView = findViewById(R.id.event_description);
+        mTitleView = findViewById(R.id.event_title_title);
+        mDescriptionView = findViewById(R.id.descriptionView);
+        mDateView = findViewById(R.id.event_date);
+        mTimeView = findViewById(R.id.event_time);
+        mLocationView = findViewById(R.id.event_location);
         mCommentField = findViewById(R.id.field_comment_text);
         mCommentButton = findViewById(R.id.button_event_comment);
         mCommentsRecycler = findViewById(R.id.recycler_comments);
@@ -94,6 +101,11 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
                 mAuthorView.setText(event.author);
                 mTitleView.setText(event.title);
                 mDescriptionView.setText(event.description);
+                mDateView.setText(event.date);
+                mTimeView.setText(event.time);
+                mLocationView.setText(event.location);
+
+//                mDescriptionView.setText(event.description);
                 // [END_EXCLUDE]
             }
 

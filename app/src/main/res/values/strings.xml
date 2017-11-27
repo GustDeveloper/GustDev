@@ -10,7 +10,7 @@
     <string name="email_label">Email</string>
     <string name="password_label">Password</string>
     <string name="send_text">Send</string>
-    <string name="lorem"> Something</string>
+    <string name="lorem"> </string>
     <string name="title_sign_in">Welcome</string>
     <string name="sign_up">Sign Up</string>
     <string name="hint_password">password</string>
@@ -51,6 +51,7 @@
     <string name="title_event_part">Participant</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="descriptionTitle">Description</string>
 
 
 </resources>

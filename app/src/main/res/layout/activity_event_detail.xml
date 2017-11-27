@@ -15,7 +15,8 @@
         layout="@layout/include_event_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/event_text_layout"
@@ -25,7 +26,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/event_author_layout"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/details_list"
@@ -46,30 +48,70 @@
                 android:padding="16dp">
 
                 <ImageView
+                    android:id="@+id/titleIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    app:srcCompat="@drawable/hamburger" />
+
+                <TextView
+                    android:id="@+id/titleTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_alignBottom="@+id/titleIcon"
+                    android:layout_toEndOf="@+id/titleIcon"
+                    android:layout_toRightOf="@+id/titleIcon"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/event_title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+
+                <TextView
+                    android:id="@+id/event_title_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/titleIcon"
+                    android:layout_marginLeft="29dp"
+                    android:layout_marginStart="29dp"
+                    android:layout_toEndOf="@+id/descriptionTitle"
+                    android:layout_toRightOf="@+id/descriptionTitle"
+                    tools:text = "Something"/>
+
+                <ImageView
                     android:id="@+id/dateIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/dateTitle"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:contentDescription="@string/contentDescription"
-                    app:srcCompat="@drawable/calendar_blank" />
+                    android:layout_below="@+id/titleIcon"
+                    android:layout_marginTop="24dp"
+                    app:srcCompat="@drawable/calendar_check" />
 
                 <TextView
                     android:id="@+id/dateTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/dateEditText"
-                    android:layout_alignBottom="@+id/dateEditText"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/dateIcon"
-                    android:layout_toRightOf="@+id/dateIcon"
-                    android:ellipsize="end"
-                    android:maxLines="1"
+
+                    android:layout_alignBottom="@+id/dateIcon"
+                    android:layout_alignLeft="@+id/titleTitle"
                     android:text="@string/title_event_date"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
+
+                <TextView
+                    android:id="@+id/event_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/dateTitle"
+                    android:layout_alignBottom="@+id/dateTitle"
+                    android:layout_alignLeft="@+id/event_title_title"
+                    android:layout_alignStart="@+id/event_title_title"
+                    tools:text = "Something"/>
 
                 <ImageView
                     android:id="@+id/timeIcon"
@@ -79,7 +121,6 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/dateIcon"
                     android:layout_marginTop="24dp"
-                    android:contentDescription="@string/contentDescription"
                     app:srcCompat="@drawable/av_timer" />
 
                 <TextView
@@ -94,6 +135,17 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272"
                      />
+
+                <TextView
+                    android:id="@+id/event_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/timeTitle"
+                    android:layout_alignBottom="@+id/timeTitle"
+                    android:layout_alignLeft="@+id/event_date"
+                    android:layout_alignStart="@+id/event_date"
+                    tools:text = "Something"/>
+
                 <ImageView
                     android:id="@+id/locationIcon"
                     android:layout_width="wrap_content"
@@ -114,6 +166,49 @@
                     android:text="@string/locationTitle"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
+
+                <TextView
+                    android:id="@+id/event_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/locationTitle"
+                    android:layout_alignBottom="@+id/locationTitle"
+                    android:layout_alignLeft="@+id/event_time"
+                    android:layout_alignStart="@+id/event_time"
+                    tools:text = "Something"/>
+
+                <ImageView
+                    android:id="@+id/descriptionIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/locationIcon"
+                    android:layout_marginTop="24dp"
+                    app:srcCompat="@drawable/description" />
+
+                <TextView
+                    android:id="@+id/descriptionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignBottom="@+id/descriptionIcon"
+                    android:layout_alignLeft="@+id/timeTitle"
+                    android:text="@string/descriptionTitle"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+
+                <TextView
+                    android:id="@+id/descriptionView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/descriptionTitle"
+                    android:layout_alignBottom="@+id/descriptionTitle"
+                    android:layout_alignLeft="@+id/event_location"
+                    android:layout_alignStart="@+id/event_location"
+                    tools:text = "Something"/>
+
+
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
@@ -139,9 +234,9 @@
             android:id="@+id/button_event_comment"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
-            android:layout_weight="0.2"
             android:layout_height="wrap_content"
-            android:text="Event"/>
+            android:layout_weight="0.2"
+            android:text="SEND" />
 
     </LinearLayout>
 
