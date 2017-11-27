@@ -1,11 +1,15 @@
 package com.google.firebase.quickstart.database.fragment;
 
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,41 +18,44 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.quickstart.database.ProfileActivity;
 import com.google.firebase.quickstart.database.R;
+import com.google.firebase.quickstart.database.models.Event;
+import com.google.firebase.quickstart.database.models.UtilToast;
 
+import co.lujun.androidtagview.ColorFactory;
+import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- *
- * create an instance of this fragment.
- */
 public class EventFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    /*
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    */
 
     // [START define_database_reference]
-    private DatabaseReference mDatabase;
+    //private DatabaseReference mDatabase;
+    //private DatabaseReference mProfileRef;
+
     // [END define_database_reference]
 
-    Button btnDatePicker, btnTimePicker;
+    Button btnDatePicker, btnTimePicker,addTagBtn;
     EditText txtDate, txtTime;
-    private int mYear, mMonth, mDay, mHour, mMinute;
+    TagContainerLayout mTagContainerLayout;
+    int mYear, mMonth, mDay, mHour, mMinute;
+    EditText phoneEditText, locationEditText,nicknameEditText,emaiEditText, titleEditText,tagEditText,descriptionEditText;
+    FloatingActionButton saveFab;
+    EventFragmentCallback eventFragmentCallback;
 
+    List<String> tags  = new ArrayList<>();
+    //String key = "";
 
-
-    //private OnFragmentInteractionListener mListener;
+    private EventFragmentCallback mListener;
 
     public EventFragment() {
         // Required empty public constructor
@@ -56,12 +63,6 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        */
     }
 
     @Override
@@ -71,13 +72,44 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         View rootView =  inflater.inflate(R.layout.fragment_event, container, false);
         btnDatePicker= rootView.findViewById(R.id.datePickerBtn);
         btnTimePicker= rootView.findViewById(R.id.timePickerBtn);
+        saveFab = rootView.findViewById(R.id.saveFab);
+        saveFab.setOnClickListener(this);
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
+
         txtDate =  rootView.findViewById(R.id.dateEditText);
         txtTime =  rootView.findViewById(R.id.timeEditText);
+        phoneEditText = rootView.findViewById(R.id.phoneEditText);
+        locationEditText = rootView.findViewById(R.id.locationEditText);
+        nicknameEditText = rootView.findViewById(R.id.nicknameEditText);
+        emaiEditText = rootView.findViewById(R.id.emailEditText);
+        titleEditText = rootView.findViewById(R.id.titleEditText);
+        tagEditText = rootView.findViewById(R.id.tagEditText);
+        descriptionEditText = rootView.findViewById(R.id.descriptionEditText);
+        mTagContainerLayout = rootView.findViewById(R.id.tagcontainerLayout);
+        mTagContainerLayout.setTags(tags);
+
+        addTagBtn = rootView.findViewById(R.id.addTagBtn);
+        addTagBtn.setOnClickListener(this);
+
         return rootView;
     }
 
+    public interface EventFragmentCallback {
+        void sendEventToServer(Event event);
+    }
+
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            eventFragmentCallback = (EventFragmentCallback) context;
+        } catch(ClassCastException e) {
+            throw new ClassCastException(context.toString() + "must implement Fragment1Callback");
+        }
+    }
 
     @Override
     public void onClick(View view) {
@@ -91,11 +123,10 @@ public class EventFragment extends Fragment implements View.OnClickListener {
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                            txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            txtDate.setText((monthOfYear + 1) + "-" + dayOfMonth +  "-" + year);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
-
         }
 
         if (view == btnTimePicker) {
@@ -113,6 +144,114 @@ public class EventFragment extends Fragment implements View.OnClickListener {
                     }, mHour,mMinute,false);
             timePickerDialog.show();
         }
+
+        if (view == saveFab) {
+            if (validateForm()) {
+                passEventToActivity();
+            } else {
+                return;
+            }
+        }
+
+        if (view == addTagBtn) {
+            String newTag = tagEditText.getText().toString();
+            mTagContainerLayout.addTag(newTag);
+            tags.add(newTag);
+        }
     }
+
+
+    public Event createEvent() {
+        Event event = new Event(getUid());
+        event.author = nicknameEditText.getText().toString();
+        event.participants = new HashMap<>();
+        event.participants.put("Gary", true);
+
+        event.tags = new HashMap<>();
+        for (String tag: tags) {
+            event.tags.put(tag, true);
+        }
+
+        event.time = txtTime.getText().toString();
+        event.date = txtDate.getText().toString();
+        event.description = "An interesting event";
+        return event;
+    }
+
+    private boolean validateForm() {
+        boolean result = true;
+        if (TextUtils.isEmpty(descriptionEditText.getText().toString())) {
+            descriptionEditText.setError("Required");
+            result = false;
+        } else {
+            descriptionEditText.setError(null);
+        }
+        if (TextUtils.isEmpty(titleEditText.getText().toString())) {
+            titleEditText.setError("Required");
+            result = false;
+        } else {
+            titleEditText.setError(null);
+        }
+
+        if (TextUtils.isEmpty(txtDate.getText().toString())) {
+            txtDate.setError("Required");
+            result = false;
+        } else {
+            txtDate.setError(null);
+        }
+
+        if (TextUtils.isEmpty(txtTime.getText().toString())) {
+            txtTime.setError("Required");
+            result = false;
+        } else {
+            txtTime.setError(null);
+        }
+
+        if (TextUtils.isEmpty(nicknameEditText.getText().toString())) {
+            nicknameEditText.setError("Required");
+            result = false;
+        } else {
+            nicknameEditText.setError(null);
+        }
+
+        if (TextUtils.isEmpty(emaiEditText.getText().toString())) {
+            emaiEditText.setError("Required");
+            result = false;
+        } else {
+            emaiEditText.setError(null);
+        }
+
+        if (TextUtils.isEmpty(locationEditText.getText().toString())) {
+            locationEditText.setError("Required");
+            result = false;
+        } else {
+            locationEditText.setError(null);
+        }
+
+        if (TextUtils.isEmpty(phoneEditText.getText().toString())) {
+            phoneEditText.setError("Required");
+            result = false;
+        } else {
+            phoneEditText.setError(null);
+        }
+
+        return result;
+    }
+
+    public void passEventToActivity() {
+        Event newEvent = createEvent();
+        eventFragmentCallback.sendEventToServer(newEvent);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    public String  getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
 }
 

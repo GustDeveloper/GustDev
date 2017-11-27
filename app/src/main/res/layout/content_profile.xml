@@ -219,7 +219,7 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
-                android:id="@+id/birthdayIcon"
+                android:id="@+id/emailIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -228,11 +228,11 @@
                 app:srcCompat="@drawable/ic_email_black" />
 
             <TextView
-                android:id="@+id/birthdayTitle"
+                android:id="@+id/emailTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/birthdayIcon"
-                android:layout_toRightOf="@id/birthdayIcon"
+                android:layout_toEndOf="@id/emailIcon"
+                android:layout_toRightOf="@id/emailIcon"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/birthdayTitle"
@@ -247,9 +247,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@+id/birthdayTitle"
+                android:layout_toEndOf="@+id/emailTitle"
                 android:layout_toLeftOf="@+id/chkBirthday"
-                android:layout_toRightOf="@+id/birthdayTitle"
+                android:layout_toRightOf="@+id/emailTitle"
                 android:layout_toStartOf="@+id/chkBirthday"
                 android:enabled="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
