@@ -115,7 +115,7 @@ public class PeopleFragment extends Fragment {
 
         // Set up FirebaseRecyclerAdapter with the Query
         //Query peopleQuery = mDatabase.child("profiles").child(getUid());
-        final Query peopleQuery = mDatabase.child("profiles").limitToFirst(10);
+        final Query peopleQuery = mDatabase.child("profiles").limitToFirst(30);
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Profile>()
                 .setQuery(peopleQuery, Profile.class).build();
 
