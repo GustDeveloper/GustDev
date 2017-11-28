@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.database;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,12 +60,12 @@ public class ChatActivity extends BaseActivity {
     private String userId;
     private String path;
     private String receiver;
+    private String ReceiverName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
         path = getIntent().getStringExtra("Path");
         receiver = getIntent().getStringExtra("receiver");
         Log.d("Path", path);
@@ -72,9 +76,29 @@ public class ChatActivity extends BaseActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         mRecyclers.setLayoutManager(linearLayoutManager);
-
-
         chat_room = FirebaseDatabase.getInstance().getReference();
+
+        if (getIntent().getStringExtra("ReceiverName") != null) {
+            ReceiverName = getIntent().getStringExtra("ReceiverName");
+            setTitle(ReceiverName);
+            //Log.d("ChatB", ReceiverName);
+        } else {
+            chat_room.child("users").child(receiver).addListenerForSingleValueEvent(new ValueEventListener(){
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User u = dataSnapshot.getValue(User.class);
+                    //Log.d("ChatA", u.username);
+                    setTitle(u.username);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
         userId = getUid();
         btn_send_msg.setOnClickListener(new View.OnClickListener(){
 
@@ -104,6 +128,24 @@ public class ChatActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_chat, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int i = item.getItemId();
+        if (i == R.id.action_profile) {
+            Intent profileActivity = new Intent(this,ProfileActivity.class);
+            profileActivity.putExtra("intentUserID", receiver);
+            startActivity(profileActivity);
+            return super.onOptionsItemSelected(item);
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
 
 
     private static class MessageViewHolder extends RecyclerView.ViewHolder {

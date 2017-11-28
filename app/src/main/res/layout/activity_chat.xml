@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
-        android:layout_height="566dp">
+        android:layout_height="wrap_content">
 
 
         <android.support.v7.widget.RecyclerView

@@ -167,6 +167,7 @@ public class PeopleFragment extends Fragment {
                                                         Log.d("ChatChat", peopleSnapshot.getValue().toString());
                                                         Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
                                                         chatActivity.putExtra("Path","/chat-room/" + peopleSnapshot.getValue().toString());
+                                                        chatActivity.putExtra("ReceiverName", model.username);
                                                         chatActivity.putExtra("receiver",infoKey);
                                                         startActivity(chatActivity);
                                                 }
@@ -181,6 +182,7 @@ public class PeopleFragment extends Fragment {
                                                 Intent chatActivity = new Intent(getActivity(), ChatActivity.class);
                                                 chatActivity.putExtra("Path", "/chat-room/" + roomkey);
                                                 chatActivity.putExtra("receiver",infoKey);
+                                                chatActivity.putExtra("ReceiverName", model.username);
                                                 startActivity(chatActivity);
                                             }
                                         }
