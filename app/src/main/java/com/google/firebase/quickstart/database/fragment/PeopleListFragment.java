@@ -33,6 +33,8 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
     private DatabaseReference mDatabase;
     // [END define_database_reference]
 
+
+
     private FirebaseRecyclerAdapter<Profile, PeopleListViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
