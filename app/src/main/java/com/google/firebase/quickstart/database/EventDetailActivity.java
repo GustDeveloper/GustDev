@@ -26,6 +26,8 @@ import com.google.firebase.quickstart.database.models.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.lujun.androidtagview.TagContainerLayout;
+
 /**
  * Created by zhang on 2017/11/12.
  */
@@ -43,6 +45,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
 
     private TextView mAuthorView;
     private TextView mDateView;
+    private TextView mHostView;
     private TextView mTimeView;
     private TextView mLocationView;
     private TextView mTitleView;
@@ -50,6 +53,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
     private EditText mCommentField;
     private Button mCommentButton;
     private RecyclerView mCommentsRecycler;
+    private TagContainerLayout mTagContainerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
 
         // Initialize Views
         mAuthorView = findViewById(R.id.event_author);
+        mHostView = findViewById(R.id.event_host);
         mTitleView = findViewById(R.id.event_title_title);
         mDescriptionView = findViewById(R.id.descriptionView);
         mDateView = findViewById(R.id.event_date);
@@ -79,6 +84,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         mCommentField = findViewById(R.id.field_comment_text);
         mCommentButton = findViewById(R.id.button_event_comment);
         mCommentsRecycler = findViewById(R.id.recycler_comments);
+        mTagContainerLayout = findViewById(R.id.tagcontainerLayout);
 
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -98,14 +104,16 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
 //                Post post = dataSnapshot.getValue(Post.class);
                 Event event = dataSnapshot.getValue(Event.class);
                 // [START_EXCLUDE]
+                List<String> tags  = new ArrayList<>(event.tags.keySet());
                 mAuthorView.setText(event.author);
                 mTitleView.setText(event.title);
                 mDescriptionView.setText(event.description);
                 mDateView.setText(event.date);
                 mTimeView.setText(event.time);
+                mHostView.setText(event.author);
                 mLocationView.setText(event.location);
+                mTagContainerLayout.setTags(tags);
 
-//                mDescriptionView.setText(event.description);
                 // [END_EXCLUDE]
             }
 
