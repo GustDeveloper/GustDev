@@ -383,7 +383,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
                ByteArrayOutputStream stream = new ByteArrayOutputStream();
                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-
+              // bitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
 
                profileImageView.setImageBitmap(null);
                profileImageView.setImageBitmap(bitmap);
@@ -412,8 +412,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(ProfileActivity.this.getContentResolver(), selectedImage);
 
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
 
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+                   // bitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
 
                     profileImageView.setImageBitmap(null);
                     profileImageView.setImageBitmap(bitmap);
