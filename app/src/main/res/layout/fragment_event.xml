@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/activity_horizontal_margin"
     android:padding="@dimen/activity_horizontal_margin"
+    android:background="@drawable/bg3hat"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
     <include layout="@layout/content_event"/>
@@ -19,6 +20,8 @@
         android:layout_marginBottom="19dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:alpha="0.8"
         android:backgroundTint="@color/colorPrimary"
+
         app:srcCompat="@drawable/content_save_settings" />
 </RelativeLayout>
