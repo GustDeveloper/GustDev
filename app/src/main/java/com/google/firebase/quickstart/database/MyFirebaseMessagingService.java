@@ -1,8 +1,10 @@
 package com.google.firebase.quickstart.database;
 
+import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -14,6 +16,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.List;
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -36,12 +39,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody, Map<String, String> data) {
+        if (isForeground("com.google.firebase.quickstart.database.ChatActivity"))
+            return;
         int id = 1;
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("Path", data.get("roomkey"));
         intent.putExtra("receiver",data.get("rec"));
+        //startActivity(intent);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_ONE_SHOT);
+
+
+//        Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
+//        chatActivity.putExtra("Path","/chat-room/" + peopleSnapshot.getValue().toString());
+//        chatActivity.putExtra("ReceiverName", model.username);
+//        chatActivity.putExtra("receiver",infoKey);
+//        startActivity(chatActivity);
 
         String channelId = "default";
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -52,14 +65,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        //.setWhen(System.currentTimeMillis())
                         .setShowWhen(true)
                         .setWhen(System.currentTimeMillis())
                         .setTicker(messageBody)
                         .setContentIntent(pendingIntent);
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+       // Log.d("Service", isForeground("123"));
 
         notificationManager.notify(id , notificationBuilder.build());
+    }
+
+    public boolean isForeground(String myPackage) {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> runningTaskInfo = manager.getRunningTasks(1);
+        ComponentName componentInfo = runningTaskInfo.get(0).topActivity;
+
+        Log.d("Service", componentInfo.getClassName());
+        return componentInfo.getClassName().equals(myPackage);
     }
 }

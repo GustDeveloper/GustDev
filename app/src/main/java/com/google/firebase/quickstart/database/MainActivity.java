@@ -28,6 +28,8 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.quickstart.database.fragment.MyPostsFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.quickstart.database.fragment.MyTopEventsFragment;
 //import com.google.firebase.quickstart.database.fragment.MyTopPostsFragment;
 import com.google.firebase.quickstart.database.fragment.PeopleFragment;
@@ -40,12 +42,14 @@ public class  MainActivity extends BaseActivity {
 
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Gust");
+        mDatabase =  FirebaseDatabase.getInstance().getReference();
         
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -102,6 +106,9 @@ public class  MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.action_logout) {
+            // set the token to null
+            String userId =getUid();
+            mDatabase.child("users").child(userId).child("token").setValue("");
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, SignInActivity.class));
             finish();

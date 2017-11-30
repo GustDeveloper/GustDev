@@ -2,13 +2,17 @@ package com.google.firebase.quickstart.database;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,16 +41,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.models.Comment;
 import com.google.firebase.quickstart.database.models.Message;
 import com.google.firebase.quickstart.database.models.Post;
+import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.models.User;
 import com.google.firebase.quickstart.database.viewholder.PostViewHolder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.widget.RelativeLayout.ALIGN_RIGHT;
 
@@ -61,9 +69,15 @@ public class ChatActivity extends BaseActivity {
     private String path;
     private String receiver;
     private String ReceiverName;
+    private Bitmap selfImg = null;
+    private Bitmap otherImg = null;
+    private int step = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        step++;
+        Log.d("ChatCreate","onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         path = getIntent().getStringExtra("Path");
@@ -77,29 +91,17 @@ public class ChatActivity extends BaseActivity {
 
         mRecyclers.setLayoutManager(linearLayoutManager);
         chat_room = FirebaseDatabase.getInstance().getReference();
+        setTitle("");
+        userId = getUid();
+
+        // get friend's image and name
 
         if (getIntent().getStringExtra("ReceiverName") != null) {
             ReceiverName = getIntent().getStringExtra("ReceiverName");
             setTitle(ReceiverName);
-            //Log.d("ChatB", ReceiverName);
-        } else {
-            chat_room.child("users").child(receiver).addListenerForSingleValueEvent(new ValueEventListener(){
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    User u = dataSnapshot.getValue(User.class);
-                    //Log.d("ChatA", u.username);
-                    setTitle(u.username);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
         }
 
-        userId = getUid();
+
         btn_send_msg.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -122,11 +124,57 @@ public class ChatActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+
+        Log.d("ChatCreate","onStart");
+
+
         // call the recyclerview adapter
+        chat_room.child("profiles").child(receiver).addListenerForSingleValueEvent(new ValueEventListener(){
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Profile p = dataSnapshot.getValue(Profile.class);
+                setTitle(p.username);
+                byte[] decodedByteArray = Base64.decode(p.image, Base64.DEFAULT);
+                Bitmap imageEncoded = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+                otherImg = imageEncoded;
+                mAdapter.notifyDataSetChanged();
+                mRecyclers.scrollToPosition(mAdapter.returnSize());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        // get your own image
+        chat_room.child("profiles").child(userId).addListenerForSingleValueEvent(new ValueEventListener(){
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Profile p = dataSnapshot.getValue(Profile.class);
+                byte[] decodedByteArray = Base64.decode(p.image, Base64.DEFAULT);
+                Bitmap imageEncoded = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+                selfImg = imageEncoded;;
+                mAdapter.notifyDataSetChanged();
+                mRecyclers.scrollToPosition(mAdapter.returnSize());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         mAdapter = new MessageAdapter(this, chat_room.child(path));
         mRecyclers.setAdapter(mAdapter);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,8 +200,9 @@ public class ChatActivity extends BaseActivity {
 
         public TextView authorView;
         public TextView bodyView;
-        public ImageView photoView;
+        public CircleImageView photoView;
         public LinearLayout linearView;
+
 
         public MessageViewHolder(View itemView) {
             super(itemView);
@@ -179,6 +228,10 @@ public class ChatActivity extends BaseActivity {
         private LinearLayout.LayoutParams p;
         private RelativeLayout.LayoutParams rparams;
 
+        public int returnSize(){
+            return mMessages.size() - 1;
+        }
+
         public MessageAdapter(final Context context, DatabaseReference ref) {
             mContext = context;
             mDatabaseReference = ref;
@@ -193,10 +246,12 @@ public class ChatActivity extends BaseActivity {
 
 
             ChildEventListener childEventListener = new ChildEventListener() {
+
+
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-
                     // A new comment has been added, add it to the displayed list
+
                     Message message = dataSnapshot.getValue(Message.class);
 
                     // Update RecyclerView
@@ -243,13 +298,15 @@ public class ChatActivity extends BaseActivity {
 
         @Override
         public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            //Log.d("ChatViewHolder", "Create");
+            Log.d("ChatCreate", "ViewHolder");
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.left_message, parent, false);
             return new MessageViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(MessageViewHolder holder, int position) {
+        public void onBindViewHolder(final MessageViewHolder holder, int position) {
 
             Message message = mMessages.get(position);
             holder.authorView.setText(message.timeStamp);
@@ -262,6 +319,7 @@ public class ChatActivity extends BaseActivity {
                 holder.linearView.setLayoutParams(params1);
                 holder.bodyView.setLayoutParams(p);
                 holder.authorView.setLayoutParams(p);
+                if (selfImg != null) {holder.photoView.setImageBitmap(selfImg);}
             } else {
                 RelativeLayout.LayoutParams paramsl = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 paramsl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -273,6 +331,10 @@ public class ChatActivity extends BaseActivity {
                 pl.gravity = Gravity.LEFT;
                 holder.bodyView.setLayoutParams(pl);
                 holder.authorView.setLayoutParams(pl);
+                if (otherImg != null) {holder.photoView.setImageBitmap(otherImg);}//holder.photoView.setImageBitmap(otherImg);
+                else {
+                    Log.d("ChatService", "NULL");
+                }
             }
 
         }
@@ -287,6 +349,7 @@ public class ChatActivity extends BaseActivity {
                 mDatabaseReference.removeEventListener(mChildEventListener);
             }
         }
+
 
     }
 
