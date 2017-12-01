@@ -10,7 +10,7 @@
         android:id="@+id/relative"
         android:layout_width="match_parent"
         android:background="@drawable/bg7"
-        android:alpha="0.7"
+        android:alpha="0.69"
         android:layout_height="wrap_content">
 
 
