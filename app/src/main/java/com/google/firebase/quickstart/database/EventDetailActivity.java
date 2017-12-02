@@ -22,9 +22,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.models.Comment;
 import com.google.firebase.quickstart.database.models.Event;
 import com.google.firebase.quickstart.database.models.User;
+import com.google.firebase.quickstart.database.models.UtilToast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import co.lujun.androidtagview.TagContainerLayout;
 
@@ -52,6 +55,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
     private TextView mDescriptionView;
     private EditText mCommentField;
     private Button mCommentButton;
+    private Button mEventJoinButton;
     private RecyclerView mCommentsRecycler;
     private TagContainerLayout mTagContainerLayout;
 
@@ -85,6 +89,20 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         mCommentButton = findViewById(R.id.button_event_comment);
         mCommentsRecycler = findViewById(R.id.recycler_comments);
         mTagContainerLayout = findViewById(R.id.tagcontainerLayout);
+        mEventJoinButton = findViewById(R.id.event_join);
+
+        mEventJoinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Map<String, Object> childUpdate = new HashMap<>();
+                String uid = getUid();
+                //childUpdate.put("/events/" + mEventKey + "/participants/" + uid, true);
+                childUpdate.put("/participants/" + uid, true);
+                // Keep copy of post listener so we can remove it when app stops
+                mEventReference.updateChildren(childUpdate);
+                UtilToast.showToast(getApplicationContext(),"Just join the event!");
+            }
+        });
 
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -130,7 +148,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         mEventReference.addValueEventListener(eventListener);
         // [END post_value_event_listener]
 
-        // Keep copy of post listener so we can remove it when app stops
+
         mEventListener = eventListener;
 
         // Listen for comments
