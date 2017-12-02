@@ -20,7 +20,7 @@ import co.lujun.androidtagview.TagContainerLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class PeopleListViewHolder extends RecyclerView.ViewHolder {
+public class PeopleListViewHolder extends RecyclerView.ViewHolder{
     public TextView nickname;
     public CircleImageView circleImageView;
     public TagContainerLayout tagContainerLayout;
@@ -34,13 +34,12 @@ public class PeopleListViewHolder extends RecyclerView.ViewHolder {
         this.peopleView = peopleView;
         nickname = peopleView.findViewById(R.id.nicknameTextView);
         circleImageView = peopleView.findViewById(R.id.list_profile_image);
-        tagContainerLayout = peopleView.findViewById(R.id.list_tagContainerLayout);
+        //tagContainerLayout = peopleView.findViewById(R.id.list_tagContainerLayout);
         checkBox = peopleView.findViewById(R.id.list_checkbox_btn);
     }
 
-    public void bindToPeopleListDialog (Profile profile, View.OnClickListener listListener ) {
+    public void bindToPeopleList (Profile profile, View.OnClickListener listListener) {
         nickname.setText(profile.username);
-
 
         String image = profile.image;
         if (image != null && image.length() != 0) {
@@ -52,15 +51,18 @@ public class PeopleListViewHolder extends RecyclerView.ViewHolder {
         }
 
 
+        /*
         if (profile.hobbies != null && profile.hobbies instanceof List) {
             hobbies = profile.hobbies;
             hobbies.removeAll(Collections.singleton(null));
          } else {
             hobbies = new ArrayList<>();
         }
+        */
 
-        tagContainerLayout.setTags(hobbies);
-
+        //tagContainerLayout.setTags(hobbies);
         checkBox.setOnClickListener(listListener);
+        checkBox.setChecked(profile.isCheck);
+
     }
 }

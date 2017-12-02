@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +42,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -265,13 +267,49 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 }
                 break;
             case R.id.messageFab:
-                Snackbar.make(view, "Messaging the others", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                final String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                final DatabaseReference userhash = mDatabase.child("user-user");
+                // determine if the user-user pair exist
+                /*
+                Log.d("Chat","Success");
 
-                Intent chatActivity = new Intent(this,ChatActivity.class);
-                startActivity(chatActivity);
+                userhash.child(Uid).addListenerForSingleValueEvent(new ValueEventListener(){
+                    public void onDataChange(DataSnapshot snapshot1) {
+                        boolean Create = true;
+                        for (DataSnapshot peopleSnapshot: snapshot1.getChildren()) {
+                            // TODO: handle the post
+                            // Log.d("ChatChat", peopleSnapshot.getKey());
+
+                            if (peopleSnapshot.getKey().equals(infoKey)) {
+                                Create = false;
+                                Log.d("ChatChat", peopleSnapshot.getValue().toString());
+                                Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
+                                chatActivity.putExtra("Path","/chat-room/" + peopleSnapshot.getValue().toString());
+                                chatActivity.putExtra("ReceiverName", model.username);
+                                chatActivity.putExtra("receiver",infoKey);
+                                startActivity(chatActivity);
+                            }
+                        }
+                        if (Create) {
+                            Log.d("ChatChat", "Create");
+                            Map<String, Object> childUpdates = new HashMap<>();
+                            String roomkey = mDatabase.child("chat-room").push().getKey();
+                            childUpdates.put("/user-user/" + Uid + "/" + infoKey, roomkey);
+                            childUpdates.put("/user-user/" + infoKey + "/" + Uid, roomkey);
+                            mDatabase.updateChildren(childUpdates);
+                            Intent chatActivity = new Intent(getActivity(), ChatActivity.class);
+                            chatActivity.putExtra("Path", "/chat-room/" + roomkey);
+                            chatActivity.putExtra("receiver",infoKey);
+                            chatActivity.putExtra("ReceiverName", model.username);
+                            startActivity(chatActivity);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+                */
                 break;
-
             case R.id.addTagBtn:
                 String newHobby = tagEditText.getText().toString();
                 hobbies.add(newHobby);

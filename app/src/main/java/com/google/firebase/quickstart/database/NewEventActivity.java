@@ -53,21 +53,8 @@ public class NewEventActivity extends BaseActivity implements EventFragment.Even
 
         mPagerAdapter = new FragmentPagerAdapter(mFragmentManager) {
 
-            /*
-            private final Fragment[] mFragments = new Fragment[] {
-                    new EventFragment(),
-                    new PeopleListFragment()
-            };
-            */
-
             private final Fragment[] mFragments = NewEventActivity.mFragments;
 
-            /*
-            private final String[] mFragmentNames = new String[] {
-                    getString(R.string.fragment_event),
-                    getString(R.string.fragment_part),
-            };
-            */
 
             private final String[] mFragmentNames = NewEventActivity.mFragmentNames;
 
@@ -104,6 +91,18 @@ public class NewEventActivity extends BaseActivity implements EventFragment.Even
         }
 
         mDatabase.child("events").child(key).setValue(newEvent, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    UtilToast.showToast(getApplicationContext(), databaseError.getMessage());
+                } else {
+                    UtilToast.showToast(getApplicationContext(), "An event is created");
+                    Log.e(TAG, "calling event fragment");
+                }
+            }
+        });
+
+        mDatabase.child("user-events").child(getUid()).child(key).setValue(newEvent, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError != null) {

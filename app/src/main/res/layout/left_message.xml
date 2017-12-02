@@ -22,6 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
             tools:text="John Doe" />
 
         <TextView
@@ -29,6 +31,8 @@
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
             tools:text="This is the comment text.." />
 
     </LinearLayout>

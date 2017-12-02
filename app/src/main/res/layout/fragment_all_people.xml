@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg3"
+    android:background="@drawable/bg3hat"
     tools:context=".MainActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -14,6 +14,8 @@
         android:clipToPadding="false"
         android:padding="5dp"
         android:scrollbars="vertical"
+        android:background="@color/colorbar"
+        android:alpha="0.9"
         tools:listitem="@layout/people_contact" />
 
 </FrameLayout>

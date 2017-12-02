@@ -19,6 +19,7 @@ public class Profile {
     public String phone;
     public String description;
     public List<String> hobbies;
+    public boolean isCheck;
 
     public Profile(){
         // Default constructor required for calls to DataSnapshot.getValue(Profile.class)
@@ -35,6 +36,7 @@ public class Profile {
         this.phone = "";
         this.hobbies = new ArrayList<>();
         this.phone = "";
+        this.isCheck = false;
     }
 
     @Exclude
