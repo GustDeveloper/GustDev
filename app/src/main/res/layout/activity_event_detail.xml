@@ -282,7 +282,15 @@
                     android:layout_alignStart="@+id/event_location"
                     tools:text = "Something"/>
 
+                <Button
+                    android:id="@+id/event_join"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
 
+                    android:layout_below="@+id/tagcontainerLayout"
+
+                    android:text="JOIN" />
 
             </RelativeLayout>
 
@@ -321,5 +329,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/comment_form"
         tools:listitem="@layout/item_comment" />
+
+
 
 </RelativeLayout>
