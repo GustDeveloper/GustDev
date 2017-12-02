@@ -15,10 +15,4 @@
         android:visible="true"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/chat"
-        android:title="Chat"
-        android:visible="true"
-        app:showAsAction="never" />
-
 </menu>

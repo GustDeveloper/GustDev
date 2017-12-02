@@ -115,7 +115,7 @@ public class PeopleFragment extends Fragment {
 
         // Set up FirebaseRecyclerAdapter with the Query
         //Query peopleQuery = mDatabase.child("profiles").child(getUid());
-        final Query peopleQuery = mDatabase.child("profiles").limitToFirst(10);
+        final Query peopleQuery = mDatabase.child("profiles").limitToFirst(30);
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Profile>()
                 .setQuery(peopleQuery, Profile.class).build();
 
@@ -167,6 +167,8 @@ public class PeopleFragment extends Fragment {
                                                         Log.d("ChatChat", peopleSnapshot.getValue().toString());
                                                         Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
                                                         chatActivity.putExtra("Path","/chat-room/" + peopleSnapshot.getValue().toString());
+                                                        chatActivity.putExtra("ReceiverName", model.username);
+                                                        chatActivity.putExtra("receiver",infoKey);
                                                         startActivity(chatActivity);
                                                 }
                                             }
@@ -179,6 +181,8 @@ public class PeopleFragment extends Fragment {
                                                 mDatabase.updateChildren(childUpdates);
                                                 Intent chatActivity = new Intent(getActivity(), ChatActivity.class);
                                                 chatActivity.putExtra("Path", "/chat-room/" + roomkey);
+                                                chatActivity.putExtra("receiver",infoKey);
+                                                chatActivity.putExtra("ReceiverName", model.username);
                                                 startActivity(chatActivity);
                                             }
                                         }

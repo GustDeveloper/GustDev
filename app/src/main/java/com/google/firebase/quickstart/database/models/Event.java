@@ -18,6 +18,8 @@ public class Event {
     public String location;
     public String description;
     public String status;
+    public String phone;
+    public String email;
     public Map<String, Boolean> tags = new HashMap<>();
     public Map<String, Boolean> participants = new HashMap<>();
     public int starCount = 0;
@@ -65,6 +67,8 @@ public class Event {
         this.description = "";
         this.status = "Upcoming";
         this.starCount = 0;
+        this.email = "";
+        this.phone = "";
     }
 
     // [START post_to_map]
@@ -79,6 +83,8 @@ public class Event {
         result.put("location", location);
         result.put("description", description);
         result.put("participants", participants);
+        result.put("phone", phone);
+        result.put("email",email);
         result.put("tags",tags);
         result.put("status", status);
         result.put("starCount", starCount);

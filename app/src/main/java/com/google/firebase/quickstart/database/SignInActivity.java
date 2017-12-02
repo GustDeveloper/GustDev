@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.models.User;
 import com.google.firebase.quickstart.database.models.UtilToast;
@@ -63,9 +64,19 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     public void onStart() {
         super.onStart();
 
+        if (getIntent().getExtras() != null) {
+            Intent intent = new Intent(this, ChatActivity.class);
+            Object roomkey = getIntent().getExtras().get("roomkey");
+            Object  receiver = getIntent().getExtras().get("rec");
+            intent.putExtra("Path",roomkey.toString());
+            intent.putExtra("receiver",receiver.toString());
+            startActivity(intent);
+            finish();
+        } else {
         // Check auth on Activity start
-        if (mAuth.getCurrentUser() != null) {
-            onAuthSuccess(mAuth.getCurrentUser());
+            if (mAuth.getCurrentUser() != null) {
+                onAuthSuccess(mAuth.getCurrentUser());
+            }
         }
     }
 
@@ -78,6 +89,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         showProgressDialog();
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
+
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -102,7 +114,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         if (!validateForm()) {
             return;
         }
-
         showProgressDialog();
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
@@ -129,15 +140,21 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         final String username = usernameFromEmail(user.getEmail());
         final String userId = user.getUid();
         final String email = user.getEmail();
+
+        final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+
         // Write new user
         mDatabase.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
-                    writeNewUser(userId, username, email);
+                    writeNewUser(userId, username, email, refreshedToken);
                     writeNewUserProfile(userId, username, email);
                     createNewUserPair(userId);
+                } else {
+                    mDatabase.child("users").child(userId).child("token").setValue(refreshedToken);
                 }
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -150,7 +167,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         finish();
 
     }
-
 
     private String usernameFromEmail(String email) {
         if (email.contains("@")) {
@@ -180,9 +196,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     }
 
     // [START basic_write]
-    private void writeNewUser(String userId, String name, String email) {
+    private void writeNewUser(String userId, String name, String email, String token) {
 
-        User user = new User(name, email);
+        User user = new User(name, email, token);
 
         mDatabase.child("users").child(userId).setValue(user);
     }

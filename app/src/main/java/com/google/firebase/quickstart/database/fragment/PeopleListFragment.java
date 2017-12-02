@@ -45,13 +45,14 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
-
+    /*
     public static PeopleListFragment newInstance() {
         PeopleListFragment fragment = new PeopleListFragment();
         //Bundle args = new Bundle();
         //fragment.setArguments(args);
         return fragment;
     }
+    */
 
     public interface PeopleListFragmentCallback{
         void invitePeopleToEvent(Map<String,Boolean> participantsMap);
@@ -101,17 +102,21 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
                 .setQuery(peopleQuery, Profile.class).build();
 
         mAdapter = new FirebaseRecyclerAdapter<Profile, PeopleListViewHolder>(options) {
+            //Create view holder;
             @Override
             public PeopleListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 LayoutInflater inflater = LayoutInflater.from(parent.getContext());
                 Log.e(TAG, "on create view");
                 return new PeopleListViewHolder(inflater.inflate(R.layout.people_list_contact, parent,false));
             }
+
+            //bind created view holdeer
             @Override
-            protected void onBindViewHolder(final PeopleListViewHolder holder, int position, final Profile profile) {
+            protected void onBindViewHolder(final PeopleListViewHolder holder, final int position, final Profile profile) {
                 final DatabaseReference userRef = getRef(position);
                 Log.e(TAG, "on bind view");
                 // not so sure what I should do here.
+                /*
                 holder.itemView.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
@@ -124,6 +129,7 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
                         }
                     }
                 });
+                */
 
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
@@ -136,8 +142,18 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
                 holder.bindToPeopleListDialog(profile, new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-
+                        if (holder.isCheck) {
+                            Log.e(TAG, "Click " + position);
+                            holder.isCheck  = false;
+                            holder.checkBox.setChecked(holder.isCheck);
+                            participantsMap.remove(userRef.getKey().toString());
+                        } else {
+                            holder.isCheck = true;
+                            holder.checkBox.setChecked(holder.isCheck);
+                            participantsMap.put(userRef.getKey().toString(), true);
+                        }
                     }
+
                 });
             }
         };

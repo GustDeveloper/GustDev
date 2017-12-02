@@ -20,7 +20,7 @@ import co.lujun.androidtagview.TagContainerLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class PeopleListViewHolder extends RecyclerView.ViewHolder {
+public class PeopleListViewHolder extends RecyclerView.ViewHolder{
     public TextView nickname;
     public CircleImageView circleImageView;
     public TagContainerLayout tagContainerLayout;
@@ -28,6 +28,7 @@ public class PeopleListViewHolder extends RecyclerView.ViewHolder {
     public View peopleView;
     public List<String> hobbies;
     final static String TAG = "In ListView Holder";
+    public boolean isCheck = false;
 
     public PeopleListViewHolder(View peopleView){
         super(peopleView);
@@ -38,9 +39,8 @@ public class PeopleListViewHolder extends RecyclerView.ViewHolder {
         checkBox = peopleView.findViewById(R.id.list_checkbox_btn);
     }
 
-    public void bindToPeopleListDialog (Profile profile, View.OnClickListener listListener ) {
+    public void bindToPeopleListDialog (Profile profile, View.OnClickListener listListener) {
         nickname.setText(profile.username);
-
 
         String image = profile.image;
         if (image != null && image.length() != 0) {
@@ -62,5 +62,6 @@ public class PeopleListViewHolder extends RecyclerView.ViewHolder {
         tagContainerLayout.setTags(hobbies);
 
         checkBox.setOnClickListener(listListener);
+
     }
 }

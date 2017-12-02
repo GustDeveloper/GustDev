@@ -83,7 +83,7 @@
                     tools:text = "Something"/>
 
                 <ImageView
-                    android:id="@+id/dateIcon"
+                    android:id="@+id/hostIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -93,12 +93,43 @@
                     app:srcCompat="@drawable/calendar_check" />
 
                 <TextView
+                    android:id="@+id/hostTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignBottom="@+id/hostIcon"
+                    android:layout_alignLeft="@+id/titleTitle"
+                    android:text="Host"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+
+                <TextView
+                    android:id="@+id/event_host"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/hostTitle"
+                    android:layout_alignBottom="@+id/hostTitle"
+                    android:layout_alignLeft="@+id/event_title_title"
+                    android:layout_alignStart="@+id/event_title_title"
+                    tools:text = "Something"/>
+
+                <ImageView
+                    android:id="@+id/dateIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/hostIcon"
+                    android:layout_marginTop="24dp"
+                    app:srcCompat="@drawable/calendar_check" />
+
+                <TextView
                     android:id="@+id/dateTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
                     android:layout_alignBottom="@+id/dateIcon"
-                    android:layout_alignLeft="@+id/titleTitle"
+                    android:layout_alignLeft="@+id/hostTitle"
                     android:text="@string/title_event_date"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
@@ -178,6 +209,47 @@
                     tools:text = "Something"/>
 
                 <ImageView
+                    android:id="@+id/hobbiesIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/descriptionIcon"
+                    android:layout_marginTop="24dp"
+                    app:srcCompat="@drawable/ic_favorite_black"
+                    android:contentDescription="@string/contentDescription"/>
+
+                <TextView
+                    android:id="@+id/hobbiesTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/hobbiesIcon"
+                    android:layout_alignLeft="@+id/timeTitle"
+                    android:layout_above="@+id/tagcontainerLayout"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Topics"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+
+                <co.lujun.androidtagview.TagContainerLayout
+                    android:id="@+id/tagcontainerLayout"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:layout_below="@+id/hobbiesIcon"
+                    android:padding="10dp"
+                    app:container_border_color="@color/transparent"
+                    app:container_enable_drag="true"
+                    app:container_background_color="@color/transparent"
+                    app:horizontal_interval="10dp"
+                    app:vertical_interval="10dp"
+                    app:tag_clickable="true"
+                    app:tag_theme="random"
+                    app:tag_ripple_duration="2000"
+                    app:tag_ripple_alpha="47"
+                    />
+
+                <ImageView
                     android:id="@+id/descriptionIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -207,6 +279,7 @@
                     android:layout_alignLeft="@+id/event_location"
                     android:layout_alignStart="@+id/event_location"
                     tools:text = "Something"/>
+
 
 
             </RelativeLayout>

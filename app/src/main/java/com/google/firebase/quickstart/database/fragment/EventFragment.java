@@ -165,16 +165,19 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         Event event = new Event(getUid());
         event.author = nicknameEditText.getText().toString();
         event.participants = new HashMap<>();
-        event.participants.put("Gary", true);
 
         event.tags = new HashMap<>();
         for (String tag: tags) {
             event.tags.put(tag, true);
         }
 
+        event.title = titleEditText.getText().toString();
         event.time = txtTime.getText().toString();
         event.date = txtDate.getText().toString();
-        event.description = "An interesting event";
+        event.description = descriptionEditText.getText().toString();
+        event.location = locationEditText.getText().toString();
+        event.email = emaiEditText.getText().toString();
+        event.phone = phoneEditText.getText().toString();
         return event;
     }
 
