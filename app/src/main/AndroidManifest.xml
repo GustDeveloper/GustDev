@@ -47,6 +47,7 @@
         <activity
             android:name=".NewEventActivity"
             android:label="@string/title_create_activity_event"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme"/>
         <service
             android:name=".MyFirebaseMessagingService"

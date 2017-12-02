@@ -86,7 +86,7 @@ public abstract class EventListFragment extends Fragment {
 
                 // Set click listener for the whole post view
                 final String eventKey = eventRef.getKey();
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity

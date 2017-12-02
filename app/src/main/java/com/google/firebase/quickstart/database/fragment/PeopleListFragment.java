@@ -2,6 +2,8 @@ package com.google.firebase.quickstart.database.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.quickstart.database.NewEventActivity;
+import com.google.firebase.quickstart.database.ProfileActivity;
 import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.models.UtilToast;
@@ -27,7 +31,7 @@ import java.util.Map;
 
 public class PeopleListFragment extends android.support.v4.app.Fragment {
 
-    private static final String TAG = "PeopleListDialogFrag";
+    private static final String TAG = "PeopleListFrag";
 
     // [START define_database_reference]
     private DatabaseReference mDatabase;
@@ -45,14 +49,6 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
-    /*
-    public static PeopleListFragment newInstance() {
-        PeopleListFragment fragment = new PeopleListFragment();
-        //Bundle args = new Bundle();
-        //fragment.setArguments(args);
-        return fragment;
-    }
-    */
 
     public interface PeopleListFragmentCallback{
         void invitePeopleToEvent(Map<String,Boolean> participantsMap);
@@ -94,7 +90,7 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
         mManager = new LinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(mManager);
 
-        final Query peopleQuery = mDatabase.child("profiles").limitToFirst(100);
+        final Query peopleQuery = mDatabase.child("profiles").limitToFirst(20);
         Log.e(TAG, peopleQuery.toString());
 
 
@@ -106,30 +102,13 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
             @Override
             public PeopleListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-                Log.e(TAG, "on create view");
                 return new PeopleListViewHolder(inflater.inflate(R.layout.people_list_contact, parent,false));
             }
 
-            //bind created view holdeer
+
             @Override
             protected void onBindViewHolder(final PeopleListViewHolder holder, final int position, final Profile profile) {
                 final DatabaseReference userRef = getRef(position);
-                Log.e(TAG, "on bind view");
-                // not so sure what I should do here.
-                /*
-                holder.itemView.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        if (holder.checkBox.isChecked()) {
-                            holder.checkBox.setChecked(false);
-                            participantsMap.remove(userRef.getKey().toString());
-                        } else {
-                            holder.checkBox.setChecked(true);
-                            participantsMap.put(userRef.getKey().toString(), true);
-                        }
-                    }
-                });
-                */
 
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
@@ -139,19 +118,25 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
                     }
                 });
 
-                holder.bindToPeopleListDialog(profile, new View.OnClickListener(){
+                holder.itemView.setOnClickListener((view)-> {
+                    Intent profileActivity = new Intent(getContext(),ProfileActivity.class);
+                    profileActivity.putExtra("intentUserID", userRef.getKey().toString());
+                    startActivity(profileActivity);
+                });
+
+                holder.bindToPeopleList(profile, new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        if (holder.isCheck) {
-                            Log.e(TAG, "Click " + position);
-                            holder.isCheck  = false;
-                            holder.checkBox.setChecked(holder.isCheck);
+                        if (profile.isCheck) {
+                            profile.isCheck = false;
+                            mAdapter.notifyDataSetChanged();
                             participantsMap.remove(userRef.getKey().toString());
                         } else {
-                            holder.isCheck = true;
-                            holder.checkBox.setChecked(holder.isCheck);
-                            participantsMap.put(userRef.getKey().toString(), true);
+                            profile.isCheck = true;
+                            mAdapter.notifyItemChanged(position);
+                            participantsMap.put(userRef.getKey().toString(), false);
                         }
+
                     }
 
                 });
@@ -166,6 +151,11 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
         if (mAdapter != null) {
             mAdapter.startListening();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
