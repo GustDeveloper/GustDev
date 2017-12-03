@@ -82,7 +82,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        app:srcCompat="@drawable/calendar_check"
+                        app:srcCompat="@drawable/formattitle"
                         android:contentDescription="@string/contentDescription"/>
 
                     <TextView
@@ -409,6 +409,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     app:srcCompat="@drawable/ic_location_on_black" />
 
 
@@ -420,41 +422,25 @@
                     android:layout_toRightOf="@+id/locationIcon"
                     android:layout_centerVertical="true"
                     android:ellipsize="end"
-                    android:text="@string/locationTitle"
+                    android:text="Area"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
 
                 <EditText
                     android:id="@+id/locationEditText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_toEndOf="@+id/locationTitle"
-                    android:layout_toLeftOf="@+id/chkLocation"
                     android:layout_toRightOf="@+id/locationTitle"
-                    android:layout_toStartOf="@+id/chkLocation"
+
                     android:enabled="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#212121" />
 
-                <ToggleButton
-                    android:id="@+id/chkLocation"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/toggle_selector"
-                    android:checked="true"
-                    android:padding="6dp"
-                    android:textOff=""
-                    android:textOn=""
-                    android:visibility="invisible"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -465,10 +451,15 @@
             android:padding="3dp"
             android:layout_margin="8dp"
             app:cardCornerRadius="4dp">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="38dp"
                 android:padding="16dp">
+
                 <ImageView
                     android:id="@+id/hobbiesIcon"
                     android:layout_width="wrap_content"
@@ -476,16 +467,16 @@
 
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    app:srcCompat="@drawable/ic_favorite_black"
-                    android:contentDescription="@string/contentDescription"/>
+                    android:contentDescription="@string/contentDescription"
+                    app:srcCompat="@drawable/ic_favorite_black" />
 
                 <TextView
                     android:id="@+id/hobbiesTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_above="@+id/tagcontainerLayout"
                     android:layout_toEndOf="@+id/hobbiesIcon"
                     android:layout_toRightOf="@+id/hobbiesIcon"
-                    android:layout_above="@+id/tagcontainerLayout"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="Topics"
@@ -494,30 +485,28 @@
 
                 <co.lujun.androidtagview.TagContainerLayout
                     android:id="@+id/tagcontainerLayout"
-                    android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
                     android:layout_below="@+id/hobbiesIcon"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="15dp"
                     android:padding="10dp"
+                    app:container_background_color="@color/transparent"
                     app:container_border_color="@color/transparent"
                     app:container_enable_drag="true"
-                    app:container_background_color="@color/transparent"
                     app:horizontal_interval="10dp"
-                    app:vertical_interval="10dp"
                     app:tag_clickable="true"
-                    app:tag_theme="random"
-                    app:tag_ripple_duration="2000"
                     app:tag_ripple_alpha="47"
-                    />
+                    app:tag_ripple_duration="2000"
+                    app:tag_theme="random"
+                    app:vertical_interval="10dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_below="@+id/tagcontainerLayout"
-                    android:weightSum="1"
-                    >
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
                     <EditText
                         android:id="@+id/tagEditText"
@@ -536,6 +525,51 @@
 
             </RelativeLayout>
 
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="4dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+                <ImageView
+                    android:id="@+id/eventImageIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/eventimage"
+                    android:contentDescription="@string/contentDescription"/>
+
+                <TextView
+                    android:id="@+id/eventImageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/eventImageIcon"
+                    android:layout_toRightOf="@+id/eventImageIcon"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Image"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+
+                <ImageView
+                    android:id="@+id/eventImage"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_below="@+id/eventImageTitle"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/eventimage"
+                    android:contentDescription="@string/contentDescription"/>
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

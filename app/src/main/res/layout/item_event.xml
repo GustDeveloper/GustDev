@@ -50,6 +50,7 @@
         </LinearLayout>
 
         <include layout="@layout/include_event_text"
+            android:id="@+id/include_event_text_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -57,6 +58,15 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp" />
 
+        <ImageView
+            android:id="@+id/event_photo"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/include_event_text_id"
+            android:scaleType="centerCrop"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="10dp" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

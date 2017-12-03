@@ -20,11 +20,11 @@ public class Event {
     public String status;
     public String phone;
     public String email;
+    public String image;
     public Map<String, Boolean> tags = new HashMap<>();
     public Map<String, Boolean> participants = new HashMap<>();
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
-
     public Event() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
@@ -69,6 +69,7 @@ public class Event {
         this.starCount = 0;
         this.email = "";
         this.phone = "";
+        this.image = "";
     }
 
     // [START post_to_map]
@@ -89,6 +90,7 @@ public class Event {
         result.put("status", status);
         result.put("starCount", starCount);
         result.put("stars", stars);
+        result.put("image", image);
         return result;
     }
     // [END post_to_map]

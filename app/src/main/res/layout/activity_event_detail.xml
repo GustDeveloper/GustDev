@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/card_album_radius"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -34,292 +34,388 @@
     <LinearLayout
         android:id="@+id/details_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/event_text_layout"
-        android:layout_marginTop="20dp">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/event_author_layout"
+        android:orientation="vertical">
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:layout_margin="8dp">
+            android:layout_height="450dp"
+            android:layout_margin="0dp"
+            android:alpha="0.85"
+            android:padding="3dp">
 
-            <RelativeLayout
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <ImageView
-                    android:id="@+id/titleIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    app:srcCompat="@drawable/hamburger" />
-
-                <TextView
-                    android:id="@+id/titleTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_alignBottom="@+id/titleIcon"
-                    android:layout_toEndOf="@+id/titleIcon"
-                    android:layout_toRightOf="@+id/titleIcon"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/event_title"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="#727272" />
-
-                <TextView
-                    android:id="@+id/event_title_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/titleIcon"
-                    android:layout_marginLeft="29dp"
-                    android:layout_marginStart="29dp"
-                    android:layout_toEndOf="@+id/descriptionTitle"
-                    android:layout_toRightOf="@+id/descriptionTitle"
-                    tools:text = "Something"/>
-
-                <ImageView
-                    android:id="@+id/hostIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/titleIcon"
-                    android:layout_marginTop="24dp"
-                    app:srcCompat="@drawable/calendar_check" />
-
-                <TextView
-                    android:id="@+id/hostTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignBottom="@+id/hostIcon"
-                    android:layout_alignLeft="@+id/titleTitle"
-                    android:text="Host"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="#727272" />
-
-                <TextView
-                    android:id="@+id/event_host"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/hostTitle"
-                    android:layout_alignBottom="@+id/hostTitle"
-                    android:layout_alignLeft="@+id/event_title_title"
-                    android:layout_alignStart="@+id/event_title_title"
-                    tools:text = "Something"/>
-
-                <ImageView
-                    android:id="@+id/dateIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/hostIcon"
-                    android:layout_marginTop="24dp"
-                    app:srcCompat="@drawable/calendar_check" />
-
-                <TextView
-                    android:id="@+id/dateTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignBottom="@+id/dateIcon"
-                    android:layout_alignLeft="@+id/hostTitle"
-                    android:text="@string/title_event_date"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="#727272" />
-
-                <TextView
-                    android:id="@+id/event_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/dateTitle"
-                    android:layout_alignBottom="@+id/dateTitle"
-                    android:layout_alignLeft="@+id/event_title_title"
-                    android:layout_alignStart="@+id/event_title_title"
-                    tools:text = "Something"/>
-
-                <ImageView
-                    android:id="@+id/timeIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/dateIcon"
-                    android:layout_marginTop="24dp"
-                    app:srcCompat="@drawable/av_timer" />
-
-                <TextView
-                    android:id="@+id/timeTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/timeIcon"
-                    android:layout_alignLeft="@+id/dateTitle"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/title_event_time"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="#727272"
-                     />
-
-                <TextView
-                    android:id="@+id/event_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/timeTitle"
-                    android:layout_alignBottom="@+id/timeTitle"
-                    android:layout_alignLeft="@+id/event_date"
-                    android:layout_alignStart="@+id/event_date"
-                    tools:text = "Something"/>
-
-                <ImageView
-                    android:id="@+id/locationIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/timeIcon"
-                    android:layout_marginTop="24dp"
-                    app:srcCompat="@drawable/ic_location_on_black" />
-
-                <TextView
-                    android:id="@+id/locationTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignBottom="@+id/locationIcon"
-                    android:layout_alignLeft="@+id/timeTitle"
-                    android:text="@string/locationTitle"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="#727272" />
-
-                <TextView
-                    android:id="@+id/event_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/locationTitle"
-                    android:layout_alignBottom="@+id/locationTitle"
-                    android:layout_alignLeft="@+id/event_time"
-                    android:layout_alignStart="@+id/event_time"
-                    tools:text = "Something"/>
-
-                <ImageView
-                    android:id="@+id/hobbiesIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/descriptionIcon"
-                    android:layout_marginTop="24dp"
-                    app:srcCompat="@drawable/ic_favorite_black"
-                    android:contentDescription="@string/contentDescription"/>
-
-                <TextView
-                    android:id="@+id/hobbiesTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/hobbiesIcon"
-                    android:layout_alignLeft="@+id/timeTitle"
-                    android:layout_above="@+id/tagcontainerLayout"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Topics"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="#727272" />
-
-                <co.lujun.androidtagview.TagContainerLayout
-                    android:id="@+id/tagcontainerLayout"
-                    android:layout_marginTop="15dp"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
-                    android:layout_below="@+id/hobbiesIcon"
-                    android:padding="10dp"
-                    app:container_border_color="@color/transparent"
-                    app:container_enable_drag="true"
-                    app:container_background_color="@color/transparent"
-                    app:horizontal_interval="10dp"
-                    app:vertical_interval="10dp"
-                    app:tag_clickable="true"
-                    app:tag_theme="random"
-                    app:tag_ripple_duration="2000"
-                    app:tag_ripple_alpha="47"
-                    />
+                    android:orientation="vertical" >
 
-                <ImageView
-                    android:id="@+id/descriptionIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/locationIcon"
-                    android:layout_marginTop="24dp"
-                    app:srcCompat="@drawable/description" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/descriptionTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                        <ImageView
+                            android:id="@+id/titleIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            app:srcCompat="@drawable/hamburger" />
 
-                    android:layout_alignBottom="@+id/descriptionIcon"
-                    android:layout_alignLeft="@+id/timeTitle"
-                    android:text="@string/descriptionTitle"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="#727272" />
+                        <TextView
+                            android:id="@+id/titleTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/titleIcon"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_toEndOf="@+id/titleIcon"
+                            android:layout_toRightOf="@+id/titleIcon"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/event_title"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
 
-                <TextView
-                    android:id="@+id/descriptionView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/descriptionTitle"
-                    android:layout_alignBottom="@+id/descriptionTitle"
-                    android:layout_alignLeft="@+id/event_location"
-                    android:layout_alignStart="@+id/event_location"
-                    tools:text = "Something"/>
+                        <TextView
+                            android:id="@+id/event_title_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/titleIcon"
+                            android:layout_marginLeft="29dp"
+                            android:layout_marginStart="29dp"
+                            android:layout_toEndOf="@+id/descriptionTitle"
+                            android:layout_toRightOf="@+id/descriptionTitle"
+                            tools:text="Something" />
+
+                        <ImageView
+                            android:id="@+id/hostIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/titleIcon"
+                            android:layout_marginTop="24dp"
+                            app:srcCompat="@drawable/ic_action_account" />
+
+                        <TextView
+                            android:id="@+id/hostTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_alignBottom="@+id/hostIcon"
+                            android:layout_alignLeft="@+id/titleTitle"
+                            android:text="Host"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+
+                        <TextView
+                            android:id="@+id/event_host"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/hostTitle"
+                            android:layout_alignBottom="@+id/hostTitle"
+                            android:layout_alignLeft="@+id/event_title_title"
+                            android:layout_alignStart="@+id/event_title_title"
+                            tools:text="Something" />
+
+                        <ImageView
+                            android:id="@+id/dateIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/hostIcon"
+                            android:layout_marginTop="24dp"
+                            app:srcCompat="@drawable/calendar_check" />
+
+                        <TextView
+                            android:id="@+id/dateTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_alignBottom="@+id/dateIcon"
+                            android:layout_alignLeft="@+id/hostTitle"
+                            android:text="@string/title_event_date"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+
+                        <TextView
+                            android:id="@+id/event_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/dateTitle"
+                            android:layout_alignBottom="@+id/dateTitle"
+                            android:layout_alignLeft="@+id/event_title_title"
+                            android:layout_alignStart="@+id/event_title_title"
+                            tools:text="Something" />
+
+                        <ImageView
+                            android:id="@+id/timeIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/dateIcon"
+                            android:layout_marginTop="24dp"
+                            app:srcCompat="@drawable/av_timer" />
+
+                        <TextView
+                            android:id="@+id/timeTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/timeIcon"
+                            android:layout_alignLeft="@+id/dateTitle"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/title_event_time"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+
+                        <TextView
+                            android:id="@+id/event_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/timeTitle"
+                            android:layout_alignBottom="@+id/timeTitle"
+                            android:layout_alignLeft="@+id/event_date"
+                            android:layout_alignStart="@+id/event_date"
+                            tools:text="Something" />
+
+                        <ImageView
+                            android:id="@+id/locationIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/timeIcon"
+                            android:layout_marginTop="24dp"
+                            app:srcCompat="@drawable/ic_location_on_black" />
+
+                        <TextView
+                            android:id="@+id/locationTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_alignBottom="@+id/locationIcon"
+                            android:layout_alignLeft="@+id/timeTitle"
+                            android:text="@string/locationTitle"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+
+                        <TextView
+                            android:id="@+id/event_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/locationTitle"
+                            android:layout_alignBottom="@+id/locationTitle"
+                            android:layout_alignLeft="@+id/event_time"
+                            android:layout_alignStart="@+id/event_time"
+                            tools:text="Something" />
+
+                        <ImageView
+                            android:id="@+id/hobbiesIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/descriptionIcon"
+                            android:layout_marginTop="24dp"
+                            android:contentDescription="@string/contentDescription"
+                            app:srcCompat="@drawable/ic_favorite_black" />
+
+                        <TextView
+                            android:id="@+id/hobbiesTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/tagcontainerLayout"
+                            android:layout_alignBottom="@+id/hobbiesIcon"
+                            android:layout_alignLeft="@+id/timeTitle"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Topics"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+
+                        <co.lujun.androidtagview.TagContainerLayout
+                            android:id="@+id/tagcontainerLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/hobbiesIcon"
+                            android:layout_margin="0dp"
+                            android:layout_marginTop="15dp"
+                            android:padding="10dp"
+                            app:container_background_color="@color/transparent"
+                            app:container_border_color="@color/transparent"
+                            app:container_enable_drag="true"
+                            app:horizontal_interval="10dp"
+                            app:tag_clickable="true"
+                            app:tag_ripple_alpha="47"
+                            app:tag_ripple_duration="2000"
+                            app:tag_theme="random"
+                            app:vertical_interval="10dp" />
+
+                        <ImageView
+                            android:id="@+id/participantsIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tagcontainerLayout"
+                            android:layout_marginTop="8dp"
+                            android:contentDescription="@string/contentDescription"
+                            app:srcCompat="@drawable/participants" />
+
+                        <TextView
+                            android:id="@+id/participantsTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/participantscontainerLayout"
+                            android:layout_alignLeft="@+id/hobbiesTitle"
+                            android:layout_alignStart="@+id/hobbiesTitle"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/participants"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+
+                        <co.lujun.androidtagview.TagContainerLayout
+                            android:id="@+id/participantscontainerLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/participantsIcon"
+                            android:layout_margin="0dp"
+                            android:layout_marginTop="15dp"
+                            android:padding="10dp"
+                            app:container_background_color="@color/transparent"
+                            app:container_border_color="@color/transparent"
+                            app:container_enable_drag="true"
+                            app:horizontal_interval="10dp"
+                            app:tag_clickable="true"
+                            app:tag_ripple_alpha="47"
+                            app:tag_ripple_duration="2000"
+                            app:tag_theme="random"
+                            app:vertical_interval="10dp" />
+
+                        <ImageView
+                            android:id="@+id/descriptionIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/locationIcon"
+                            android:layout_marginTop="24dp"
+                            app:srcCompat="@drawable/description" />
+
+                        <TextView
+                            android:id="@+id/descriptionTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_alignBottom="@+id/descriptionIcon"
+                            android:layout_alignLeft="@+id/timeTitle"
+                            android:text="@string/descriptionTitle"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+
+                        <TextView
+                            android:id="@+id/descriptionView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/descriptionTitle"
+                            android:layout_alignBottom="@+id/descriptionTitle"
+                            android:layout_alignLeft="@+id/event_location"
+                            android:layout_alignStart="@+id/event_location"
+                            tools:text="Something" />
+
+                        <Button
+                            android:id="@+id/event_quit"
+                            style="@style/Widget.AppCompat.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+                            android:layout_below="@+id/participantscontainerLayout"
+                            android:backgroundTint="@color/colorPrimaryDark"
+                            android:layout_marginLeft="20dp"
+                            android:text="QUIT"
+                            android:textColor="#ffffff" />
+
+                        <Button
+                            android:id="@+id/event_join"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+
+                            android:layout_below="@+id/participantscontainerLayout"
+                            android:layout_marginRight="20dp"
+                            android:backgroundTint="@color/colorPrimaryDark"
+                            android:text="JOIN"
+                            android:textColor="#ffffff" />
 
 
+                    </RelativeLayout>
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:layout_marginLeft="22dp"
+                        android:layout_weight="1"
+                        android:text="Comment:"
+                        android:textColor="#000000" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="0dp"
+                        tools:listitem="@layout/item_comment" />
+                </LinearLayout>
+
+            </android.support.v4.widget.NestedScrollView>
 
         </android.support.v7.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:alpha="0.9"
+            android:background="@color/colorbar"
+            android:layout_marginBottom="0dp"
+            android:layout_margin="0dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/field_comment_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.85"
+                android:alpha="1"
+                android:hint="Write a comment..."
+                android:maxLines="1" />
+
+            <Button
+                android:id="@+id/button_event_comment"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:background="@color/colorPrimaryDark"
+                android:text="SEND"
+                android:textColor="@color/colorbar" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/comment_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/details_list"
-        android:layout_marginTop="20dp"
-        android:weightSum="1.0">
 
-        <EditText
-            android:id="@+id/field_comment_text"
-            android:layout_width="0dp"
-            android:layout_weight="0.8"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:hint="Write a comment..."/>
-
-        <Button
-            android:id="@+id/button_event_comment"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:text="SEND" />
-
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_comments"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/comment_form"
-        tools:listitem="@layout/item_comment" />
 
 </RelativeLayout>

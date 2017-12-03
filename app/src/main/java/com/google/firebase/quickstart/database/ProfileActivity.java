@@ -40,6 +40,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -85,7 +87,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     String description;
 
     String image;
-    List<String> hobbies;
+    List<String> hobbies = new ArrayList<>();
 
     CollapsingToolbarLayout collapsingToolbarLayout;
 
@@ -153,12 +155,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
         profileImageView.setOnClickListener(this);
 
-        mTagContainerLayout = findViewById(R.id.tagcontainerLayout);
+        mTagContainerLayout = findViewById(R.id.tagcontainerLayoutProfile);
         mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
-                toastMessage = "Please do not cross click buttons";
-                UtilToast.showToast(ProfileActivity.this, toastMessage);
             }
 
             @Override
@@ -172,6 +172,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                                 if (position < mTagContainerLayout.getChildCount()) {
                                     mTagContainerLayout.removeTag(position);
                                 }
+
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -193,10 +194,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         mTagContainerLayout.setBackgroundColor(ColorFactory.NONE);
         mTagContainerLayout.setTheme(ColorFactory.RANDOM);
 
-        tagEditText = findViewById(R.id.tagEditText);
+        tagEditText = findViewById(R.id.tagEditTextProfile);
         tagEditText.setVisibility(View.INVISIBLE);
 
-        addTagBtn = findViewById(R.id.addTagButton);
+        addTagBtn = findViewById(R.id.addTagButtonProfile);
         addTagBtn.setVisibility(View.INVISIBLE);
         addTagBtn.setOnClickListener(this);
         /*
@@ -208,6 +209,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 mTagContainerLayout.addTag(newHobby);
                 Log.e(TAG, hobbies.toString());
                 tagRef.setValue(hobbies, new DatabaseReference.CompletionListener() {
+                    @Override
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                         if (databaseError != null) {
@@ -236,13 +238,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
 
         collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-
+        collapsingToolbarLayout.setTitle("");
         nicknameEditText = findViewById(R.id.nicknameEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
         locationEditText = findViewById(R.id.locationEditText);
         birthdayEditText = findViewById(R.id.birthdayEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
-        descriptionEditText.setText("I am a foodie and I love hanging out with people");
+        descriptionEditText.setText("");
 
         profileRef = mDatabase.child("profiles").child(intentUserID);
         imgRef = profileRef.child("image");
@@ -269,8 +271,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             case R.id.messageFab:
                 final String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 final DatabaseReference userhash = mDatabase.child("user-user");
+                final String infoKey =intentUserID;
                 // determine if the user-user pair exist
-                /*
                 Log.d("Chat","Success");
 
                 userhash.child(Uid).addListenerForSingleValueEvent(new ValueEventListener(){
@@ -283,9 +285,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                             if (peopleSnapshot.getKey().equals(infoKey)) {
                                 Create = false;
                                 Log.d("ChatChat", peopleSnapshot.getValue().toString());
-                                Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
+                                Intent chatActivity = new Intent(getApplicationContext() , ChatActivity.class);
                                 chatActivity.putExtra("Path","/chat-room/" + peopleSnapshot.getValue().toString());
-                                chatActivity.putExtra("ReceiverName", model.username);
+                                chatActivity.putExtra("ReceiverName", profile.username);
                                 chatActivity.putExtra("receiver",infoKey);
                                 startActivity(chatActivity);
                             }
@@ -297,10 +299,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                             childUpdates.put("/user-user/" + Uid + "/" + infoKey, roomkey);
                             childUpdates.put("/user-user/" + infoKey + "/" + Uid, roomkey);
                             mDatabase.updateChildren(childUpdates);
-                            Intent chatActivity = new Intent(getActivity(), ChatActivity.class);
+                            Intent chatActivity = new Intent(getApplicationContext() , ChatActivity.class);
                             chatActivity.putExtra("Path", "/chat-room/" + roomkey);
                             chatActivity.putExtra("receiver",infoKey);
-                            chatActivity.putExtra("ReceiverName", model.username);
+                            chatActivity.putExtra("ReceiverName", profile.username);
                             startActivity(chatActivity);
                         }
                     }
@@ -308,9 +310,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-                */
+
                 break;
-            case R.id.addTagBtn:
+            case R.id.addTagButtonProfile:
                 String newHobby = tagEditText.getText().toString();
                 hobbies.add(newHobby);
                 mTagContainerLayout.addTag(newHobby);
@@ -644,7 +646,14 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 birthday = (String) profileMap.get("birthday");
                 image = (String) profileMap.get("image");
                 description = (String) profileMap.get("description");
-                hobbies  = (List)profileMap.get("hobbies");
+
+                if (profileMap.get("hobbies") != null) {
+                    hobbies  = (List)profileMap.get("hobbies");
+                    hobbies.removeAll(Collections.singleton(null));
+                    hobbies.removeAll(Arrays.asList("", null));
+                    mTagContainerLayout.setTags(hobbies);
+                }
+
 
                 if (validateString(nickname)) {
                     nicknameEditText.setText(nickname);
@@ -675,7 +684,11 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
                 if (hobbies != null) {
                     hobbies.removeAll(Collections.singleton(null)); //Time complexity is n^2, not the best implementation
+                    hobbies.removeAll(Arrays.asList("", null));
                     mTagContainerLayout.setTags(hobbies);
+                } else {
+
+                    Log.e(TAG, "null");
                 }
 
             }

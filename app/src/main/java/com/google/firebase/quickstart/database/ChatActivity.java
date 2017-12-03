@@ -336,7 +336,6 @@ public class ChatActivity extends BaseActivity {
                     Log.d("ChatService", "NULL");
                 }
             }
-
         }
 
         @Override
