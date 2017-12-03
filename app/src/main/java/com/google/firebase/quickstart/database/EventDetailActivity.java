@@ -21,13 +21,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.models.Comment;
 import com.google.firebase.quickstart.database.models.Event;
+import com.google.firebase.quickstart.database.models.Profile;
 import com.google.firebase.quickstart.database.models.User;
 import com.google.firebase.quickstart.database.models.UtilToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import co.lujun.androidtagview.TagContainerLayout;
 
@@ -41,6 +45,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
     public static final String EXTRA_EVENT_KEY = "event_key";
 
     private DatabaseReference mEventReference;
+    private DatabaseReference mProfileReference;
     private DatabaseReference mCommentsReference;
     private ValueEventListener mEventListener;
     private String mEventKey;
@@ -58,6 +63,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
     private Button mEventJoinButton;
     private RecyclerView mCommentsRecycler;
     private TagContainerLayout mTagContainerLayout;
+    private TagContainerLayout mParticipantsContainerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +80,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         // Initialize Database
         mEventReference = FirebaseDatabase.getInstance().getReference()
                 .child("events").child(mEventKey);
+        mProfileReference = FirebaseDatabase.getInstance().getReference().child("profiles");
         mCommentsReference = FirebaseDatabase.getInstance().getReference()
                 .child("event-comments").child(mEventKey);
 
@@ -89,6 +96,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         mCommentButton = findViewById(R.id.button_event_comment);
         mCommentsRecycler = findViewById(R.id.recycler_comments);
         mTagContainerLayout = findViewById(R.id.tagcontainerLayout);
+        mParticipantsContainerLayout = findViewById(R.id.participantscontainerLayout);
         mEventJoinButton = findViewById(R.id.event_join);
 
         mEventJoinButton.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +123,8 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
 
         // Add value event listener to the post
         // [START post_value_event_listener]
+
+
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -123,6 +133,26 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
                 Event event = dataSnapshot.getValue(Event.class);
                 // [START_EXCLUDE]
                 List<String> tags  = new ArrayList<>(event.tags.keySet());
+                Set<String> participants  = new HashSet<>(event.participants.keySet());
+                List<String> nicknames  = new LinkedList<>();
+
+                mProfileReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snap: dataSnapshot.getChildren()) {
+                            if(participants.contains(snap.getKey())){
+                                Profile p = snap.getValue(Profile.class);
+                                nicknames.add(p.nickname);
+                            }
+                        }
+                        mParticipantsContainerLayout.setTags(nicknames);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 mAuthorView.setText(event.author);
                 mTitleView.setText(event.title);
                 mDescriptionView.setText(event.description);

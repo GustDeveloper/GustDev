@@ -103,7 +103,7 @@
                             android:layout_alignParentStart="true"
                             android:layout_below="@+id/titleIcon"
                             android:layout_marginTop="24dp"
-                            app:srcCompat="@drawable/calendar_check" />
+                            app:srcCompat="@drawable/ic_action_account" />
 
                         <TextView
                             android:id="@+id/hostTitle"
@@ -261,6 +261,46 @@
                             app:vertical_interval="10dp" />
 
                         <ImageView
+                            android:id="@+id/participantsIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tagcontainerLayout"
+                            android:layout_marginTop="8dp"
+                            android:contentDescription="@string/contentDescription"
+                            app:srcCompat="@drawable/participants" />
+
+                        <TextView
+                            android:id="@+id/participantsTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/participantscontainerLayout"
+                            android:layout_alignLeft="@+id/hobbiesTitle"
+                            android:layout_alignStart="@+id/hobbiesTitle"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/participants"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+
+                        <co.lujun.androidtagview.TagContainerLayout
+                            android:id="@+id/participantscontainerLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/participantsIcon"
+                            android:layout_margin="0dp"
+                            android:layout_marginTop="15dp"
+                            android:padding="10dp"
+                            app:container_background_color="@color/transparent"
+                            app:container_border_color="@color/transparent"
+                            app:container_enable_drag="true"
+                            app:horizontal_interval="10dp"
+                            app:tag_clickable="true"
+                            app:tag_ripple_alpha="47"
+                            app:tag_ripple_duration="2000"
+                            app:tag_theme="random"
+                            app:vertical_interval="10dp" />
+
+                        <ImageView
                             android:id="@+id/descriptionIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -297,7 +337,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
 
-                            android:layout_below="@+id/tagcontainerLayout"
+                            android:layout_below="@+id/participantscontainerLayout"
 
                             android:text="JOIN" />
 
@@ -309,7 +349,9 @@
                         android:id="@+id/recycler_comments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/comment_form"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="18dp"
                         tools:listitem="@layout/item_comment" />
                 </LinearLayout>
 
