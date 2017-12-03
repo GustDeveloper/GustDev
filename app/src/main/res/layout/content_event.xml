@@ -4,8 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/activity_horizontal_margin"
-    android:padding="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="0dp"
+    android:padding="0dp"
     tools:showIn="@layout/fragment_event"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
@@ -24,52 +24,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="3dp"
-            android:layout_margin="8dp">
+            android:layout_margin="3dp"
+            app:cardCornerRadius="4dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-                    <ImageView
-                        android:id="@+id/descriptionIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        app:srcCompat="@drawable/calendar_check"
-                        android:contentDescription="@string/contentDescription"/>
-
-                    <TextView
-                        android:id="@+id/descriptionTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/descriptionEditText"
-                        android:layout_alignBottom="@+id/descriptionEditText"
-                        android:layout_toEndOf="@+id/descriptionIcon"
-                        android:layout_toRightOf="@+id/descriptionIcon"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="@string/title_event_description"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#727272" />
-
-                    <EditText
-                        android:id="@+id/descriptionEditText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_toEndOf="@+id/descriptionTitle"
-                        android:layout_toRightOf="@+id/descriptionTitle"
-                        android:enabled="true"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="#121212" />
-                    >
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -111,6 +71,47 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="#121212" />
 >
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+                    <ImageView
+                        android:id="@+id/descriptionIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        app:srcCompat="@drawable/calendar_check"
+                        android:contentDescription="@string/contentDescription"/>
+
+                    <TextView
+                        android:id="@+id/descriptionTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/descriptionEditText"
+                        android:layout_alignBottom="@+id/descriptionEditText"
+                        android:layout_toEndOf="@+id/descriptionIcon"
+                        android:layout_toRightOf="@+id/descriptionIcon"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/title_event_description"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#727272" />
+
+                    <EditText
+                        android:id="@+id/descriptionEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_toEndOf="@+id/descriptionTitle"
+                        android:layout_toRightOf="@+id/descriptionTitle"
+                        android:enabled="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="#121212" />
+                    >
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -163,7 +164,10 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:padding="6dp"
+                        android:padding="3dp"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/colorbar"
                         android:text="Select"
                         />
                 </RelativeLayout>
@@ -222,6 +226,9 @@
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:padding="6dp"
                         android:text="Select"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/colorbar"
                         />
 
                 </RelativeLayout>
@@ -230,23 +237,14 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:layout_margin="8dp">
-
-
-        </android.support.v7.widget.CardView>
-
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/personalInfo"
             android:padding="3dp"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="4dp">
+            android:layout_margin="3dp"
+            app:cardCornerRadius="4dp"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -273,11 +271,9 @@
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/phoneIcon"
                         android:layout_toRightOf="@+id/phoneIcon"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="Phone"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#727272"
-                        android:text="Phone" />
+                        android:textColor="#727272" />
 
                     <EditText
                         android:id="@+id/phoneEditText"
@@ -286,9 +282,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:layout_toEndOf="@+id/phoneTitle"
-                        android:layout_toLeftOf="@+id/chkPhone"
                         android:layout_toRightOf="@+id/phoneTitle"
-                        android:layout_toStartOf="@+id/chkPhone"
                         android:enabled="true"
                         android:inputType="number"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -393,7 +387,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="3dp"
-            android:layout_margin="8dp"
+            android:layout_margin="3dp"
             app:cardCornerRadius="4dp">
 
             <RelativeLayout
@@ -449,7 +443,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="3dp"
-            android:layout_margin="8dp"
+            android:layout_margin="3dp"
             app:cardCornerRadius="4dp">
 
             <RelativeLayout
@@ -491,6 +485,7 @@
                     android:layout_margin="0dp"
                     android:layout_marginTop="15dp"
                     android:padding="10dp"
+                    android:paddingLeft="60dp"
                     app:container_background_color="@color/transparent"
                     app:container_border_color="@color/transparent"
                     app:container_enable_drag="true"
@@ -520,7 +515,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.25"
-                        android:text="add tag" />
+                        android:text="add tag"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/colorbar"/>
                 </LinearLayout>
 
             </RelativeLayout>
@@ -530,9 +528,9 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="4dp">
+            android:layout_margin="3dp"
+            app:cardCornerRadius="4dp"
+            >
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

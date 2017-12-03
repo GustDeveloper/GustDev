@@ -260,6 +260,7 @@
             app:vertical_interval="10dp"
             app:tag_clickable="true"
             app:tag_theme="random"
+            android:alpha="0.8"
             app:tag_ripple_duration="2000"
             app:tag_ripple_alpha="47"/>
 

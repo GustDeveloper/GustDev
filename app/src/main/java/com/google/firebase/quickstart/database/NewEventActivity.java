@@ -49,7 +49,7 @@ public class NewEventActivity extends BaseActivity implements EventFragment.Even
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-        setTitle("Create An Event");
+        setTitle("GUST.eat together");
 
         mPagerAdapter = new FragmentPagerAdapter(mFragmentManager) {
 

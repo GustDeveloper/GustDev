@@ -138,7 +138,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         setSupportActionBar(toolbar); //replace the old action bar with toolbar
 
         Intent intent = getIntent();
-        //isUser = intent.getBooleanExtra("isUser", true);
         intentUserID = intent.getStringExtra("intentUserID");
         Log.e(TAG, intentUserID);
 
@@ -200,28 +199,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         addTagBtn = findViewById(R.id.addTagButtonProfile);
         addTagBtn.setVisibility(View.INVISIBLE);
         addTagBtn.setOnClickListener(this);
-        /*
-        addTagBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newHobby = tagEditText.getText().toString();
-                hobbies.add(newHobby);
-                mTagContainerLayout.addTag(newHobby);
-                Log.e(TAG, hobbies.toString());
-                tagRef.setValue(hobbies, new DatabaseReference.CompletionListener() {
-                    @Override
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if (databaseError != null) {
-                            toastMessage = "Failed to add tags to the server";
-                            UtilToast.showToast(ProfileActivity.this, toastMessage);
-                        }
-                    }
-                });
-            }
-        });
-        */
-
 
         if (intentUserID.matches(userID)) {
             messageFab.setVisibility(View.INVISIBLE);
@@ -279,8 +256,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     public void onDataChange(DataSnapshot snapshot1) {
                         boolean Create = true;
                         for (DataSnapshot peopleSnapshot: snapshot1.getChildren()) {
-                            // TODO: handle the post
-                            // Log.d("ChatChat", peopleSnapshot.getKey());
 
                             if (peopleSnapshot.getKey().equals(infoKey)) {
                                 Create = false;

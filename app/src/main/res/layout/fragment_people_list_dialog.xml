@@ -15,6 +15,7 @@
         android:padding="10dp"
         android:scrollbars="vertical"
         android:layout_below="@+id/gustlogo"
+        android:alpha="0.9"
         tools:listitem="@layout/people_list_contact" />
 
     <android.support.design.widget.FloatingActionButton
@@ -30,6 +31,6 @@
         android:alpha="0.8"
         android:src="@drawable/content_save_settings"
         android:layout_gravity="bottom|right"
-        android:backgroundTint="@color/colorPrimary"/>
+        android:backgroundTint="@color/colorAccent"/>
 
 </FrameLayout>
