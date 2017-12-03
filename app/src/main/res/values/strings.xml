@@ -20,7 +20,7 @@
     <string name="heading_my_posts">My Posts</string>
     <string name="heading_my_top_posts">History Events</string>
     <string name="action_profile">Profile</string>
-    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile"></string>
     <string name="nicknameTitle">Nickname</string>
     <string name="title_activity_chat">chatActivity</string>
     <string name="birthdayTitle">Birthday</string>

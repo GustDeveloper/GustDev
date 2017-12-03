@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class PeopleListFragment extends android.support.v4.app.Fragment {
+public class PeopleListFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
 
     private static final String TAG = "PeopleListFrag";
 
@@ -44,11 +45,18 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
     private LinearLayoutManager mManager;
     private Map<String, Boolean> participantsMap = new HashMap<>();
     PeopleListFragmentCallback peopleListFragmentCallback;
+    private FloatingActionButton saveFab;
 
     public PeopleListFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view == saveFab) {
+            peopleListFragmentCallback.invitePeopleToEvent(participantsMap);
+        }
+    }
 
     public interface PeopleListFragmentCallback{
         void invitePeopleToEvent(Map<String,Boolean> participantsMap);
@@ -79,6 +87,8 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mRecycler = rootView.findViewById(R.id.people_recyclerList);
         mRecycler.setHasFixedSize(true);
+        saveFab = rootView.findViewById(R.id.saveFabFrag);
+        saveFab.setOnClickListener(this);
         return rootView;
     }
 
@@ -110,6 +120,7 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
             protected void onBindViewHolder(final PeopleListViewHolder holder, final int position, final Profile profile) {
                 final DatabaseReference userRef = getRef(position);
 
+                /*
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View view){
@@ -117,6 +128,7 @@ public class PeopleListFragment extends android.support.v4.app.Fragment {
                         return true;
                     }
                 });
+                */
 
                 holder.itemView.setOnClickListener((view)-> {
                     Intent profileActivity = new Intent(getContext(),ProfileActivity.class);

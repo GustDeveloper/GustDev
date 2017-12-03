@@ -40,6 +40,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -85,7 +86,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     String description;
 
     String image;
-    List<String> hobbies;
+    List<String> hobbies = new ArrayList<>();
 
     CollapsingToolbarLayout collapsingToolbarLayout;
 
@@ -153,7 +154,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
         profileImageView.setOnClickListener(this);
 
-        mTagContainerLayout = findViewById(R.id.tagcontainerLayout);
+        mTagContainerLayout = findViewById(R.id.tagcontainerLayoutProfile);
         mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
@@ -193,10 +194,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         mTagContainerLayout.setBackgroundColor(ColorFactory.NONE);
         mTagContainerLayout.setTheme(ColorFactory.RANDOM);
 
-        tagEditText = findViewById(R.id.tagEditText);
+        tagEditText = findViewById(R.id.tagEditTextProfile);
         tagEditText.setVisibility(View.INVISIBLE);
 
-        addTagBtn = findViewById(R.id.addTagButton);
+        addTagBtn = findViewById(R.id.addTagButtonProfile);
         addTagBtn.setVisibility(View.INVISIBLE);
         addTagBtn.setOnClickListener(this);
         /*
@@ -208,6 +209,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 mTagContainerLayout.addTag(newHobby);
                 Log.e(TAG, hobbies.toString());
                 tagRef.setValue(hobbies, new DatabaseReference.CompletionListener() {
+                    @Override
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                         if (databaseError != null) {
@@ -236,7 +238,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
 
         collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-
+        collapsingToolbarLayout.setTitle("");
         nicknameEditText = findViewById(R.id.nicknameEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
         locationEditText = findViewById(R.id.locationEditText);
@@ -310,7 +312,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 });
                 */
                 break;
-            case R.id.addTagBtn:
+            case R.id.addTagButtonProfile:
                 String newHobby = tagEditText.getText().toString();
                 hobbies.add(newHobby);
                 mTagContainerLayout.addTag(newHobby);
@@ -646,7 +648,11 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 birthday = (String) profileMap.get("birthday");
                 image = (String) profileMap.get("image");
                 description = (String) profileMap.get("description");
-                hobbies  = (List)profileMap.get("hobbies");
+
+                if (profileMap.get("hobbies") != null) {
+                    hobbies  = (List)profileMap.get("hobbies");
+                }
+
 
                 if (validateString(nickname)) {
                     nicknameEditText.setText(nickname);
@@ -678,6 +684,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 if (hobbies != null) {
                     hobbies.removeAll(Collections.singleton(null)); //Time complexity is n^2, not the best implementation
                     mTagContainerLayout.setTags(hobbies);
+                } else {
+
+                    Log.e(TAG, "null");
                 }
 
             }

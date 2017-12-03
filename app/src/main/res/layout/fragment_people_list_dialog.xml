@@ -17,4 +17,19 @@
         android:layout_below="@+id/gustlogo"
         tools:listitem="@layout/people_list_contact" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/saveFabFrag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="19dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:alpha="0.8"
+        android:src="@drawable/content_save_settings"
+        android:layout_gravity="bottom|right"
+        android:backgroundTint="@color/colorPrimary"/>
+
 </FrameLayout>

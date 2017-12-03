@@ -307,7 +307,7 @@
         </RelativeLayout>
 
         <co.lujun.androidtagview.TagContainerLayout
-            android:id="@+id/tagcontainerLayout"
+            android:id="@+id/tagcontainerLayoutProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
@@ -329,14 +329,14 @@
             >
 
             <EditText
-                android:id="@+id/tagEditText"
+                android:id="@+id/tagEditTextProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.75"
                 android:singleLine="true" />
 
             <Button
-                android:id="@+id/addTagButton"
+                android:id="@+id/addTagButtonProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
