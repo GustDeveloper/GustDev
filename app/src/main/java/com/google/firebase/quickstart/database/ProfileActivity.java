@@ -271,8 +271,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             case R.id.messageFab:
                 final String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 final DatabaseReference userhash = mDatabase.child("user-user");
+                final String infoKey =intentUserID;
                 // determine if the user-user pair exist
-                /*
                 Log.d("Chat","Success");
 
                 userhash.child(Uid).addListenerForSingleValueEvent(new ValueEventListener(){
@@ -285,9 +285,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                             if (peopleSnapshot.getKey().equals(infoKey)) {
                                 Create = false;
                                 Log.d("ChatChat", peopleSnapshot.getValue().toString());
-                                Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
+                                Intent chatActivity = new Intent(getApplicationContext() , ChatActivity.class);
                                 chatActivity.putExtra("Path","/chat-room/" + peopleSnapshot.getValue().toString());
-                                chatActivity.putExtra("ReceiverName", model.username);
+                                chatActivity.putExtra("ReceiverName", profile.username);
                                 chatActivity.putExtra("receiver",infoKey);
                                 startActivity(chatActivity);
                             }
@@ -299,10 +299,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                             childUpdates.put("/user-user/" + Uid + "/" + infoKey, roomkey);
                             childUpdates.put("/user-user/" + infoKey + "/" + Uid, roomkey);
                             mDatabase.updateChildren(childUpdates);
-                            Intent chatActivity = new Intent(getActivity(), ChatActivity.class);
+                            Intent chatActivity = new Intent(getApplicationContext() , ChatActivity.class);
                             chatActivity.putExtra("Path", "/chat-room/" + roomkey);
                             chatActivity.putExtra("receiver",infoKey);
-                            chatActivity.putExtra("ReceiverName", model.username);
+                            chatActivity.putExtra("ReceiverName", profile.username);
                             startActivity(chatActivity);
                         }
                     }
@@ -310,7 +310,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-                */
+
                 break;
             case R.id.addTagButtonProfile:
                 String newHobby = tagEditText.getText().toString();

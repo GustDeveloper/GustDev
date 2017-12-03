@@ -100,7 +100,6 @@ public class RecentEventsFragment extends Fragment {
                 .build();
 
         mAdapter = new FirebaseRecyclerAdapter<Event, EventViewHolder>(options) {
-
             @Override
             public EventViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -110,7 +109,6 @@ public class RecentEventsFragment extends Fragment {
             @Override
             protected void onBindViewHolder(EventViewHolder viewHolder, int position, final Event model) {
                 final DatabaseReference eventRef = getRef(position);
-
                 // Set click listener for the whole post view
                 final String eventKey = eventRef.getKey();
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

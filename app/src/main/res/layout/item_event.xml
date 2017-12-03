@@ -60,11 +60,12 @@
 
         <ImageView
             android:id="@+id/event_photo"
-            android:layout_width="340dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/include_event_text_id"
-            android:layout_marginLeft="5dp"
+            android:scaleType="centerCrop"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="10dp" />
     </RelativeLayout>
 

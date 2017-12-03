@@ -61,9 +61,11 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
     private EditText mCommentField;
     private Button mCommentButton;
     private Button mEventJoinButton;
+    private Button mEventQuitButton;
     private RecyclerView mCommentsRecycler;
     private TagContainerLayout mTagContainerLayout;
     private TagContainerLayout mParticipantsContainerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         mLocationView = findViewById(R.id.event_location);
         mCommentField = findViewById(R.id.field_comment_text);
         mCommentButton = findViewById(R.id.button_event_comment);
+        mEventQuitButton =  findViewById(R.id.event_quit);
         mCommentsRecycler = findViewById(R.id.recycler_comments);
         mTagContainerLayout = findViewById(R.id.tagcontainerLayout);
         mParticipantsContainerLayout = findViewById(R.id.participantscontainerLayout);
@@ -108,7 +111,21 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
                 childUpdate.put("/participants/" + uid, true);
                 // Keep copy of post listener so we can remove it when app stops
                 mEventReference.updateChildren(childUpdate);
-                UtilToast.showToast(getApplicationContext(),"Just join the event!");
+                UtilToast.showToast(getApplicationContext(),"Just joined the event!");
+            }
+        });
+
+        mEventQuitButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> childUpdate = new HashMap<>();
+                String uid = getUid();
+                //childUpdate.put("/events/" + mEventKey + "/participants/" + uid, true);
+                childUpdate.put("/participants/" + uid, false);
+                // Keep copy of post listener so we can remove it when app stops
+                mEventReference.updateChildren(childUpdate);
+                UtilToast.showToast(getApplicationContext(),"Just cancelled the event!");
             }
         });
 
@@ -128,8 +145,6 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-//                Post post = dataSnapshot.getValue(Post.class);
                 Event event = dataSnapshot.getValue(Event.class);
                 // [START_EXCLUDE]
                 List<String> tags  = new ArrayList<>(event.tags.keySet());
