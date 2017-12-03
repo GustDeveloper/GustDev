@@ -25,7 +25,6 @@ public class Event {
     public Map<String, Boolean> participants = new HashMap<>();
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
-    public String image;
     public Event() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
