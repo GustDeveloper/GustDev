@@ -343,7 +343,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         switch (menuItem.getItemId()){
             case R.id.action_camera:
                 //do stuff
-                Log.e(TAG, "You clicked camera");
                 if (hasCamera()) {
                     if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                             checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
@@ -355,7 +354,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
                 return true;
             case R.id.action_storage:
-                Log.e(TAG, "You clicked storage");
                 if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_IMAGE_STORAGE);
                 } else {
