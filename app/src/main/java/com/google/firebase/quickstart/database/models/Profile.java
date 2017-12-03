@@ -37,6 +37,7 @@ public class Profile {
         this.hobbies = new ArrayList<>();
         this.phone = "";
         this.isCheck = false;
+        this.description = "";
     }
 
     @Exclude

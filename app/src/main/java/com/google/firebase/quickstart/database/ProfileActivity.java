@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -158,8 +159,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
-                toastMessage = "Please do not cross click buttons";
-                UtilToast.showToast(ProfileActivity.this, toastMessage);
             }
 
             @Override
@@ -173,6 +172,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                                 if (position < mTagContainerLayout.getChildCount()) {
                                     mTagContainerLayout.removeTag(position);
                                 }
+
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -244,7 +244,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         locationEditText = findViewById(R.id.locationEditText);
         birthdayEditText = findViewById(R.id.birthdayEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
-        descriptionEditText.setText("I am a foodie and I love hanging out with people");
+        descriptionEditText.setText("");
 
         profileRef = mDatabase.child("profiles").child(intentUserID);
         imgRef = profileRef.child("image");
@@ -651,6 +651,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
                 if (profileMap.get("hobbies") != null) {
                     hobbies  = (List)profileMap.get("hobbies");
+                    hobbies.removeAll(Collections.singleton(null));
+                    hobbies.removeAll(Arrays.asList("", null));
+                    mTagContainerLayout.setTags(hobbies);
                 }
 
 
@@ -683,6 +686,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
                 if (hobbies != null) {
                     hobbies.removeAll(Collections.singleton(null)); //Time complexity is n^2, not the best implementation
+                    hobbies.removeAll(Arrays.asList("", null));
                     mTagContainerLayout.setTags(hobbies);
                 } else {
 
