@@ -54,16 +54,12 @@ public class  MainActivity extends BaseActivity {
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
-//                    new RecentPostsFragment(),
                     new RecentEventsFragment(),
-//                    new MyPostsFragment(),
-//                    new MyTopPostsFragment(),
                     new MyTopEventsFragment(),
                     new PeopleFragment()
             };
             private final String[] mFragmentNames = new String[] {
                     getString(R.string.heading_recent),
-//                    getString(R.string.heading_my_posts),
                     getString(R.string.heading_my_top_events),
                     "Contacts"
             };
@@ -90,7 +86,6 @@ public class  MainActivity extends BaseActivity {
         findViewById(R.id.fab_new_event).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this, NewPostActivity.class));
                 startActivity(new Intent(MainActivity.this, NewEventActivity.class));
             }
         });

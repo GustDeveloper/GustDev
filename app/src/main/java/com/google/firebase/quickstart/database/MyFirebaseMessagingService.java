@@ -49,13 +49,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_ONE_SHOT);
 
-
-//        Intent chatActivity = new Intent(getActivity(),ChatActivity.class);
-//        chatActivity.putExtra("Path","/chat-room/" + peopleSnapshot.getValue().toString());
-//        chatActivity.putExtra("ReceiverName", model.username);
-//        chatActivity.putExtra("receiver",infoKey);
-//        startActivity(chatActivity);
-
         String channelId = "default";
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
@@ -80,7 +73,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> runningTaskInfo = manager.getRunningTasks(1);
         ComponentName componentInfo = runningTaskInfo.get(0).topActivity;
-
         Log.d("Service", componentInfo.getClassName());
         return componentInfo.getClassName().equals(myPackage);
     }

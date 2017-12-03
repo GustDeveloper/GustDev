@@ -98,8 +98,6 @@ public class PeopleFragment extends Fragment {
         // [END create_database_reference]
         mRecycler = rootView.findViewById(R.id.people_list);
         mRecycler.setHasFixedSize(true);
-
-
         return rootView;
     }
 
@@ -141,7 +139,6 @@ public class PeopleFragment extends Fragment {
                         startActivity(profileActivity);
                     }
                 });
-
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
                 // can be used as message
                 // for two people,
@@ -154,7 +151,6 @@ public class PeopleFragment extends Fragment {
                         final DatabaseReference userhash = mDatabase.child("user-user");
                         // determine if the user-user pair exist
                                     Log.d("Chat","Success");
-
                                     userhash.child(Uid).addListenerForSingleValueEvent(new ValueEventListener(){
                                         public void onDataChange(DataSnapshot snapshot1) {
                                             boolean Create = true;

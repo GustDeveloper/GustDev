@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/gust_logo_nowhite"
+        android:icon="@drawable/gust_logo_vector"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
