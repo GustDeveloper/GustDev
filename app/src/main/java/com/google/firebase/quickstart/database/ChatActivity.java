@@ -57,6 +57,9 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.widget.RelativeLayout.ALIGN_RIGHT;
+import static com.google.firebase.quickstart.database.R.color.colorAccent;
+import static com.google.firebase.quickstart.database.R.color.colorPrimary;
+import static com.google.firebase.quickstart.database.R.color.colorbar;
 
 public class ChatActivity extends BaseActivity {
     private Button btn_send_msg;
@@ -315,6 +318,11 @@ public class ChatActivity extends BaseActivity {
             // for own message, appears right. for others' message, appear left
             if (message.sender.equals(userId)){
                 holder.photoView.setLayoutParams(params);
+                final float scale = getResources().getDisplayMetrics().density;
+                holder.photoView.getLayoutParams().width= 60 * (int)scale;
+                holder.photoView.getLayoutParams().height= 60 *(int)scale;
+                holder.photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                holder.photoView.setPadding(20, 10, 20, 10);
                 params1.addRule(RelativeLayout.LEFT_OF, holder.photoView.getId());
                 holder.linearView.setLayoutParams(params1);
                 holder.bodyView.setLayoutParams(p);
@@ -324,6 +332,11 @@ public class ChatActivity extends BaseActivity {
                 RelativeLayout.LayoutParams paramsl = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 paramsl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 holder.photoView.setLayoutParams(paramsl);
+                final float scale = getResources().getDisplayMetrics().density;
+                holder.photoView.getLayoutParams().width= 60 * (int)scale;
+                holder.photoView.getLayoutParams().height= 60 *(int)scale;
+                holder.photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                holder.photoView.setPadding(20, 10, 20, 10);
                 rparams.addRule(RelativeLayout.RIGHT_OF, holder.photoView.getId());
                 holder.linearView.setLayoutParams(rparams);
                 LinearLayout.LayoutParams pl = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -331,6 +344,10 @@ public class ChatActivity extends BaseActivity {
                 pl.gravity = Gravity.LEFT;
                 holder.bodyView.setLayoutParams(pl);
                 holder.authorView.setLayoutParams(pl);
+                holder.linearView.setBackgroundColor(getResources().getColor(colorbar));
+                holder.bodyView.setTextColor(getResources().getColor(colorPrimary));
+                holder.authorView.setTextColor(getResources().getColor(colorPrimary));
+
                 if (otherImg != null) {holder.photoView.setImageBitmap(otherImg);}//holder.photoView.setImageBitmap(otherImg);
                 else {
                     Log.d("ChatService", "NULL");

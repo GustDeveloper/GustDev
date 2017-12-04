@@ -10,4 +10,5 @@
     <color name="icons">#212121</color>
     <color name="divider">#b6b6b6</color>
     <color name="transparent">#00000000</color>
+    <color name="AZURE">#3498db</color>
 </resources>
