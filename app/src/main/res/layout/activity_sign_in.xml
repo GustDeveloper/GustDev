@@ -76,14 +76,16 @@
             android:textColor="@color/cardview_light_background" />
 
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
+
+    <Button
+        android:id="@+id/button_forget_password"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_buttons"
         android:layout_centerHorizontal="true"
         android:text="Forget Password"
-        android:linksClickable="true"
         android:textAlignment="center"
-        android:textColor="@color/cardview_light_background"/>
+        android:background="@android:color/transparent"
+        android:textColor="@color/cardview_light_background" />
 
 </RelativeLayout>

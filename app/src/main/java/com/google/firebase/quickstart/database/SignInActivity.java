@@ -37,6 +37,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private EditText mPasswordField;
     private Button mSignInButton;
     private Button mSignUpButton;
+    private Button mForgetPassword;
 
     private String message;
 
@@ -52,12 +53,15 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         // Views
         mEmailField = findViewById(R.id.field_email);
         mPasswordField = findViewById(R.id.field_password);
+
         mSignInButton = findViewById(R.id.button_sign_in);
         mSignUpButton = findViewById(R.id.button_sign_up);
+        mForgetPassword=findViewById(R.id.button_forget_password);
 
         // Click listeners
         mSignInButton.setOnClickListener(this);
         mSignUpButton.setOnClickListener(this);
+        mForgetPassword.setOnClickListener(this);
     }
 
     @Override
@@ -135,6 +139,30 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     }
                 });
     }
+
+    public void forgetPassword(){
+
+        if (TextUtils.isEmpty(mEmailField.getText().toString())) {
+            mEmailField.setError("Required");
+
+        } else {
+            mEmailField.setError(null);
+            String emailAddress = mEmailField.getText().toString();
+
+
+            mAuth.sendPasswordResetEmail(emailAddress)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Email sent.");
+                                message = "Email sent.";
+                            }
+                        }
+                    });
+        }
+    }
+
 
     private void onAuthSuccess(FirebaseUser user) {
         final String username = usernameFromEmail(user.getEmail());
@@ -224,6 +252,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             signIn();
         } else if (i == R.id.button_sign_up) {
             signUp();
+        }
+        else if (i == R.id.button_forget_password) {
+            forgetPassword();
         }
     }
 }
