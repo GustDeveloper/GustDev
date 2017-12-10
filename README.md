@@ -21,7 +21,7 @@ The User must have an Internet connection while using the application.
 
 Contacts for Technical Support:
 Chen Chen chc507@eng.ucsd.edu  Software Architect
-Jinghao Tang  xxxxxxxx@gmail.com Software Development Lead
+Jinghao Tang  jit063@eng.ucsd.edu Software Development Lead
 
 ##Installation Instruction: 
 1. Download from GitHub repository at URL: https://github.com/GustDeveloper/GustDev
