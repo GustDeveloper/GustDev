@@ -5,10 +5,10 @@ Communication among students on large college campus such as UCSD often lacks su
 
 
 ##Login Credentials:
-For testing purposes, we have provided two created accounts for ease of understanding functionality and relationship between users. The user needs to have a username and password in order to log in to their account in this mobile app. If the user doesn’t have a personal account yet, he/she can sign up for a new account. 
+For testing purposes, we have provided a created accounts for ease of understanding functionality and relationship between users. The user needs to have a username and password in order to log in to their account in this mobile app. If the user doesn’t have a personal account yet, he/she can sign up for a new account. 
 
 Created App Account(For testing purpose):
-Username : 1@qq.com.                     Password: 1234567
+Username : 1@qq.com.                     Password: 123456
 
 
 Important Note: If you want to try the functionality of resetting passwords, please use your real email address to sign up. Additionally, the email that sent it to your email address sometimes may take a few minutes to reach your email inbox. 
@@ -21,7 +21,7 @@ The User must have an Internet connection while using the application.
 
 Contacts for Technical Support:
 Chen Chen chc507@eng.ucsd.edu  Software Architect
-Jinghao Tang  xxxxxxxx@gmail.com Software Development Lead
+Jinghao Tang  jit063@eng.ucsd.edu Software Development Lead
 
 ##Installation Instruction: 
 1. Download from GitHub repository at URL: https://github.com/GustDeveloper/GustDev
