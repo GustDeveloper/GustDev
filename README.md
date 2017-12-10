@@ -20,14 +20,12 @@ The User must have an Internet connection while using the application.
 
 
 Contacts for Technical Support:
-Chen Chen xxxxxxxx@gmail.com    Software Architect
+Chen Chen chc507@eng.ucsd.edu  Software Architect
 Jinghao Tang  xxxxxxxx@gmail.com Software Development Lead
 
 ##Installation Instruction: 
 1. Download from GitHub repository at URL: https://github.com/GustDeveloper/GustDev
 2.  Run the APK file from the downloads folder and install it. 
-
-
 
 
 ##How to Run: 
@@ -41,6 +39,9 @@ Login Bug:
 In some of the Android devices, after the user enters the correct credentials and then clicks “sign in” button to log in to the app, it may crush because the device doesn’t have enough memory for running this application. 
 
 In some of the Android Emulator devices from Android Studio, the login or signup process may takes forever due to some unknown reasons. But this doesn’t happen very often. 
+
+Memory Issues: 
+Some devices might experience Application Not Response (ANR) issues. This is caused by excesss memory consumption when caching contents of activities. Repeatly switching between pages might trigger excessive memoery demand and casue the crash. This is expected to be repaired in next iteration. 
 
 If you run into any of these issues mentioned above, please do not hesitate to contact our technical support.
 
