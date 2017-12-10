@@ -20,8 +20,8 @@ The User must have an Internet connection while using the application.
 
 
 Contacts for Technical Support:
-Chen Chen (402-739-7780 ) xxxxxxxx@gmail.com    Software Architect
-Jinghao Tang (-xxx-xxxx) xxxxxxxx@gmail.com Software Development Lead
+Chen Chen xxxxxxxx@gmail.com    Software Architect
+Jinghao Tang  xxxxxxxx@gmail.com Software Development Lead
 
 ##Installation Instruction: 
 1. Download from GitHub repository at URL: https://github.com/GustDeveloper/GustDev
