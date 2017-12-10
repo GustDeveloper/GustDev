@@ -292,6 +292,51 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 hobbies.add(newHobby);
                 mTagContainerLayout.addTag(newHobby);
                 Log.e(TAG, hobbies.toString());
+                nickname = nicknameEditText.getText().toString();
+                location = locationEditText.getText().toString();
+                birthday = birthdayEditText.getText().toString();
+                phone = phoneEditText.getText().toString();
+                description = descriptionEditText.getText().toString();
+
+                if (validateString(nickname)) {
+                    //profile.setNickname(nickname);
+                    profile.nickname = nickname;
+                }
+
+                if (validateString(phone)) {
+                    //profile.setLocation(phone);
+                    profile.phone = phone;
+                }
+
+                if (validateString(location)) {
+                    // profile.setPhone(location);
+                    profile.location = location;
+                }
+
+                if (validateString(birthday)) {
+                    //profile.setBirthday(birthday);
+                    profile.birthday = birthday;
+                }
+
+                if (validateString(description)) {
+                    profile.description = description;
+                }
+
+                //updateProfileView();
+
+                /*Update to Firebase*/
+                profileRef.setValue(profile, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            Log.e(TAG, "Failed to update user information, please try again");
+                            toastMessage = "Failed to update user information, please try again";
+                            UtilToast.showToast(ProfileActivity.this, toastMessage);
+                        }
+                    }
+
+                });
+
                 tagRef.setValue(hobbies, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
