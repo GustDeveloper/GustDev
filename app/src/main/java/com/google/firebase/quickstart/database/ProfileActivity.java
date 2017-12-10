@@ -289,6 +289,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.addTagButtonProfile:
                 String newHobby = tagEditText.getText().toString();
+                if (newHobby == null || newHobby.length() == 0) {
+                    UtilToast.showToast(getApplicationContext(), "You haven't enter any tag");
+                    break;
+                }
                 hobbies.add(newHobby);
                 mTagContainerLayout.addTag(newHobby);
                 Log.e(TAG, hobbies.toString());
@@ -322,7 +326,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     profile.description = description;
                 }
 
-                //updateProfileView();
 
                 /*Update to Firebase*/
                 profileRef.setValue(profile, new DatabaseReference.CompletionListener() {
@@ -343,6 +346,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         if (databaseError != null) {
                             toastMessage = "Failed to add tags to the server";
                             UtilToast.showToast(ProfileActivity.this, toastMessage);
+                        } else {
+                            tagEditText.setText("");
                         }
                     }
                 });
