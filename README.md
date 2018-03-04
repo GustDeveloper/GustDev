@@ -4,6 +4,9 @@
 Communication among students on large college campus such as UCSD often lacks sufficient medium to support and facilitate. Gust is the next generation campus social dining tool that shortens the social distance among the student body, developed by Team Eat Together. Students can eat and hang out with new friends through using this mobile app. This app has three interesting features, which is users can create new events, chat with people who goes to the same events as well as see all the history event they participated.  
 
 
+#Vide Demo:
+https://www.youtube.com/watch?v=EEj4PPHftJU&t=405s
+
 ##Login Credentials:
 For testing purposes, we have provided a created accounts for ease of understanding functionality and relationship between users. The user needs to have a username and password in order to log in to their account in this mobile app. If the user doesn’t have a personal account yet, he/she can sign up for a new account. 
 
