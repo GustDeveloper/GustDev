@@ -5,7 +5,12 @@ Communication among students on large college campus such as UCSD often lacks su
 
 
 #Vide Demo:
-https://www.youtube.com/watch?v=EEj4PPHftJU&t=405s
+
+[![Gust Demo](https://img.youtube.com/vi/EEj4PPHftJU/0.jpg)](https://www.youtube.com/watch?v=EEj4PPHftJU)
+
+
+Link: https://www.youtube.com/watch?v=EEj4PPHftJU&t=405s
+
 
 ##Login Credentials:
 For testing purposes, we have provided a created accounts for ease of understanding functionality and relationship between users. The user needs to have a username and password in order to log in to their account in this mobile app. If the user doesn’t have a personal account yet, he/she can sign up for a new account. 
